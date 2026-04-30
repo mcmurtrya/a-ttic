@@ -1,0 +1,47 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ttic-embeddings"
+version = "0.1.0"
+description = "Visual encoder swap to caption analysis (TTIC course project)"
+authors = [
+    {name = "Alex McMurtry", email = "amcmurtry@uchicago.edu"},
+    {name = "Hilman Hanivan", email = "hanivan@uchicago.edu"},
+]
+requires-python = ">=3.11"
+dependencies = [
+    "torch>=2.1",
+    "transformers>=4.40",
+    "accelerate>=0.30",
+    "spacy>=3.7",
+    "nltk>=3.8",
+    "lexical-diversity>=0.1.1",
+    "scipy>=1.11",
+    "statsmodels>=0.14",
+    "pingouin>=0.5",
+    "pandas>=2.0",
+    "numpy<2.0",
+    "pyyaml",
+    "omegaconf>=2.3",
+    "tqdm",
+    "wandb",
+    "Pillow",
+    "requests",
+]
+
+[project.optional-dependencies]
+caption-quality = ["pycocoevalcap"]
+dev = ["pytest>=7.0", "ruff", "ipython"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP"]
+ignore = ["E501"]

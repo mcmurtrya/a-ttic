@@ -1,0 +1,14 @@
+# Encoder: DINOv2 ViT-L/14 — Meta, self-supervised (self-distillation, no labels)
+# Pretraining: LVD-142M (curated image collection, no text)
+# Role: self-supervised, condition 1 (primary self-supervised condition)
+
+defaults:
+  - base
+
+encoder:
+  name: dinov2
+  checkpoint: facebook/dinov2-large
+  hidden_dim: 1024
+  patch_count: 256
+  image_size: 224
+  supervision: self

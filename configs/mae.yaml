@@ -1,0 +1,15 @@
+# Encoder: MAE ViT-L/16 — Meta, self-supervised (masked image reconstruction)
+# Pretraining: ImageNet-1K (1.3M images)
+# Role: self-supervised, condition 2 (narrow-pretrained, secondary check)
+# Patch count is 196, not 256 — adaptor input layer absorbs this asymmetry.
+
+defaults:
+  - base
+
+encoder:
+  name: mae
+  checkpoint: facebook/vit-mae-large
+  hidden_dim: 1024
+  patch_count: 196
+  image_size: 224
+  supervision: self

@@ -1,0 +1,15 @@
+# Encoder: SigLIP ViT-L/16 at 256 res — Google, language-supervised (sigmoid contrastive)
+# Pretraining: WebLI (~10B image-text pairs)
+# Role: language-supervised, condition 2 (within-category replication for CLIP)
+# 256 resolution chosen to match CLIP's 256-patch input shape.
+
+defaults:
+  - base
+
+encoder:
+  name: siglip
+  checkpoint: google/siglip-large-patch16-256
+  hidden_dim: 1024
+  patch_count: 256
+  image_size: 256
+  supervision: language

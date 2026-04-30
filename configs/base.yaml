@@ -1,0 +1,55 @@
+# Shared configuration applied across all encoder runs.
+# Encoder-specific configs override the `encoder` block below.
+
+seed: 0
+
+paths:
+  coco_root: ${oc.env:COCO_ROOT,./data/coco}
+  vg_root: ${oc.env:VG_ROOT,./data/vg}
+  cache_root: ${oc.env:FEATURE_CACHE_ROOT,./features}
+  checkpoint_root: ${oc.env:CHECKPOINT_ROOT,./checkpoints}
+  caption_root: ${oc.env:CAPTION_ROOT,./captions}
+
+decoder:
+  name: gpt2-medium
+  hidden_dim: 1024
+
+adaptor:
+  k_soft_tokens: 10
+  hidden_dim: 1024
+  num_hidden_layers: 2
+  activation: gelu
+  dropout: 0.1
+
+train:
+  optimizer: adamw
+  lr: 1.0e-4
+  weight_decay: 0.01
+  betas: [0.9, 0.999]
+  batch_size: 256
+  warmup_steps: 500
+  max_steps: 50000
+  val_every_steps: 500
+  patience_evals: 5
+  precision: bf16
+  num_seeds: 3
+
+generate:
+  beam_size: 5
+  nucleus_p: 0.9
+  max_new_tokens: 30
+  num_val_images: 5000
+
+logging:
+  wandb_project: ttic-embeddings
+  wandb_entity: null
+  log_every_steps: 50
+
+# Filled in by encoder-specific configs:
+encoder:
+  name: ???
+  checkpoint: ???
+  hidden_dim: ???
+  patch_count: ???
+  image_size: ???
+  supervision: ???

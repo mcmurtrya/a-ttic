@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="680" height="780" viewBox="0 0 680 780" role="img" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">
+<title>Data collection and analysis pipeline</title>
+<desc>Five-stage pipeline: COCO image sampling, four-encoder caption generation, four-axis metric scoring, per-image paired score vectors, and two parallel analytic paths — a primary supervision-category contrast and a secondary all-pairwise contrast — both with BH-FDR correction and Wilcoxon r effect sizes.</desc>
+<defs>
+<marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker>
+<style>
+  .th { font-size: 14px; font-weight: 500; }
+  .ts { font-size: 12px; font-weight: 400; }
+  .arr { stroke: #5F5E5A; stroke-width: 1.5; fill: none; }
+  .gray-rect { fill: #F1EFE8; stroke: #5F5E5A; stroke-width: 0.5; }
+  .gray-title { fill: #444441; }
+  .gray-sub { fill: #5F5E5A; }
+  .purple-rect { fill: #EEEDFE; stroke: #534AB7; stroke-width: 0.5; }
+  .purple-title { fill: #3C3489; }
+  .purple-sub { fill: #534AB7; }
+  .header { fill: #2C2C2A; }
+  .sep { stroke: #B4B2A9; stroke-width: 0.5; }
+</style>
+</defs>
+
+<text class="th header" x="40" y="34">Stage 1 — image sampling</text>
+<line class="sep" x1="40" y1="42" x2="640" y2="42"/>
+<rect class="gray-rect" x="200" y="58" width="280" height="56" rx="8"/>
+<text class="th gray-title" x="340" y="78" text-anchor="middle" dominant-baseline="central">COCO val2017</text>
+<text class="ts gray-sub" x="340" y="96" text-anchor="middle" dominant-baseline="central">5K images, VG-annotated subset for specificity</text>
+
+<line class="arr" x1="340" y1="114" x2="340" y2="146" marker-end="url(#arrow)"/>
+
+<text class="th header" x="40" y="172">Stage 2 — caption generation</text>
+<line class="sep" x1="40" y1="180" x2="640" y2="180"/>
+<rect class="gray-rect" x="200" y="196" width="280" height="56" rx="8"/>
+<text class="th gray-title" x="340" y="216" text-anchor="middle" dominant-baseline="central">8 captions per image</text>
+<text class="ts gray-sub" x="340" y="234" text-anchor="middle" dominant-baseline="central">4 encoders × 2 decoding strategies = ~40K captions</text>
+
+<line class="arr" x1="340" y1="252" x2="340" y2="284" marker-end="url(#arrow)"/>
+
+<text class="th header" x="40" y="310">Stage 3 — score extraction</text>
+<line class="sep" x1="40" y1="318" x2="640" y2="318"/>
+<rect class="gray-rect" x="200" y="334" width="280" height="56" rx="8"/>
+<text class="th gray-title" x="340" y="354" text-anchor="middle" dominant-baseline="central">4 metric scores per caption</text>
+<text class="ts gray-sub" x="340" y="372" text-anchor="middle" dominant-baseline="central">spaCy parse → specificity, spatial, abstraction, diversity</text>
+
+<line class="arr" x1="340" y1="390" x2="340" y2="422" marker-end="url(#arrow)"/>
+
+<text class="th header" x="40" y="448">Stage 4 — paired observations</text>
+<line class="sep" x1="40" y1="456" x2="640" y2="456"/>
+<rect class="purple-rect" x="160" y="472" width="360" height="80" rx="8"/>
+<text class="th purple-title" x="340" y="494" text-anchor="middle" dominant-baseline="central">Per-image score vectors</text>
+<text class="ts purple-sub" x="340" y="514" text-anchor="middle" dominant-baseline="central">(s_CLIP, s_SigLIP, s_DINO, s_MAE) per metric × image</text>
+<text class="ts purple-sub" x="340" y="532" text-anchor="middle" dominant-baseline="central">same image across encoders enables paired tests</text>
+
+<path class="arr" d="M340 552 L340 580 L195 580 L195 612" marker-end="url(#arrow)"/>
+<path class="arr" d="M340 552 L340 580 L485 580 L485 612" marker-end="url(#arrow)"/>
+
+<rect class="purple-rect" x="50" y="612" width="290" height="120" rx="8"/>
+<text class="th purple-title" x="195" y="634" text-anchor="middle" dominant-baseline="central">Primary analysis</text>
+<text class="ts purple-sub" x="195" y="654" text-anchor="middle" dominant-baseline="central">supervision-category contrast</text>
+<text class="ts purple-sub" x="195" y="674" text-anchor="middle" dominant-baseline="central">pool (CLIP+SigLIP) vs (DINO+MAE)</text>
+<text class="ts purple-sub" x="195" y="694" text-anchor="middle" dominant-baseline="central">4 paired Wilcoxon tests</text>
+<text class="ts purple-sub" x="195" y="714" text-anchor="middle" dominant-baseline="central">BH-FDR · Wilcoxon r effect size</text>
+
+<rect class="gray-rect" x="340" y="612" width="290" height="120" rx="8"/>
+<text class="th gray-title" x="485" y="634" text-anchor="middle" dominant-baseline="central">Secondary analysis</text>
+<text class="ts gray-sub" x="485" y="654" text-anchor="middle" dominant-baseline="central">all pairwise contrasts</text>
+<text class="ts gray-sub" x="485" y="674" text-anchor="middle" dominant-baseline="central">6 encoder pairs × 4 metrics</text>
+<text class="ts gray-sub" x="485" y="694" text-anchor="middle" dominant-baseline="central">24 paired Wilcoxon tests</text>
+<text class="ts gray-sub" x="485" y="714" text-anchor="middle" dominant-baseline="central">BH-FDR within family</text>
+
+<text class="ts header" x="340" y="754" text-anchor="middle">Pre-registered direction · effect threshold r ≥ 0.10 · primary tests confirmatory, secondary exploratory</text>
+</svg>

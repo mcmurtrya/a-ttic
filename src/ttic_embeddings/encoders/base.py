@@ -58,8 +58,13 @@ class VisualEncoder(nn.Module, ABC):
     def preprocess(self, images: list[Image.Image]) -> torch.Tensor:
         return self.processor(images=images, return_tensors="pt")["pixel_values"]
 
-    @torch.inference_mode()
+    @torch.no_grad()
     def forward(self, pixel_values: torch.Tensor) -> torch.Tensor:
+        # `no_grad` (not `inference_mode`): the encoder's output is fed
+        # into a TRAINABLE adaptor downstream, and `inference_mode`
+        # tensors cannot participate in autograd-tracked computation.
+        # `no_grad` is sufficient here because all encoder params are
+        # frozen, so no gradients flow back into the encoder anyway.
         outputs = self.backbone(pixel_values=pixel_values)
         patches = self._get_patches(outputs)
         self._verify_shape(patches)

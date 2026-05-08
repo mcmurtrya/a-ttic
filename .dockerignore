@@ -1,0 +1,43 @@
+# VCS
+.git
+.gitignore
+
+# Local Python envs / build artifacts
+.venv
+venv
+__pycache__
+*.pyc
+*.pyo
+*.egg-info
+build
+dist
+
+# Caches
+.ruff_cache
+.pytest_cache
+.mypy_cache
+.coverage
+
+# Data / outputs (mounted at runtime, not baked into the image)
+data/
+features/
+captions/
+checkpoints/
+wandb/
+*.parquet
+*.pkl
+
+# Docs (the README is explicitly re-included below)
+*.md
+*.svg
+!README.md
+
+# Editor / OS
+.idea
+.vscode
+.DS_Store
+Thumbs.db
+
+# Env
+.env
+.env.local

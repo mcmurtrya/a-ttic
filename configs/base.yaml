@@ -30,9 +30,12 @@ train:
   warmup_steps: 500
   max_steps: 50000
   val_every_steps: 500
+  val_max_batches: null      # null = full val set; int = first N batches only
   patience_evals: 5
+  grad_clip: 1.0
   precision: bf16
   num_seeds: 3
+  num_workers: 4             # DataLoader workers
 
 generate:
   beam_size: 5

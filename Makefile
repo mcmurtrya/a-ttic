@@ -50,9 +50,7 @@ install:  ## Create venv and install the package via uv
 	uv pip install -e .
 
 install-dev:  ## Install package + dev/eval extras + NLP assets
-	uv venv
-	uv pip install -e ".[dev,caption-quality]"
-	uv run python -m spacy download en_core_web_lg
+	uv sync --extra dev --extra caption-quality
 	uv run python -c "import nltk; nltk.download('wordnet'); nltk.download('omw-1.4')"
 
 sync:  ## Re-sync deps from pyproject.toml (or uv.lock if present)
@@ -63,6 +61,10 @@ lock:  ## Generate or update uv.lock
 
 smoke:  ## Run the Phase 0 smoke test
 	uv run python scripts/00_smoke_test.py
+
+test:  ## Run pytest (metric + stats unit tests)
+	uv sync --extra dev --extra caption-quality
+	uv run pytest
 
 data:  ## Download COCO + VG into $COCO_ROOT and $VG_ROOT
 	uv run python scripts/01_download_data.py

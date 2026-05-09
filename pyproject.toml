@@ -34,7 +34,16 @@ dependencies = [
 
 [project.optional-dependencies]
 caption-quality = ["pycocoevalcap"]
-dev = ["pytest>=7.0", "ruff", "ipython"]
+dev = [
+    "pytest>=7.0",
+    "ruff",
+    "ipython",
+    # Pin the spaCy model as a direct URL dep so `uv sync --extra dev`
+    # installs it as part of resolution. Manually-downloaded models
+    # were getting clobbered by `uv sync` because they weren't in
+    # pyproject.toml.
+    "en-core-web-lg @ https://github.com/explosion/spacy-models/releases/download/en_core_web_lg-3.8.0/en_core_web_lg-3.8.0-py3-none-any.whl",
+]
 
 [tool.setuptools.packages.find]
 where = ["src"]
@@ -46,3 +55,10 @@ target-version = "py311"
 [tool.ruff.lint]
 select = ["E", "F", "I", "B", "UP"]
 ignore = ["E501"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = "-v --tb=short"

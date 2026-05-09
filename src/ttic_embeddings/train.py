@@ -26,6 +26,7 @@ from __future__ import annotations
 
 import logging
 import math
+import signal
 import time
 from contextlib import contextmanager, nullcontext
 from pathlib import Path
@@ -234,17 +235,73 @@ def save_checkpoint(
     val_ppl: float,
     path: Path,
 ) -> None:
-    """Save adaptor weights + optimizer/scheduler state to disk."""
-    torch.save(
-        {
-            "adaptor_state_dict": adaptor.state_dict(),
-            "optimizer_state_dict": optimizer.state_dict(),
-            "scheduler_state_dict": scheduler.state_dict(),
-            "step": step,
-            "val_ppl": val_ppl,
-        },
-        path,
+    """Save adaptor + optimizer + scheduler state. Atomic via temp + rename."""
+    payload = {
+        "adaptor_state_dict": adaptor.state_dict(),
+        "optimizer_state_dict": optimizer.state_dict(),
+        "scheduler_state_dict": scheduler.state_dict(),
+        "step": step,
+        "val_ppl": val_ppl,
+    }
+    path = Path(path)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    tmp = path.with_suffix(path.suffix + ".tmp")
+    torch.save(payload, tmp)
+    tmp.replace(path)  # atomic on POSIX, atomic-enough on NTFS
+
+
+def maybe_resume(
+    adaptor: nn.Module,
+    optimizer: torch.optim.Optimizer,
+    scheduler: torch.optim.lr_scheduler.LRScheduler,
+    ckpt_path: Path,
+) -> tuple[int, float]:
+    """Restore training state from `ckpt_path` if it exists.
+
+    Returns (start_step, last_val_ppl). When the checkpoint is absent,
+    returns (0, inf) — the same state as a fresh run.
+    """
+    ckpt_path = Path(ckpt_path)
+    if not ckpt_path.exists():
+        return 0, float("inf")
+    logger.info("Resuming from %s ...", ckpt_path)
+    ckpt = torch.load(ckpt_path, map_location="cpu")
+    adaptor.load_state_dict(ckpt["adaptor_state_dict"])
+    optimizer.load_state_dict(ckpt["optimizer_state_dict"])
+    scheduler.load_state_dict(ckpt["scheduler_state_dict"])
+    start_step = int(ckpt.get("step", 0))
+    last_val_ppl = float(ckpt.get("val_ppl", float("inf")))
+    logger.info(
+        "Resumed at step %d (last val_ppl=%.3f)", start_step, last_val_ppl
     )
+    return start_step, last_val_ppl
+
+
+class _GracefulExit:
+    """Trap SIGTERM/SIGINT so the train loop can save and exit cleanly.
+
+    Spot reclaims send SIGTERM with ~2 minutes warning. We set
+    `received = True` from the handler and the train loop checks it
+    after each step, saves a checkpoint, and exits with
+    stopped_reason='interrupted'.
+    """
+
+    def __init__(self) -> None:
+        self.received = False
+        for sig in (signal.SIGTERM, signal.SIGINT):
+            try:
+                signal.signal(sig, self._handle)
+            except (ValueError, OSError):
+                # signal.signal() can only be installed from the main
+                # thread; if we're not in main, just no-op.
+                pass
+
+    def _handle(self, signum: int, frame: Any) -> None:
+        logger.warning(
+            "Received signal %d; will save checkpoint and exit at next safe step.",
+            signum,
+        )
+        self.received = True
 
 
 # ---------------------------------------------------------------------
@@ -260,6 +317,7 @@ def train(
     output_dir: Path | str,
     device: torch.device,
     wandb_run: Any | None = None,
+    resume: bool = True,
 ) -> dict:
     """Train the adaptor until val PPL plateaus or max_steps is reached.
 
@@ -318,9 +376,29 @@ def train(
     )
     logger.info("Trainable params (adaptor only): %s", f"{n_trainable:,}")
 
-    step = 0
-    best_val_ppl = float("inf")
+    # Resume from `adaptor_latest.pt` if present (spot-reclaim safe).
+    latest_ckpt = output_dir / "adaptor_latest.pt"
+    best_ckpt = output_dir / "adaptor_best.pt"
+    start_step = 0
     last_val_ppl = float("inf")
+    best_val_ppl = float("inf")
+    if resume:
+        start_step, last_val_ppl = maybe_resume(
+            model.adaptor, optimizer, scheduler, latest_ckpt
+        )
+        if best_ckpt.exists():
+            try:
+                best_payload = torch.load(best_ckpt, map_location="cpu")
+                best_val_ppl = float(best_payload.get("val_ppl", float("inf")))
+                logger.info("Restored best_val_ppl=%.3f from %s",
+                            best_val_ppl, best_ckpt)
+            except Exception as e:
+                logger.warning("Could not read best_val_ppl from %s: %s",
+                               best_ckpt, e)
+
+    graceful = _GracefulExit()
+
+    step = start_step
     train_loss_running = 0.0
     train_loss_count = 0
     t0 = time.time()
@@ -389,6 +467,97 @@ def train(
 
                 save_checkpoint(
                     model.adaptor, optimizer, scheduler, step, val_ppl,
+                    latest_ckpt,
+                )
+
+                if early_stopper.update(val_ppl):
+                    logger.info(
+                        "Early stop: no val/ppl improvement for %d evals. "
+                        "Best: %.3f",
+                        early_stopper.patience, early_stopper.best,
+                    )
+                    stopped_reason = "early_stop"
+                    break
+
+            if graceful.received:
+                logger.warning(
+                    "Graceful exit: saving checkpoint at step %d and exiting.",
+                    step,
+                )
+                save_checkpoint(
+                    model.adaptor, optimizer, scheduler,
+                    step, last_val_ppl,
+                    latest_ckpt,
+                )
+                stopped_reason = "interrupted"
+                break
+
+            if step >= max_steps:
+                break
+
+        if stopped_reason in ("early_stop", "interrupted"):
+            break
+
+    return {
+        "best_val_ppl": best_val_ppl,
+        "last_val_ppl": last_val_ppl,
+        "total_steps": step,
+        "stopped_reason": stopped_reason,
+    } input_ids, attention_mask)
+            loss.backward()
+            grad_norm = torch.nn.utils.clip_grad_norm_(
+                model.adaptor.parameters(), max_norm=grad_clip
+            )
+            optimizer.step()
+            scheduler.step()
+
+            train_loss_running += loss.item()
+            train_loss_count += 1
+            step += 1
+
+            if step % log_every == 0:
+                elapsed = time.time() - t0
+                steps_per_sec = step / max(1.0, elapsed)
+                avg_loss = train_loss_running / max(1, train_loss_count)
+                lr = scheduler.get_last_lr()[0]
+                logger.info(
+                    "step %6d | loss %.4f | lr %.2e | gnorm %.2f | %.2f step/s",
+                    step, avg_loss, lr, float(grad_norm), steps_per_sec,
+                )
+                if wandb_run is not None:
+                    wandb_run.log({
+                        "train/loss": avg_loss,
+                        "train/lr": lr,
+                        "train/grad_norm": float(grad_norm),
+                        "train/steps_per_sec": steps_per_sec,
+                        "step": step,
+                    })
+                train_loss_running = 0.0
+                train_loss_count = 0
+
+            if step % val_every == 0:
+                val_ppl = validate(
+                    model, val_loader, device, use_amp,
+                    max_batches=val_max_batches,
+                )
+                last_val_ppl = val_ppl
+                logger.info("step %6d | val/ppl %.3f", step, val_ppl)
+                if wandb_run is not None:
+                    wandb_run.log({"val/perplexity": val_ppl, "step": step})
+
+                if val_ppl < best_val_ppl:
+                    best_val_ppl = val_ppl
+                    save_checkpoint(
+                        model.adaptor, optimizer, scheduler, step, val_ppl,
+                        output_dir / "adaptor_best.pt",
+                    )
+                    logger.info(
+                        "  best val/ppl so far (%.3f) -> saved %s",
+                        val_ppl, output_dir / "adaptor_best.pt",
+                    )
+
+                save_checkpoint(
+                    model.adaptor, optimizer, scheduler, step, val_ppl,
                     output_dir / "adaptor_latest.pt",
                 )
 
@@ -401,10 +570,23 @@ def train(
                     stopped_reason = "early_stop"
                     break
 
+            if graceful.received:
+                logger.warning(
+                    "Graceful exit: saving checkpoint at step %d and exiting.",
+                    step,
+                )
+                save_checkpoint(
+                    model.adaptor, optimizer, scheduler,
+                    step, last_val_ppl,
+                    latest_ckpt,
+                )
+                stopped_reason = "interrupted"
+                break
+
             if step >= max_steps:
                 break
 
-        if stopped_reason == "early_stop":
+        if stopped_reason in ("early_stop", "interrupted"):
             break
 
     return {

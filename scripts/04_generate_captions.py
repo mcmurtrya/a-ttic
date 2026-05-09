@@ -26,6 +26,7 @@ import argparse
 import json
 import sys
 from pathlib import Path
+from typing import Any
 
 import torch
 from omegaconf import DictConfig, OmegaConf
@@ -78,8 +79,17 @@ def generate_for_encoder(
     device: torch.device,
     decoders: tuple[str, ...],
     max_images: int | None,
+    output_handle: Any | None = None,
+    completed: set | None = None,
 ) -> list[dict]:
-    """Generate captions for one encoder. Returns list of result dicts."""
+    """Generate captions for one encoder. Returns list of result dicts.
+
+    If `output_handle` is provided, each row is also written and flushed
+    to the file as soon as it's generated (spot-reclaim safe). If
+    `completed` is provided, (image_id, encoder, decoder) tuples already
+    in the set are skipped — used for resume after a partial run.
+    """
+    completed = completed if completed is not None else set()
     log.info("=" * 60)
     log.info("Encoder: %s", encoder_name)
     log.info("=" * 60)
@@ -117,10 +127,20 @@ def generate_for_encoder(
     log.info("Generating on %d val images, decoders: %s", n, ", ".join(decoders))
 
     rows: list[dict] = []
+    n_skipped = 0
     for i in tqdm(range(n), desc=f"{encoder_name}", unit="img"):
         item = val_ds[i]
+        image_id = int(item["image_id"])
+
+        # Skip the encoder forward entirely if every decoder for this
+        # image is already in the completed set.
+        pending = [d for d in decoders if (image_id, encoder_name, d) not in completed]
+        if not pending:
+            n_skipped += 1
+            continue
+
         pixel_values = item["pixel_values"].unsqueeze(0).to(device)
-        for strategy in decoders:
+        for strategy in pending:
             kwargs = {}
             if strategy == "beam":
                 kwargs["beam_size"] = cfg.generate.beam_size
@@ -133,13 +153,22 @@ def generate_for_encoder(
                 max_new_tokens=cfg.generate.max_new_tokens,
                 **kwargs,
             )[0]
-            rows.append({
-                "image_id": int(item["image_id"]),
+            row = {
+                "image_id": image_id,
                 "encoder": encoder_name,
                 "decoder": strategy,
                 "seed": seed,
                 "caption": caption,
-            })
+            }
+            rows.append(row)
+            if output_handle is not None:
+                output_handle.write(json.dumps(row, ensure_ascii=False) + "\n")
+                output_handle.flush()
+            completed.add((image_id, encoder_name, strategy))
+
+    if n_skipped:
+        log.info("Skipped %d already-complete images for %s",
+                 n_skipped, encoder_name)
 
     # Free GPU memory before loading next encoder
     del encoder, adaptor
@@ -165,6 +194,9 @@ def main() -> int:
                         help="Limit per encoder (default: full val set).")
     parser.add_argument("--output", type=Path, default=None,
                         help="JSONL output path. Default: $CAPTION_ROOT/captions_seed{N}.jsonl.")
+    parser.add_argument("--restart", action="store_true",
+                        help="Delete any existing output JSONL and start fresh "
+                             "(default: append + skip-completed for spot resume).")
     args = parser.parse_args()
 
     encoder_names = [e.strip() for e in args.encoders.split(",") if e.strip()]
@@ -199,24 +231,42 @@ def main() -> int:
         output_path = args.output
         output_path.parent.mkdir(parents=True, exist_ok=True)
 
-    all_rows: list[dict] = []
-    for encoder_name in encoder_names:
-        cfg = load_config(encoder_name, configs_dir)
-        rows = generate_for_encoder(
-            encoder_name, cfg, decoder, tokenizer,
-            seed=args.seed, device=device,
-            decoders=decoders, max_images=args.max_images,
-        )
-        all_rows.extend(rows)
+    # Resume support: scan any existing rows in the output JSONL and skip
+    # those (image_id, encoder, decoder) tuples on regeneration. This makes
+    # the script spot-reclaim safe — restart re-runs only what's missing.
+    completed: set[tuple[int, str, str]] = set()
+    if args.restart and output_path.exists():
+        log.info("--restart: removing existing %s", output_path)
+        output_path.unlink()
+    elif output_path.exists():
+        with open(output_path, encoding="utf-8") as f:
+            for line in f:
+                line = line.strip()
+                if not line:
+                    continue
+                row = json.loads(line)
+                completed.add((int(row["image_id"]), row["encoder"], row["decoder"]))
+        log.info("Found %d already-completed rows in %s; will skip them",
+                 len(completed), output_path)
 
-    if not all_rows:
+    all_rows: list[dict] = []
+    with open(output_path, "a", encoding="utf-8") as f:
+        for encoder_name in encoder_names:
+            cfg = load_config(encoder_name, configs_dir)
+            rows = generate_for_encoder(
+                encoder_name, cfg, decoder, tokenizer,
+                seed=args.seed, device=device,
+                decoders=decoders, max_images=args.max_images,
+                output_handle=f, completed=completed,
+            )
+            all_rows.extend(rows)
+
+    if not all_rows and not completed:
         log.error("No captions generated — likely no trained adaptors found. Train first.")
         return 1
 
-    with open(output_path, "w", encoding="utf-8") as f:
-        for row in all_rows:
-            f.write(json.dumps(row, ensure_ascii=False) + "\n")
-    log.info("Wrote %d caption rows to %s", len(all_rows), output_path)
+    log.info("Wrote %d new caption rows to %s (%d total including resumed)",
+             len(all_rows), output_path, len(all_rows) + len(completed))
     return 0
 
 

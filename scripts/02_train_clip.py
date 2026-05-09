@@ -107,6 +107,10 @@ def main() -> int:
     parser.add_argument("--seed", type=int, default=None)
     parser.add_argument("--no-wandb", action="store_true",
                         help="Skip wandb logging even if WANDB_API_KEY is set.")
+    parser.add_argument("--no-resume", action="store_true",
+                        help="Start training from step 0 even if "
+                             "adaptor_latest.pt exists (default: auto-resume "
+                             "for spot-reclaim safety).")
     args = parser.parse_args()
 
     repo_root = Path(__file__).resolve().parents[1]
@@ -195,7 +199,7 @@ def main() -> int:
 
     # ----- Train ----------------------------------------------------
     output_dir = (
-        Path(cfg.paths.checkpoint_root) / cfg.encoder.name
+        Path(cfg.paths.checkpoint_root) / f"{cfg.encoder.name}_seed{cfg.seed}"
         if not args.smoke
         else Path(cfg.paths.checkpoint_root) / f"{cfg.encoder.name}_smoke"
     )
@@ -210,6 +214,7 @@ def main() -> int:
         output_dir=output_dir,
         device=device,
         wandb_run=wandb_run,
+        resume=not args.no_resume,
     )
     log.info("Training summary: %s", summary)
 

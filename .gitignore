@@ -5,12 +5,12 @@ __pycache__/
 .venv/
 venv/
 
-# Data and outputs
-data/
-features/
-captions/
-checkpoints/
-wandb/
+# Data and outputs (anchored to repo root so they don't shadow src/ttic_embeddings/data/, etc.)
+/data/
+/features/
+/captions/
+/checkpoints/
+/wandb/
 *.parquet
 *.pkl
 

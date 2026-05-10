@@ -26,12 +26,14 @@ from __future__ import annotations
 
 import logging
 import math
+import random
 import signal
 import time
 from contextlib import contextmanager, nullcontext
 from pathlib import Path
 from typing import Any
 
+import numpy as np
 import torch
 import torch.nn as nn
 from torch.utils.data import DataLoader
@@ -227,6 +229,34 @@ def validate(
     return math.exp(total_loss / total_tokens)
 
 
+def _capture_rng_state() -> dict:
+    """Snapshot every RNG that could affect training (Python, NumPy, Torch).
+
+    Saved into the checkpoint so that on spot-reclaim resume the next
+    sample is the one we would have drawn in the never-killed run —
+    not a fresh draw from a re-seeded RNG.
+    """
+    return {
+        "python": random.getstate(),
+        "numpy": np.random.get_state(),
+        "torch": torch.get_rng_state(),
+        "torch_cuda": (
+            torch.cuda.get_rng_state_all()
+            if torch.cuda.is_available() else None
+        ),
+    }
+
+
+def _restore_rng_state(state: dict) -> None:
+    """Inverse of _capture_rng_state. Tolerates missing CUDA on the resume host."""
+    random.setstate(state["python"])
+    np.random.set_state(state["numpy"])
+    torch.set_rng_state(state["torch"])
+    cuda_state = state.get("torch_cuda")
+    if cuda_state is not None and torch.cuda.is_available():
+        torch.cuda.set_rng_state_all(cuda_state)
+
+
 def save_checkpoint(
     adaptor: nn.Module,
     optimizer: torch.optim.Optimizer,
@@ -235,13 +265,14 @@ def save_checkpoint(
     val_ppl: float,
     path: Path,
 ) -> None:
-    """Save adaptor + optimizer + scheduler state. Atomic via temp + rename."""
+    """Save adaptor + optimizer + scheduler + RNG state. Atomic via temp + rename."""
     payload = {
         "adaptor_state_dict": adaptor.state_dict(),
         "optimizer_state_dict": optimizer.state_dict(),
         "scheduler_state_dict": scheduler.state_dict(),
         "step": step,
         "val_ppl": val_ppl,
+        "rng_state": _capture_rng_state(),
     }
     path = Path(path)
     path.parent.mkdir(parents=True, exist_ok=True)
@@ -271,6 +302,16 @@ def maybe_resume(
     scheduler.load_state_dict(ckpt["scheduler_state_dict"])
     start_step = int(ckpt.get("step", 0))
     last_val_ppl = float(ckpt.get("val_ppl", float("inf")))
+    rng_state = ckpt.get("rng_state")
+    if rng_state is not None:
+        _restore_rng_state(rng_state)
+        logger.info("Restored RNG state from checkpoint")
+    else:
+        logger.warning(
+            "Checkpoint at %s has no rng_state; resuming with current RNGs. "
+            "Sample order will diverge from the never-killed run.",
+            ckpt_path,
+        )
     logger.info(
         "Resumed at step %d (last val_ppl=%.3f)", start_step, last_val_ppl
     )
@@ -468,97 +509,6 @@ def train(
                 save_checkpoint(
                     model.adaptor, optimizer, scheduler, step, val_ppl,
                     latest_ckpt,
-                )
-
-                if early_stopper.update(val_ppl):
-                    logger.info(
-                        "Early stop: no val/ppl improvement for %d evals. "
-                        "Best: %.3f",
-                        early_stopper.patience, early_stopper.best,
-                    )
-                    stopped_reason = "early_stop"
-                    break
-
-            if graceful.received:
-                logger.warning(
-                    "Graceful exit: saving checkpoint at step %d and exiting.",
-                    step,
-                )
-                save_checkpoint(
-                    model.adaptor, optimizer, scheduler,
-                    step, last_val_ppl,
-                    latest_ckpt,
-                )
-                stopped_reason = "interrupted"
-                break
-
-            if step >= max_steps:
-                break
-
-        if stopped_reason in ("early_stop", "interrupted"):
-            break
-
-    return {
-        "best_val_ppl": best_val_ppl,
-        "last_val_ppl": last_val_ppl,
-        "total_steps": step,
-        "stopped_reason": stopped_reason,
-    } input_ids, attention_mask)
-            loss.backward()
-            grad_norm = torch.nn.utils.clip_grad_norm_(
-                model.adaptor.parameters(), max_norm=grad_clip
-            )
-            optimizer.step()
-            scheduler.step()
-
-            train_loss_running += loss.item()
-            train_loss_count += 1
-            step += 1
-
-            if step % log_every == 0:
-                elapsed = time.time() - t0
-                steps_per_sec = step / max(1.0, elapsed)
-                avg_loss = train_loss_running / max(1, train_loss_count)
-                lr = scheduler.get_last_lr()[0]
-                logger.info(
-                    "step %6d | loss %.4f | lr %.2e | gnorm %.2f | %.2f step/s",
-                    step, avg_loss, lr, float(grad_norm), steps_per_sec,
-                )
-                if wandb_run is not None:
-                    wandb_run.log({
-                        "train/loss": avg_loss,
-                        "train/lr": lr,
-                        "train/grad_norm": float(grad_norm),
-                        "train/steps_per_sec": steps_per_sec,
-                        "step": step,
-                    })
-                train_loss_running = 0.0
-                train_loss_count = 0
-
-            if step % val_every == 0:
-                val_ppl = validate(
-                    model, val_loader, device, use_amp,
-                    max_batches=val_max_batches,
-                )
-                last_val_ppl = val_ppl
-                logger.info("step %6d | val/ppl %.3f", step, val_ppl)
-                if wandb_run is not None:
-                    wandb_run.log({"val/perplexity": val_ppl, "step": step})
-
-                if val_ppl < best_val_ppl:
-                    best_val_ppl = val_ppl
-                    save_checkpoint(
-                        model.adaptor, optimizer, scheduler, step, val_ppl,
-                        output_dir / "adaptor_best.pt",
-                    )
-                    logger.info(
-                        "  best val/ppl so far (%.3f) -> saved %s",
-                        val_ppl, output_dir / "adaptor_best.pt",
-                    )
-
-                save_checkpoint(
-                    model.adaptor, optimizer, scheduler, step, val_ppl,
-                    output_dir / "adaptor_latest.pt",
                 )
 
                 if early_stopper.update(val_ppl):

@@ -32,6 +32,7 @@ from collections import defaultdict
 from pathlib import Path
 from typing import Any
 
+import numpy as np
 from PIL import Image
 from torch.utils.data import Dataset
 
@@ -39,6 +40,36 @@ from torch.utils.data import Dataset
 def coco_root_from_env(default: str = "./data/coco") -> Path:
     """Resolve $COCO_ROOT or fall back to a project-relative default."""
     return Path(os.environ.get("COCO_ROOT", default))
+
+
+def train_holdout_image_ids(
+    coco_root: Path | str | None = None,
+    n_holdout: int = 5000,
+    holdout_seed: int = 0,
+) -> set[int]:
+    """Deterministic held-out subset of train2017 image ids for early-stopping val.
+
+    Captioning eval reports metrics on val2017 (CocoEvalImages). If we
+    also use val2017 for the early-stopping criterion, the model selects
+    a checkpoint specifically tuned to the very images we then evaluate
+    on — train/eval leakage. Methods.md commits to a held-out subset of
+    train2017 for the stopping signal; this function produces it.
+
+    Choice is deterministic across encoders/seeds — the holdout must be
+    identical for every condition we compare. `holdout_seed` is intentionally
+    separate from `cfg.seed`; the same holdout is used by every run.
+    """
+    coco_root = Path(coco_root) if coco_root else coco_root_from_env()
+    annotations_path = coco_root / "annotations" / "captions_train2017.json"
+    image_index, _ = _load_captions(annotations_path)
+    image_ids = sorted(image_index.keys())
+    if n_holdout >= len(image_ids):
+        raise ValueError(
+            f"holdout size {n_holdout} >= train2017 image count {len(image_ids)}"
+        )
+    rng = np.random.default_rng(holdout_seed)
+    selected = rng.choice(len(image_ids), size=n_holdout, replace=False)
+    return {image_ids[i] for i in selected}
 
 
 def _load_captions(annotations_path: Path) -> tuple[dict[int, dict], list[dict]]:
@@ -83,11 +114,17 @@ class CocoCaptionPairs(Dataset):
         image_processor: Any = None,
         tokenizer: Any = None,
         max_caption_tokens: int = 32,
+        image_ids_filter: set[int] | None = None,
+        filter_mode: str = "include",
     ) -> None:
         if image_processor is None:
             raise ValueError("image_processor is required (e.g. encoder.processor)")
         if tokenizer is None:
             raise ValueError("tokenizer is required (e.g. GPT2Tokenizer.from_pretrained(...))")
+        if filter_mode not in ("include", "exclude"):
+            raise ValueError(
+                f"filter_mode must be 'include' or 'exclude', got {filter_mode!r}"
+            )
 
         self.coco_root = Path(coco_root) if coco_root else coco_root_from_env()
         self.split = split
@@ -110,6 +147,15 @@ class CocoCaptionPairs(Dataset):
         self.max_caption_tokens = max_caption_tokens
 
         image_index, annotations = _load_captions(annotations_path)
+
+        def _keep(image_id: int) -> bool:
+            if image_id not in image_index:
+                return False
+            if image_ids_filter is None:
+                return True
+            in_set = image_id in image_ids_filter
+            return in_set if filter_mode == "include" else not in_set
+
         self.items: list[tuple[int, str, str]] = [
             (
                 ann["image_id"],
@@ -117,7 +163,7 @@ class CocoCaptionPairs(Dataset):
                 ann["caption"].strip(),
             )
             for ann in annotations
-            if ann["image_id"] in image_index
+            if _keep(ann["image_id"])
         ]
 
     def __len__(self) -> int:

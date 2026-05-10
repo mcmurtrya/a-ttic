@@ -99,6 +99,32 @@ class TestWilcoxonPaired:
         result = wilcoxon_paired([1, 1, 1, 5], [1, 1, 1, 1])
         assert result["n"] == 1
 
+    def test_r_not_clamped_at_underflow(self):
+        """r is computed from the test statistic, not reverse-engineered from p.
+
+        At our sample sizes (thousands of pairs) any real effect underflows
+        p to 0. The previous reverse-engineered formula clamped r at 1.0 in
+        that regime, making the pre-registered headline (r >= 0.10) unable
+        to distinguish "huge effect" from "modest effect" once N got large.
+        """
+        rng = np.random.default_rng(0)
+        n = 5000
+        # Strong effect: every diff positive by ~1 sigma. r should be high
+        # but well below the theoretical upper bound for Wilcoxon (~0.87).
+        x = 1.0 + rng.standard_normal(n) * 0.2
+        y = 0.0 + rng.standard_normal(n) * 0.2
+        result_strong = wilcoxon_paired(x, y)
+        assert result_strong["p_value"] == 0.0  # underflowed
+        assert result_strong["r"] > 0.5
+        assert result_strong["r"] < 0.95  # not pinned at 1.0
+
+        # Smaller effect but same N — r should be smaller, not also clamped.
+        # Cohen's d ~ 0.05 / 0.28 ≈ 0.18 — small effect.
+        x2 = 1.05 + rng.standard_normal(n) * 0.2
+        y2 = 1.00 + rng.standard_normal(n) * 0.2
+        result_weak = wilcoxon_paired(x2, y2)
+        assert result_weak["r"] < result_strong["r"] - 0.3
+
 
 # ---------------------------------------------------------------------
 # bh_fdr

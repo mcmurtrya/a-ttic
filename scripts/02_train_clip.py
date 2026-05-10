@@ -41,7 +41,11 @@ if str(SRC) not in sys.path:
     sys.path.insert(0, str(SRC))
 
 from ttic_embeddings.adaptor import build_adaptor                    # noqa: E402
-from ttic_embeddings.data.coco import CocoCaptionPairs, CocoEvalImages  # noqa: E402
+from ttic_embeddings.data.coco import (                              # noqa: E402
+    CocoCaptionPairs,
+    CocoEvalImages,
+    train_holdout_image_ids,
+)
 from ttic_embeddings.encoders import build_encoder                   # noqa: E402
 from ttic_embeddings.generate import generate_captions               # noqa: E402
 from ttic_embeddings.train import CaptioningModel, train             # noqa: E402
@@ -139,19 +143,37 @@ def main() -> int:
     log.info("Model assembled. Adaptor: %s", adaptor)
 
     # ----- Datasets + loaders ---------------------------------------
+    # Early-stopping val PPL is computed on a held-out slice of train2017,
+    # NOT on val2017 — caption metrics are reported on val2017, so using it
+    # as the early-stopping signal would tune the model on the same images
+    # we evaluate on. The holdout is deterministic across encoders and seeds
+    # so every condition's stopping signal sees the same images.
+    holdout_ids = train_holdout_image_ids(
+        coco_root=cfg.paths.coco_root,
+        n_holdout=cfg.train.holdout_size,
+        holdout_seed=cfg.train.holdout_seed,
+    )
+    log.info(
+        "Held %d train2017 images out for val PPL (holdout_seed=%d)",
+        len(holdout_ids), cfg.train.holdout_seed,
+    )
     train_ds = CocoCaptionPairs(
         coco_root=cfg.paths.coco_root,
         split="train",
         image_processor=encoder.processor,
         tokenizer=tokenizer,
         max_caption_tokens=32,
+        image_ids_filter=holdout_ids,
+        filter_mode="exclude",
     )
     val_ds = CocoCaptionPairs(
         coco_root=cfg.paths.coco_root,
-        split="val",
+        split="train",
         image_processor=encoder.processor,
         tokenizer=tokenizer,
         max_caption_tokens=32,
+        image_ids_filter=holdout_ids,
+        filter_mode="include",
     )
     if args.smoke:
         # Trim to a few hundred for fast iteration. Subset preserves

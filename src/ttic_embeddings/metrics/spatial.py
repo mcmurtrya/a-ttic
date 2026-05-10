@@ -25,42 +25,32 @@ from spacy.language import Language
 from spacy.matcher import PhraseMatcher
 from spacy.tokens import Doc
 
-# Topological prepositions (containment/contact). Single-word only —
-# multi-word topological phrases are rare and overlap with the
-# projective set.
+# Topological prepositions (containment/contact). Pre-registered in
+# methods.md L33 — do not silently expand without updating the doc,
+# since the test statistic is sensitive to the lexicon.
 TOPOLOGICAL_LEXICON: list[str] = [
     "in",
     "on",
     "at",
     "inside",
     "outside",
-    "around",
     "with",
-    "containing",
 ]
 
-# Projective phrases (directional/metric). Includes multi-word phrases;
-# the PhraseMatcher will resolve them as single matches.
+# Projective phrases (directional/metric). Pre-registered in methods.md
+# L33. Multi-word phrases ("left of") match via PhraseMatcher on lemma;
+# the matcher catches "to the left of" via the embedded "left of" span,
+# so spelled-out variants do not need separate entries.
 PROJECTIVE_LEXICON: list[str] = [
-    "above",
-    "below",
-    "behind",
-    "in front of",
     "left of",
     "right of",
-    "to the left of",
-    "to the right of",
+    "behind",
+    "in front of",
+    "above",
+    "below",
     "next to",
     "between",
     "near",
-    "beside",
-    "across from",
-    "opposite",
-    "underneath",
-    "beneath",
-    "over",
-    "under",
-    "atop",
 ]
 
 

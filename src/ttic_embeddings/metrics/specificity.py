@@ -84,6 +84,27 @@ def vg_attribute_precision_recall(
     return precision, recall
 
 
+def load_vg_to_coco_remap(image_data_json_path: Path) -> dict[int, int]:
+    """Build a {VG image_id -> COCO image_id} mapping from VG's image_data.json.
+
+    VG's image_data.json is a list of records; each carries a VG `image_id`
+    and a `coco_id` (null when the VG image is not in COCO). We keep only
+    the entries with a non-null coco_id.
+
+    Required because VG attribute annotations are keyed by VG ids, but
+    every downstream consumer (caption rows, COCO splits) keys by COCO id.
+    Passing the result as `load_vg_attributes(image_id_remap=...)` is what
+    makes vg_attribute_precision_recall actually find any images.
+    """
+    with open(image_data_json_path) as f:
+        records = json.load(f)
+    return {
+        rec["image_id"]: rec["coco_id"]
+        for rec in records
+        if rec.get("coco_id") is not None
+    }
+
+
 def load_vg_attributes(
     attributes_json_path: Path,
     image_id_remap: dict[int, int] | None = None,

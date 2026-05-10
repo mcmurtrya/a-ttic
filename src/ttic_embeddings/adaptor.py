@@ -7,34 +7,42 @@ the LLM can read.
 
 Design decisions (all justified in methods.md):
 
-  Two-layer MLP. Higher-capacity adaptors (Q-Former, deep transformers)
-  risk absorbing the encoder differences this project is designed to
-  measure. The experiment depends on the adaptor being a passive
-  translator, not an interpreter.
+  Two-layer MLP, applied per-token. Higher-capacity adaptors (Q-Former,
+  deep transformers) risk absorbing the encoder differences this project
+  is designed to measure. The experiment depends on the adaptor being a
+  passive translator, not an interpreter. A single MLP is shared across
+  all 10 prefix positions; the LLM's positional embeddings handle
+  position-specific interpretation downstream.
 
-  Mean-pool over patch tokens before the MLP. We do not use the CLS
-  token because the four encoders concentrate information at CLS very
-  differently (CLIP/SigLIP heavily, DINOv2/MAE less so). Mean-pooling
-  treats them symmetrically and naturally handles MAE's 196-patch input
-  against the other three encoders' 256-patch input — the MLP's input
-  dimensionality is constant.
+  1 global mean-pool token + 3x3 adaptive average pool over the patch
+  grid = 10 prefix tokens. We do not use the encoder's CLS token because
+  the four encoders concentrate information at CLS very differently
+  (CLIP/SigLIP heavily, DINOv2/MAE less so) — the global mean-pool token
+  preserves a CLS-symmetric global representation. The 3x3 spatial grid
+  carries enough structure to distinguish left/center/right and
+  top/middle/bottom, which is the substrate the projective-spatial
+  hypothesis (methods.md L60-61) needs. Adaptive average pooling
+  collapses both the 16x16 (CLIP/SigLIP/DINOv2) and 14x14 (MAE) grids
+  to the same 3x3 output, absorbing the patch-count asymmetry
+  symmetrically.
 
   k = 10 soft tokens at the decoder hidden dim. Small enough that the
   prefix doesn't dominate the LLM's attention, large enough to carry
-  scene-level information.
+  scene-level information across 1 global + 9 spatial positions.
 
 Forward pass:
-    patches  (B, N, D_enc)
-      -- mean-pool over N -->  (B, D_enc)
-      -- linear -->            (B, H)
-      -- GELU + dropout -->
-      -- linear -->            (B, k * D_dec)
-      -- reshape -->           (B, k, D_dec)
+    patches  (B, N, D_enc) where N = h*h (square grid; 16x16 or 14x14)
+      -- transpose + reshape to (B, D_enc, h, h)
+      -- adaptive_avg_pool2d to 3x3 -->     (B, 9, D_enc)   # 9 spatial cells
+      -- mean over N -->                    (B, 1, D_enc)   # 1 global cell
+      -- concat (global first) -->          (B, 10, D_enc)
+      -- per-token MLP -->                  (B, 10, D_dec)
 """
 from __future__ import annotations
 
 import torch
 import torch.nn as nn
+import torch.nn.functional as F
 
 
 _ACTIVATIONS: dict[str, type[nn.Module]] = {
@@ -45,23 +53,30 @@ _ACTIVATIONS: dict[str, type[nn.Module]] = {
 
 
 class PrefixAdaptor(nn.Module):
-    """MLP mapping encoder patch features to k soft prompt tokens.
+    """MLP mapping encoder patch features to k = 10 soft prompt tokens.
+
+    Layout: 1 global mean-pool token at position 0, followed by 3x3 spatial
+    grid in raster order (positions 1-9). A per-token MLP is shared across
+    all 10 positions.
 
     Args:
         encoder_dim: hidden dimensionality of the encoder's patch tokens.
             All four encoders in this project use 1024.
         decoder_dim: hidden dimensionality of the LLM's input embeddings
             (1024 for GPT-2 medium).
-        k_soft_tokens: number of soft prefix tokens to produce.
+        k_soft_tokens: must equal 10 (1 global + 3x3 spatial). Kept as a
+            parameter for config compatibility; values other than 10 are
+            rejected because the spatial-grid layout is hard-coded.
         hidden_dim: width of intermediate MLP layers.
-        num_layers: total number of linear layers in the MLP. Default
-            is 2 (one hidden representation, two weight matrices) per
-            the "two-layer MLP" commitment in methods.md. num_layers=1
-            collapses to a single linear projection; num_layers=3+ adds
-            hidden layers (available for ablation, not the headline run).
+        num_layers: total number of linear layers in the per-token MLP.
+            Default is 2; num_layers=1 collapses to a single linear
+            projection; num_layers=3+ adds hidden layers (ablation only).
         dropout: dropout probability applied between hidden layers.
         activation: nonlinearity, one of "gelu", "relu", "silu".
     """
+
+    SPATIAL_GRID: int = 3
+    K_TOKENS: int = 1 + SPATIAL_GRID * SPATIAL_GRID  # 1 global + 3x3 spatial
 
     def __init__(
         self,
@@ -81,6 +96,12 @@ class PrefixAdaptor(nn.Module):
                 f"unknown activation {activation!r}; "
                 f"choose from {sorted(_ACTIVATIONS)}"
             )
+        if k_soft_tokens != self.K_TOKENS:
+            raise ValueError(
+                f"k_soft_tokens must equal {self.K_TOKENS} "
+                f"(1 global + {self.SPATIAL_GRID}x{self.SPATIAL_GRID} spatial); "
+                f"got {k_soft_tokens}. The spatial-grid layout is hard-coded."
+            )
 
         self.encoder_dim = encoder_dim
         self.decoder_dim = decoder_dim
@@ -89,8 +110,9 @@ class PrefixAdaptor(nn.Module):
         self.num_layers = num_layers
         self.activation = activation
 
-        # Build the MLP: (num_layers - 1) hidden blocks, then a final
-        # projection layer to k * decoder_dim.
+        # Per-token MLP: applied independently to each of the 10 prefix
+        # positions. The same weights are shared across positions —
+        # specialization is the LLM's job via its positional embeddings.
         Activation = _ACTIVATIONS[activation]
         layers: list[nn.Module] = []
         in_dim = encoder_dim
@@ -99,19 +121,20 @@ class PrefixAdaptor(nn.Module):
             layers.append(Activation())
             layers.append(nn.Dropout(dropout))
             in_dim = hidden_dim
-        layers.append(nn.Linear(in_dim, k_soft_tokens * decoder_dim))
+        layers.append(nn.Linear(in_dim, decoder_dim))
         self.mlp = nn.Sequential(*layers)
 
     def forward(self, patch_features: torch.Tensor) -> torch.Tensor:
-        """Map encoder patch tokens to a fixed-size soft prefix.
+        """Map encoder patch tokens to a 10-token spatial-grid soft prefix.
 
         Args:
-            patch_features: shape (B, N, encoder_dim). N varies across
-                encoders (256 for CLIP/SigLIP/DINOv2, 196 for MAE);
-                the mean-pool below makes this transparent.
+            patch_features: shape (B, N, encoder_dim). N must be a perfect
+                square (256 = 16x16 for CLIP/SigLIP/DINOv2, 196 = 14x14 for
+                MAE). Adaptive average pooling absorbs the asymmetry.
 
         Returns:
-            Tensor of shape (B, k_soft_tokens, decoder_dim), suitable
+            Tensor of shape (B, 10, decoder_dim) — global at position 0,
+            3x3 spatial grid at positions 1-9 in raster order. Suitable
             for prepending to caption-token embeddings via the LLM's
             ``inputs_embeds`` argument.
         """
@@ -125,9 +148,27 @@ class PrefixAdaptor(nn.Module):
                 f"adaptor's expected encoder_dim {self.encoder_dim}"
             )
 
-        pooled = patch_features.mean(dim=1)        # (B, encoder_dim)
-        out = self.mlp(pooled)                      # (B, k * decoder_dim)
-        return out.view(-1, self.k, self.decoder_dim)
+        b, n, d = patch_features.shape
+        h = int(round(n ** 0.5))
+        if h * h != n:
+            raise ValueError(
+                f"PrefixAdaptor expects a square patch grid (sqrt(N) integer); "
+                f"got N={n} which is not a perfect square. All four project "
+                f"encoders use square grids (16x16 or 14x14)."
+            )
+
+        # Reshape (B, N, D) -> (B, D, h, h) and pool to 3x3, then back
+        # to (B, 9, D) in raster order.
+        spatial = patch_features.transpose(1, 2).reshape(b, d, h, h)
+        spatial = F.adaptive_avg_pool2d(spatial, self.SPATIAL_GRID)   # (B, D, 3, 3)
+        spatial_tokens = spatial.flatten(2).transpose(1, 2)           # (B, 9, D)
+
+        # Global token: average over all original patches (not the 3x3 cells —
+        # we want the unbiased global mean even when the spatial grid is small).
+        global_token = patch_features.mean(dim=1, keepdim=True)        # (B, 1, D)
+
+        tokens = torch.cat([global_token, spatial_tokens], dim=1)      # (B, 10, D)
+        return self.mlp(tokens)                                        # (B, 10, D_dec)
 
     def num_parameters(self) -> int:
         return sum(p.numel() for p in self.parameters())
@@ -164,17 +205,31 @@ def _smoke_check() -> None:
     a = PrefixAdaptor(encoder_dim=1024, decoder_dim=1024)
     print(f"  {a}")
 
-    # 256-patch input (CLIP / SigLIP / DINOv2)
+    # 256-patch input (CLIP / SigLIP / DINOv2): 16x16 -> 3x3 spatial pool
     x256 = torch.randn(2, 256, 1024)
     y256 = a(x256)
     print(f"  256-patch input  in={tuple(x256.shape)} -> out={tuple(y256.shape)}")
     assert y256.shape == (2, 10, 1024)
 
-    # 196-patch input (MAE) — mean-pool absorbs the asymmetry
+    # 196-patch input (MAE): 14x14 -> 3x3 spatial pool — adaptive pool absorbs
+    # the patch-count asymmetry symmetrically.
     x196 = torch.randn(2, 196, 1024)
     y196 = a(x196)
     print(f"  196-patch input  in={tuple(x196.shape)} -> out={tuple(y196.shape)}")
     assert y196.shape == (2, 10, 1024)
+
+    # Permutation-sensitivity check: shuffling patches across spatial
+    # positions must change the output. (Mean-pool was permutation-invariant —
+    # this assert would have caught the silent spatial-info-destroyed bug.)
+    perm = torch.randperm(256)
+    x256_shuffled = x256[:, perm, :]
+    y256_shuffled = a(x256_shuffled)
+    diff = (y256 - y256_shuffled).abs().max().item()
+    assert diff > 1e-5, (
+        "Permuting patches must change the output — adaptor is "
+        "permutation-invariant and not preserving spatial info."
+    )
+    print(f"  permutation sensitivity: max output diff = {diff:.4f}")
 
     # Trainable param count
     n_trainable = sum(p.numel() for p in a.parameters() if p.requires_grad)

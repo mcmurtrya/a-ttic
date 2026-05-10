@@ -59,9 +59,21 @@ def wilcoxon_paired(x: Iterable[float], y: Iterable[float]) -> dict:
         return {"statistic": 0.0, "p_value": 1.0, "n": 0, "r": 0.0}
     res = stats.wilcoxon(nonzero, zero_method="wilcox", alternative="two-sided")
     p = float(res.pvalue)
-    # Reverse-engineer Z from the two-sided p, then r = |Z| / sqrt(n)
-    z = float(stats.norm.isf(p / 2)) if p > 0 else float("inf")
-    r = z / math.sqrt(n) if math.isfinite(z) else 1.0
+    # Wilcoxon r = |Z| / sqrt(n). Compute Z directly from the test statistic
+    # (with tie correction), not by reverse-engineering from the two-sided p:
+    # at our sample sizes (thousands of paired captions) any real effect
+    # underflows p to 0, which would clamp r at 1.0 and make the headline
+    # statistic uninformative. methods.md L47 specifies r as the headline.
+    abs_d = np.abs(nonzero)
+    ranks = stats.rankdata(abs_d)
+    t_plus = float(ranks[nonzero > 0].sum())
+    mu = n * (n + 1) / 4.0
+    _, counts = np.unique(abs_d, return_counts=True)
+    tie_correction = float((counts ** 3 - counts).sum()) / 48.0
+    sigma2 = n * (n + 1) * (2 * n + 1) / 24.0 - tie_correction
+    sigma = math.sqrt(sigma2) if sigma2 > 0 else 0.0
+    z = abs(t_plus - mu) / sigma if sigma > 0 else 0.0
+    r = z / math.sqrt(n)
     return {
         "statistic": float(res.statistic),
         "p_value": p,

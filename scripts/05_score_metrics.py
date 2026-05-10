@@ -50,8 +50,14 @@ from ttic_embeddings.metrics import (                              # noqa: E402
     topological_density,
     vg_attribute_precision_recall,
 )
-from ttic_embeddings.metrics.diversity import caption_length        # noqa: E402
-from ttic_embeddings.metrics.specificity import load_vg_attributes  # noqa: E402
+from ttic_embeddings.metrics.diversity import (                    # noqa: E402
+    caption_length,
+    mtld_from_docs,
+)
+from ttic_embeddings.metrics.specificity import (                   # noqa: E402
+    load_vg_attributes,
+    load_vg_to_coco_remap,
+)
 from ttic_embeddings.utils import get_logger                        # noqa: E402
 
 log = get_logger("score_metrics")
@@ -66,6 +72,50 @@ def load_captions(path: Path) -> list[dict]:
                 rows.append(json.loads(line))
     log.info("Loaded %d caption rows from %s", len(rows), path)
     return rows
+
+
+def score_diversity_cells(
+    rows: list[dict],
+    docs: list,
+    n_bootstrap: int = 1000,
+    rng_seed: int = 0,
+) -> pd.DataFrame:
+    """One MTLD score per (encoder, decoder, seed) cell, with bootstrap 95% CI.
+
+    Per methods.md L37, MTLD is unreliable below ~50 tokens, so we
+    pool all captions in a cell before measuring. Bootstrap CI is
+    over caption-resampling within the cell.
+    """
+    import numpy as np
+    by_cell: dict[tuple, list] = {}
+    for row, doc in zip(rows, docs):
+        key = (row["encoder"], row["decoder"], row.get("seed", 0))
+        by_cell.setdefault(key, []).append(doc)
+
+    rng = np.random.default_rng(rng_seed)
+    out: list[dict] = []
+    for (encoder, decoder, seed), cell_docs in by_cell.items():
+        n = len(cell_docs)
+        point = mtld_from_docs(cell_docs)
+        if n_bootstrap > 0 and n > 0:
+            samples = np.empty(n_bootstrap, dtype=float)
+            for b in range(n_bootstrap):
+                idx = rng.integers(0, n, size=n)
+                samples[b] = mtld_from_docs([cell_docs[i] for i in idx])
+            ci_lo, ci_hi = np.quantile(samples, [0.025, 0.975])
+        else:
+            ci_lo = ci_hi = float("nan")
+        out.append({
+            "encoder": encoder,
+            "decoder": decoder,
+            "seed": seed,
+            "metric": "mtld",
+            "score": point,
+            "ci_lo": float(ci_lo),
+            "ci_hi": float(ci_hi),
+            "n_captions": n,
+        })
+    return pd.DataFrame(out)
 
 
 def score_all(
@@ -113,8 +163,16 @@ def main() -> int:
                         help="Output CSV path. Default: alongside the input.")
     parser.add_argument("--vg-attributes", type=Path, default=None,
                         help="Optional VG attributes.json — enables vg_attr_* metrics.")
+    parser.add_argument("--vg-image-data", type=Path, default=None,
+                        help="VG image_data.json (for VG↔COCO id remap). "
+                             "Defaults to image_data.json beside --vg-attributes.")
     parser.add_argument("--n-process", type=int, default=1,
                         help="spaCy multiprocessing workers (default: 1).")
+    parser.add_argument("--mtld-bootstrap", type=int, default=1000,
+                        help="Bootstrap resamples for per-cell MTLD CI "
+                             "(default: 1000; set to 0 to skip).")
+    parser.add_argument("--mtld-bootstrap-seed", type=int, default=0,
+                        help="Seed for MTLD bootstrap RNG (default: 0).")
     args = parser.parse_args()
 
     rows = load_captions(args.captions)
@@ -136,9 +194,39 @@ def main() -> int:
         if not args.vg_attributes.exists():
             log.error("VG attributes file not found: %s", args.vg_attributes)
             return 1
+        image_data_path = args.vg_image_data or (
+            args.vg_attributes.parent / "image_data.json"
+        )
+        if not image_data_path.exists():
+            log.error(
+                "VG image_data.json not found at %s. "
+                "VG attributes are keyed by VG image-ids; without "
+                "image_data.json we cannot remap to COCO ids and every "
+                "lookup would silently miss. Re-run scripts/01_download_data.py "
+                "or pass --vg-image-data.",
+                image_data_path,
+            )
+            return 1
+        log.info("Building VG→COCO id remap from %s ...", image_data_path)
+        remap = load_vg_to_coco_remap(image_data_path)
+        log.info("VG→COCO remap covers %d images", len(remap))
         log.info("Loading VG attributes from %s ...", args.vg_attributes)
-        vg_attrs = load_vg_attributes(args.vg_attributes)
-        log.info("Loaded VG attributes for %d images", len(vg_attrs))
+        vg_attrs = load_vg_attributes(args.vg_attributes, image_id_remap=remap)
+        coco_ids_in_captions = {r["image_id"] for r in rows}
+        overlap = len(coco_ids_in_captions & vg_attrs.keys())
+        log.info(
+            "Loaded VG attributes for %d images (%d overlap with caption rows)",
+            len(vg_attrs), overlap,
+        )
+        if overlap == 0:
+            log.error(
+                "Zero overlap between caption image_ids and VG attribute keys "
+                "after remap. The remap is not working — caption ids look like "
+                "%s, VG keys look like %s.",
+                list(coco_ids_in_captions)[:3],
+                list(vg_attrs.keys())[:3],
+            )
+            return 1
 
     df = score_all(rows, docs, topological_matcher, projective_matcher, vg_attrs)
 
@@ -152,12 +240,31 @@ def main() -> int:
     df.to_csv(output_path, index=False)
     log.info("Wrote %d score rows to %s", len(df), output_path)
 
+    log.info(
+        "Computing per-cell MTLD with %d bootstrap resamples...",
+        args.mtld_bootstrap,
+    )
+    diversity_df = score_diversity_cells(
+        rows, docs,
+        n_bootstrap=args.mtld_bootstrap,
+        rng_seed=args.mtld_bootstrap_seed,
+    )
+    diversity_path = output_path.with_name(
+        output_path.stem + "_diversity.csv"
+    )
+    diversity_df.to_csv(diversity_path, index=False)
+    log.info(
+        "Wrote %d per-cell MTLD rows to %s",
+        len(diversity_df), diversity_path,
+    )
+
     summary = (
         df.dropna(subset=["score"])
           .groupby(["encoder", "metric"])["score"]
           .agg(["count", "mean", "std"])
     )
     log.info("Per-encoder/metric summary:\n%s", summary)
+    log.info("Per-cell MTLD:\n%s", diversity_df.to_string(index=False))
     return 0
 
 

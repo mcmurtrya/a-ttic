@@ -41,7 +41,7 @@ from ttic_embeddings.adaptor import build_adaptor                  # noqa: E402
 from ttic_embeddings.data.coco import CocoEvalImages               # noqa: E402
 from ttic_embeddings.encoders import build_encoder                 # noqa: E402
 from ttic_embeddings.generate import generate_captions             # noqa: E402
-from ttic_embeddings.utils import get_logger                       # noqa: E402
+from ttic_embeddings.utils import get_logger, set_seed             # noqa: E402
 
 log = get_logger("generate_captions")
 
@@ -189,7 +189,9 @@ def main() -> int:
         help="Comma-separated decoding strategies (default: beam,nucleus).",
     )
     parser.add_argument("--seed", type=int, default=1,
-                        help="Adaptor training seed to use (default: 1).")
+                        help="Adaptor training seed AND sampling seed (default: 1). "
+                             "Drives nucleus-sampling RNG so generated captions are "
+                             "reproducible across runs.")
     parser.add_argument("--max-images", type=int, default=None,
                         help="Limit per encoder (default: full val set).")
     parser.add_argument("--output", type=Path, default=None,
@@ -204,6 +206,12 @@ def main() -> int:
     for d in decoders:
         if d not in ALL_DECODERS:
             raise SystemExit(f"Unknown decoder strategy: {d!r}")
+
+    # Seed RNGs so nucleus sampling is reproducible across runs. Without
+    # this, the seed flag only locates the checkpoint — sampling itself
+    # was non-deterministic, and the `seed` field stamped per row was
+    # only the training seed, not the sampling seed.
+    set_seed(args.seed)
 
     repo_root = Path(__file__).resolve().parents[1]
     configs_dir = repo_root / "configs"
@@ -239,13 +247,27 @@ def main() -> int:
         log.info("--restart: removing existing %s", output_path)
         output_path.unlink()
     elif output_path.exists():
+        n_bad = 0
         with open(output_path, encoding="utf-8") as f:
             for line in f:
                 line = line.strip()
                 if not line:
                     continue
-                row = json.loads(line)
+                # Tolerate a partial trailing line from a hard-killed
+                # previous run: incomplete JSON gets dropped, the rest
+                # of the file is still resumable.
+                try:
+                    row = json.loads(line)
+                except json.JSONDecodeError:
+                    n_bad += 1
+                    continue
                 completed.add((int(row["image_id"]), row["encoder"], row["decoder"]))
+        if n_bad:
+            log.warning(
+                "Skipped %d malformed JSONL line(s) in %s (likely from a "
+                "hard-killed previous run); resume continues with the rest.",
+                n_bad, output_path,
+            )
         log.info("Found %d already-completed rows in %s; will skip them",
                  len(completed), output_path)
 

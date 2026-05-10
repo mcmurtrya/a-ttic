@@ -36,6 +36,8 @@ train:
   precision: bf16
   num_seeds: 3
   num_workers: 4             # DataLoader workers
+  holdout_size: 5000         # train2017 images held out for early-stopping val PPL
+  holdout_seed: 0            # fixed across encoders/seeds — same holdout for fair comparison
 
 generate:
   beam_size: 5

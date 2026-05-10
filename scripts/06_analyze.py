@@ -33,7 +33,11 @@ SRC = Path(__file__).resolve().parents[1] / "src"
 if str(SRC) not in sys.path:
     sys.path.insert(0, str(SRC))
 
-from ttic_embeddings.stats import primary_family, secondary_family   # noqa: E402
+from ttic_embeddings.stats import (                                  # noqa: E402
+    mixed_effects_supervision_contrast,
+    primary_family,
+    secondary_family,
+)
 from ttic_embeddings.utils import get_logger                         # noqa: E402
 
 log = get_logger("analyze")
@@ -98,6 +102,29 @@ def main() -> int:
     log.info("Primary results:\n%s", primary.to_string(index=False))
     log.info("Wrote -> %s", primary_path)
 
+    # --- Mixed-effects robustness check (methods.md L49) --------------
+    log.info(
+        "\nRunning mixed-effects robustness check on primary contrasts (%d metrics)...",
+        len(metrics),
+    )
+    mixed_rows: list[dict] = []
+    for metric in metrics:
+        per_metric_long = df_dec[df_dec["metric"] == metric].rename(
+            columns={"score": metric}
+        )
+        try:
+            row = mixed_effects_supervision_contrast(per_metric_long, metric)
+        except Exception as exc:  # noqa: BLE001
+            log.warning("mixed-effects failed for %s: %s", metric, exc)
+            row = {"metric": metric, "coef": None, "se": None,
+                   "z": None, "p_value": None, "error": str(exc)}
+        mixed_rows.append(row)
+    mixed = pd.DataFrame(mixed_rows)
+    mixed_path = output_dir / f"{base}{suffix}_mixed_effects.csv"
+    mixed.to_csv(mixed_path, index=False)
+    log.info("Mixed-effects results:\n%s", mixed.to_string(index=False))
+    log.info("Wrote -> %s", mixed_path)
+
     # --- Secondary family ---------------------------------------------
     log.info("\nRunning secondary family (pairwise contrasts, %d tests)...",
              6 * len(metrics))
@@ -119,6 +146,13 @@ def main() -> int:
         f.write("Pools (CLIP, SigLIP) vs (DINOv2, MAE) per image, per metric.\n")
         f.write("BH-FDR corrected within this 4-test family.\n\n")
         f.write(primary.to_string(index=False))
+        f.write("\n\n## Mixed-effects robustness (methods.md L49)\n\n")
+        f.write(
+            "score ~ supervision + (1 | encoder). Agreement with the pooled\n"
+            "Wilcoxon primary supports the supervision claim; disagreement\n"
+            "points to one encoder driving most of its category's effect.\n\n"
+        )
+        f.write(mixed.to_string(index=False))
         f.write("\n\n## Secondary family (all pairwise contrasts)\n\n")
         f.write("6 encoder pairs * %d metrics = %d tests, "
                 "BH-FDR corrected within this family.\n\n"
@@ -130,6 +164,30 @@ def main() -> int:
         f.write("differences mean one encoder drives that category's effect.\n\n")
         within = secondary[secondary["within_category"]]
         f.write(within.to_string(index=False))
+
+        # Per-cell MTLD: by design (methods.md L37) MTLD is computed per
+        # (encoder × decoder) cell rather than per caption, since per-caption
+        # MTLD is unreliable below ~50 tokens. Cross-encoder comparison is via
+        # bootstrap CI overlap rather than paired Wilcoxon.
+        diversity_path = args.scores.with_name(
+            args.scores.stem + "_diversity.csv"
+        )
+        if diversity_path.exists():
+            diversity = pd.read_csv(diversity_path)
+            diversity_dec = diversity[diversity["decoder"] == args.decoder]
+            f.write("\n\n## Lexical diversity (MTLD, per-cell with bootstrap 95% CI)\n\n")
+            f.write(
+                "MTLD pooled over all captions in each (encoder, decoder, seed) "
+                "cell. Two cells differ meaningfully when their bootstrap CIs "
+                "do not overlap.\n\n"
+            )
+            f.write(diversity_dec.to_string(index=False))
+            log.info("MTLD per-cell:\n%s", diversity_dec.to_string(index=False))
+        else:
+            log.warning(
+                "MTLD per-cell file not found at %s — re-run script 05 to "
+                "produce it.", diversity_path,
+            )
     log.info("Wrote -> %s", summary_path)
 
     return 0

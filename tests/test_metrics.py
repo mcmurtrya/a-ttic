@@ -65,6 +65,30 @@ class TestCaptionAdjectives:
         assert "red" in caption_adjectives(doc)
 
 
+class TestVgToCocoRemap:
+    def test_drops_records_without_coco_id(self, tmp_path):
+        import json
+        from ttic_embeddings.metrics.specificity import load_vg_to_coco_remap
+        p = tmp_path / "image_data.json"
+        p.write_text(json.dumps([
+            {"image_id": 1, "coco_id": 100},
+            {"image_id": 2, "coco_id": None},
+            {"image_id": 3, "coco_id": 300},
+        ]))
+        assert load_vg_to_coco_remap(p) == {1: 100, 3: 300}
+
+    def test_load_vg_attributes_with_remap(self, tmp_path):
+        import json
+        from ttic_embeddings.metrics.specificity import load_vg_attributes
+        p = tmp_path / "attributes.json"
+        p.write_text(json.dumps([
+            {"image_id": 1, "attributes": [{"attributes": ["red", "shiny"]}]},
+            {"image_id": 2, "attributes": [{"attributes": ["blue"]}]},
+        ]))
+        attrs = load_vg_attributes(p, image_id_remap={1: 100, 2: 200})
+        assert attrs == {100: {"red", "shiny"}, 200: {"blue"}}
+
+
 class TestVgAttributePR:
     def test_returns_none_when_image_missing(self, nlp):
         from ttic_embeddings.metrics.specificity import (

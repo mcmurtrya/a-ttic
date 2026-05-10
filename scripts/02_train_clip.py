@@ -115,6 +115,11 @@ def main() -> int:
                         help="Start training from step 0 even if "
                              "adaptor_latest.pt exists (default: auto-resume "
                              "for spot-reclaim safety).")
+    parser.add_argument("--gpu", type=int, default=None,
+                        help="GPU index to use (e.g. 0 or 1). Calls "
+                             "torch.cuda.set_device(N). Use this instead of "
+                             "CUDA_VISIBLE_DEVICES when the environment's "
+                             "PyTorch+CUDA combo doesn't honor that variable.")
     args = parser.parse_args()
 
     repo_root = Path(__file__).resolve().parents[1]
@@ -125,7 +130,12 @@ def main() -> int:
     cfg = apply_cli_overrides(cfg, args)
 
     set_seed(cfg.seed)
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    if torch.cuda.is_available():
+        gpu_idx = args.gpu if args.gpu is not None else 0
+        torch.cuda.set_device(gpu_idx)
+        device = torch.device(f"cuda:{gpu_idx}")
+    else:
+        device = torch.device("cpu")
     log.info("Device: %s (CUDA available: %s)",
              device, torch.cuda.is_available())
     log.info("Encoder: %s (%s)", cfg.encoder.name, cfg.encoder.checkpoint)

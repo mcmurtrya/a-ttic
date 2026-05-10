@@ -56,13 +56,13 @@ run_train_pair() {
     echo ""
     echo "[$(date +%H:%M:%S)] TRAIN  GPU0=$tag0   GPU1=$tag1"
 
-    CUDA_VISIBLE_DEVICES=0 uv run python scripts/02_train_clip.py \
-        --encoder "$enc0" --seed "$seed0" \
+    uv run python scripts/02_train_clip.py \
+        --encoder "$enc0" --seed "$seed0" --gpu 0 \
         > "$LOG_DIR/train_${tag0}.log" 2>&1 &
     local pid0=$!
 
-    CUDA_VISIBLE_DEVICES=1 uv run python scripts/02_train_clip.py \
-        --encoder "$enc1" --seed "$seed1" \
+    uv run python scripts/02_train_clip.py \
+        --encoder "$enc1" --seed "$seed1" --gpu 1 \
         > "$LOG_DIR/train_${tag1}.log" 2>&1 &
     local pid1=$!
 
@@ -76,14 +76,14 @@ run_gen_pair() {
     echo ""
     echo "[$(date +%H:%M:%S)] GEN    GPU0=$enc0   GPU1=$enc1   (seed $seed)"
 
-    CUDA_VISIBLE_DEVICES=0 uv run python scripts/04_generate_captions.py \
-        --encoders "$enc0" --seed "$seed" \
+    uv run python scripts/04_generate_captions.py \
+        --encoders "$enc0" --seed "$seed" --gpu 0 \
         --output "captions/captions_${enc0}_seed${seed}.jsonl" \
         > "$LOG_DIR/gen_${enc0}_seed${seed}.log" 2>&1 &
     local pid0=$!
 
-    CUDA_VISIBLE_DEVICES=1 uv run python scripts/04_generate_captions.py \
-        --encoders "$enc1" --seed "$seed" \
+    uv run python scripts/04_generate_captions.py \
+        --encoders "$enc1" --seed "$seed" --gpu 1 \
         --output "captions/captions_${enc1}_seed${seed}.jsonl" \
         > "$LOG_DIR/gen_${enc1}_seed${seed}.log" 2>&1 &
     local pid1=$!
@@ -98,14 +98,14 @@ run_probe_pair() {
     echo ""
     echo "[$(date +%H:%M:%S)] PROBE  GPU0=$enc0   GPU1=$enc1"
 
-    CUDA_VISIBLE_DEVICES=0 uv run python scripts/07_probes.py \
-        --encoders "$enc0" \
+    uv run python scripts/07_probes.py \
+        --encoders "$enc0" --gpu 0 \
         --output "captions/probe_${enc0}.csv" \
         > "$LOG_DIR/probe_${enc0}.log" 2>&1 &
     local pid0=$!
 
-    CUDA_VISIBLE_DEVICES=1 uv run python scripts/07_probes.py \
-        --encoders "$enc1" \
+    uv run python scripts/07_probes.py \
+        --encoders "$enc1" --gpu 1 \
         --output "captions/probe_${enc1}.csv" \
         > "$LOG_DIR/probe_${enc1}.log" 2>&1 &
     local pid1=$!

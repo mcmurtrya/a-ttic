@@ -277,6 +277,11 @@ def main() -> int:
     parser.add_argument("--instances-path", type=Path, default=None,
                         help="Override path to COCO instances_val2017.json.")
     parser.add_argument("--seed", type=int, default=0)
+    parser.add_argument("--gpu", type=int, default=None,
+                        help="GPU index to use (e.g. 0 or 1). Calls "
+                             "torch.cuda.set_device(N). Use this instead of "
+                             "CUDA_VISIBLE_DEVICES when the environment's "
+                             "PyTorch+CUDA combo doesn't honor that variable.")
     args = parser.parse_args()
 
     encoder_names = [e.strip() for e in args.encoders.split(",") if e.strip()]
@@ -296,7 +301,12 @@ def main() -> int:
     log.info("Loaded labels for %d images, %d categories",
              len(image_id_to_label), len(cat_names))
 
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    if torch.cuda.is_available():
+        gpu_idx = args.gpu if args.gpu is not None else 0
+        torch.cuda.set_device(gpu_idx)
+        device = torch.device(f"cuda:{gpu_idx}")
+    else:
+        device = torch.device("cpu")
     log.info("Device: %s", device)
 
     cache_root = Path(base_cfg.paths.cache_root)

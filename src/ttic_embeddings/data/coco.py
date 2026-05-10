@@ -26,6 +26,7 @@ which is large and shouldn't be sent to workers).
 """
 from __future__ import annotations
 
+import functools
 import json
 import os
 from collections import defaultdict
@@ -72,8 +73,15 @@ def train_holdout_image_ids(
     return {image_ids[i] for i in selected}
 
 
+@functools.lru_cache(maxsize=4)
 def _load_captions(annotations_path: Path) -> tuple[dict[int, dict], list[dict]]:
-    """Read a COCO captions JSON. Returns (image_index, annotations)."""
+    """Read a COCO captions JSON. Returns (image_index, annotations).
+
+    Cached because the same JSON is read by both `train_holdout_image_ids`
+    and `CocoCaptionPairs` per process — train2017 is ~25 MB and parsing
+    it twice on startup is wasteful. Callers must treat the returned
+    structures as read-only.
+    """
     if not annotations_path.exists():
         raise FileNotFoundError(
             f"COCO captions JSON not found at {annotations_path}. "

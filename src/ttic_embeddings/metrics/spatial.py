@@ -68,15 +68,11 @@ def build_phrase_matcher(nlp: Language, phrases: list[str]) -> PhraseMatcher:
     return matcher
 
 
-def _term_count(doc: Doc, matcher: PhraseMatcher) -> int:
-    return len(matcher(doc))
-
-
 def _density(doc: Doc, matcher: PhraseMatcher) -> float:
     """Term count divided by total token count (excluding zero-length docs)."""
     if len(doc) == 0:
         return 0.0
-    return _term_count(doc, matcher) / len(doc)
+    return len(matcher(doc)) / len(doc)
 
 
 def topological_density(doc: Doc, matcher: PhraseMatcher) -> float:

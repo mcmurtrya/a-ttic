@@ -29,7 +29,7 @@ import math
 import random
 import signal
 import time
-from contextlib import contextmanager, nullcontext
+from contextlib import contextmanager
 from pathlib import Path
 from typing import Any
 
@@ -296,9 +296,31 @@ def maybe_resume(
     if not ckpt_path.exists():
         return 0, float("inf")
     logger.info("Resuming from %s ...", ckpt_path)
-    ckpt = torch.load(ckpt_path, map_location="cpu")
+    ckpt = torch.load(ckpt_path, map_location="cpu", weights_only=False)
     adaptor.load_state_dict(ckpt["adaptor_state_dict"])
+
+    # Snapshot cfg-derived hyperparams BEFORE load_state_dict overwrites
+    # them from the checkpoint's param_groups. If the user edited cfg
+    # between runs (lr, betas, weight_decay), the edits are silently
+    # ignored on resume — warn so they aren't surprised.
+    pre_load = [
+        {k: pg[k] for k in ("lr", "betas", "weight_decay") if k in pg}
+        for pg in optimizer.param_groups
+    ]
     optimizer.load_state_dict(ckpt["optimizer_state_dict"])
+    post_load = [
+        {k: pg[k] for k in ("lr", "betas", "weight_decay") if k in pg}
+        for pg in optimizer.param_groups
+    ]
+    for i, (cfg_vals, ckpt_vals) in enumerate(zip(pre_load, post_load)):
+        diffs = {k: (cfg_vals[k], ckpt_vals[k]) for k in cfg_vals if cfg_vals.get(k) != ckpt_vals.get(k)}
+        if diffs:
+            logger.warning(
+                "Resume: optimizer param_group[%d] hyperparams from checkpoint differ "
+                "from cfg. Checkpoint values will be used. cfg -> ckpt: %s",
+                i, diffs,
+            )
+
     scheduler.load_state_dict(ckpt["scheduler_state_dict"])
     start_step = int(ckpt.get("step", 0))
     last_val_ppl = float(ckpt.get("val_ppl", float("inf")))
@@ -429,7 +451,7 @@ def train(
         )
         if best_ckpt.exists():
             try:
-                best_payload = torch.load(best_ckpt, map_location="cpu")
+                best_payload = torch.load(best_ckpt, map_location="cpu", weights_only=False)
                 best_val_ppl = float(best_payload.get("val_ppl", float("inf")))
                 logger.info("Restored best_val_ppl=%.3f from %s",
                             best_val_ppl, best_ckpt)

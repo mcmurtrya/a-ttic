@@ -49,7 +49,7 @@ from ttic_embeddings.data.coco import (                              # noqa: E40
 from ttic_embeddings.encoders import build_encoder                   # noqa: E402
 from ttic_embeddings.generate import generate_captions               # noqa: E402
 from ttic_embeddings.train import CaptioningModel, train             # noqa: E402
-from ttic_embeddings.utils import get_logger, set_seed                # noqa: E402
+from ttic_embeddings.utils import get_logger, seed_worker, set_seed   # noqa: E402
 
 log = get_logger("train_clip")
 
@@ -190,6 +190,7 @@ def main() -> int:
         num_workers=cfg.train.num_workers,
         pin_memory=(device.type == "cuda"),
         drop_last=True,
+        worker_init_fn=seed_worker,
     )
     val_loader = DataLoader(
         val_ds,
@@ -197,6 +198,7 @@ def main() -> int:
         shuffle=False,
         num_workers=cfg.train.num_workers,
         pin_memory=(device.type == "cuda"),
+        worker_init_fn=seed_worker,
     )
     log.info("Loaders built. train batches: %d, val batches: %d",
              len(train_loader), len(val_loader))

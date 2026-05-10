@@ -12,6 +12,7 @@ relations being correct.
 """
 from __future__ import annotations
 
+import hashlib
 import logging
 from pathlib import Path
 
@@ -23,6 +24,15 @@ logger = logging.getLogger(__name__)
 
 _NLP: Language | None = None
 _MODEL_NAME = "en_core_web_lg"
+
+
+def _captions_hash(captions: list[str]) -> str:
+    """Stable digest of a caption set. Used to invalidate parse caches."""
+    h = hashlib.sha256()
+    for c in captions:
+        h.update(c.encode("utf-8"))
+        h.update(b"\n")
+    return h.hexdigest()
 
 
 def get_nlp() -> Language:
@@ -71,20 +81,28 @@ def parse_and_cache(
 ) -> list[Doc]:
     """Parse + cache, or load existing cache if present.
 
+    Cache validity is gated on a sha256 of the caption text stored in a
+    `.meta` sidecar. Length-only checks would silently load stale parses
+    when re-running with new captions of the same count (e.g. a fresh
+    generation seed against the same val set).
+
     Set force=True to invalidate the cache and re-parse from scratch.
     """
     cache_path = Path(cache_path)
+    meta_path = cache_path.with_suffix(cache_path.suffix + ".meta")
+    expected_hash = _captions_hash(captions)
     if cache_path.exists() and not force:
-        logger.info("Loading cached parses from %s", cache_path)
-        docs = load_parsed_docs(cache_path)
-        if len(docs) == len(captions):
-            return docs
+        cached_hash = meta_path.read_text().strip() if meta_path.exists() else None
+        if cached_hash == expected_hash:
+            logger.info("Loading cached parses from %s", cache_path)
+            return load_parsed_docs(cache_path)
         logger.warning(
-            "Cache size mismatch (%d cached vs %d captions); re-parsing.",
-            len(docs), len(captions),
+            "Parse cache at %s is stale (hash mismatch or missing .meta); re-parsing.",
+            cache_path,
         )
     logger.info("Parsing %d captions with spaCy...", len(captions))
     docs = parse_captions(captions, n_process=n_process)
     cache_parsed_docs(docs, cache_path)
+    meta_path.write_text(expected_hash)
     logger.info("Cached parses to %s", cache_path)
     return docs

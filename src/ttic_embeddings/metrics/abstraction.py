@@ -42,7 +42,7 @@ COCO_OBJECTS: frozenset[str] = frozenset(
         "ball", "kite", "bat", "glove", "skateboard", "surfboard",
         "racket", "bottle", "glass", "cup", "fork", "knife", "spoon",
         "bowl", "banana", "apple", "sandwich", "orange", "broccoli",
-        "carrot", "dog", "pizza", "donut", "cake", "chair", "couch",
+        "carrot", "pizza", "donut", "cake", "chair", "couch",
         "plant", "bed", "table", "toilet", "tv", "laptop", "mouse",
         "remote", "keyboard", "phone", "microwave", "oven", "toaster",
         "sink", "refrigerator", "book", "clock", "vase", "scissors",

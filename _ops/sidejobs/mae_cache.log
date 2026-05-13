@@ -1,0 +1,62 @@
+2026-05-11 14:50:40,835 | INFO    | cache_features | Device: cuda:1
+2026-05-11 14:50:42,421 | INFO    | cache_features | Encoder: mae (facebook/vit-mae-large)
+2026-05-11 14:50:42,421 | INFO    | cache_features | Images:  118287  |  patches: 196  |  dim: 1024  |  fp16 size: 44.2 GiB
+2026-05-11 14:50:42,421 | INFO    | cache_features | Output:  features/mae/train2017_features.fp16.bin
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Loading weights:   0%|          | 0/390 [00:00<?, ?it/s]Loading weights: 100%|██████████| 390/390 [00:00<00:00, 15292.94it/s]
+[transformers] [1mViTMAEModel LOAD REPORT[0m from: facebook/vit-mae-large
+Key                                                                              | Status     |  | 
+---------------------------------------------------------------------------------+------------+--+-
+decoder.decoder_layers.{0, 1, 2, 3, 4, 5, 6, 7}.attention.attention.query.bias   | UNEXPECTED |  | 
+decoder.decoder_layers.{0, 1, 2, 3, 4, 5, 6, 7}.intermediate.dense.weight        | UNEXPECTED |  | 
+decoder.decoder_layers.{0, 1, 2, 3, 4, 5, 6, 7}.attention.attention.value.weight | UNEXPECTED |  | 
+decoder.decoder_layers.{0, 1, 2, 3, 4, 5, 6, 7}.layernorm_after.weight           | UNEXPECTED |  | 
+decoder.decoder_layers.{0, 1, 2, 3, 4, 5, 6, 7}.attention.output.dense.bias      | UNEXPECTED |  | 
+decoder.decoder_layers.{0, 1, 2, 3, 4, 5, 6, 7}.layernorm_before.bias            | UNEXPECTED |  | 
+decoder.decoder_layers.{0, 1, 2, 3, 4, 5, 6, 7}.output.dense.weight              | UNEXPECTED |  | 
+decoder.decoder_layers.{0, 1, 2, 3, 4, 5, 6, 7}.output.dense.bias                | UNEXPECTED |  | 
+decoder.decoder_layers.{0, 1, 2, 3, 4, 5, 6, 7}.attention.attention.query.weight | UNEXPECTED |  | 
+decoder.decoder_layers.{0, 1, 2, 3, 4, 5, 6, 7}.attention.output.dense.weight    | UNEXPECTED |  | 
+decoder.decoder_layers.{0, 1, 2, 3, 4, 5, 6, 7}.layernorm_after.bias             | UNEXPECTED |  | 
+decoder.decoder_layers.{0, 1, 2, 3, 4, 5, 6, 7}.attention.attention.key.weight   | UNEXPECTED |  | 
+decoder.decoder_layers.{0, 1, 2, 3, 4, 5, 6, 7}.layernorm_before.weight          | UNEXPECTED |  | 
+decoder.decoder_layers.{0, 1, 2, 3, 4, 5, 6, 7}.intermediate.dense.bias          | UNEXPECTED |  | 
+decoder.decoder_embed.weight                                                     | UNEXPECTED |  | 
+decoder.decoder_layers.{0, 1, 2, 3, 4, 5, 6, 7}.attention.attention.key.bias     | UNEXPECTED |  | 
+decoder.decoder_layers.{0, 1, 2, 3, 4, 5, 6, 7}.attention.attention.value.bias   | UNEXPECTED |  | 
+decoder.decoder_pos_embed                                                        | UNEXPECTED |  | 
+decoder.mask_token                                                               | UNEXPECTED |  | 
+decoder.decoder_norm.bias                                                        | UNEXPECTED |  | 
+decoder.decoder_pred.weight                                                      | UNEXPECTED |  | 
+decoder.decoder_norm.weight                                                      | UNEXPECTED |  | 
+decoder.decoder_pred.bias                                                        | UNEXPECTED |  | 
+decoder.decoder_embed.bias                                                       | UNEXPECTED |  | 
+
+Notes:
+- UNEXPECTED:	can be ignored when loading from different task/architecture; not ok if you expect identical arch.
+2026-05-11 14:50:59,649 | INFO    | cache_features | Allocating memmap (44.2 GiB)...
+2026-05-11 14:51:29,873 | INFO    | cache_features |   3520 / 118287 images  |  116.5 img/s  |  ETA 16.4 min
+2026-05-11 14:52:00,388 | INFO    | cache_features |   10816 / 118287 images  |  178.1 img/s  |  ETA 10.1 min
+2026-05-11 14:52:30,545 | INFO    | cache_features |   15936 / 118287 images  |  175.3 img/s  |  ETA 9.7 min
+2026-05-11 14:53:00,678 | INFO    | cache_features |   21312 / 118287 images  |  176.1 img/s  |  ETA 9.2 min
+2026-05-11 14:53:30,931 | INFO    | cache_features |   26560 / 118287 images  |  175.6 img/s  |  ETA 8.7 min
+2026-05-11 14:54:00,947 | INFO    | cache_features |   31168 / 118287 images  |  171.9 img/s  |  ETA 8.4 min
+2026-05-11 14:54:31,172 | INFO    | cache_features |   37504 / 118287 images  |  177.3 img/s  |  ETA 7.6 min
+2026-05-11 14:55:01,821 | INFO    | cache_features |   43456 / 118287 images  |  179.4 img/s  |  ETA 7.0 min
+2026-05-11 14:55:32,275 | INFO    | cache_features |   47808 / 118287 images  |  175.4 img/s  |  ETA 6.7 min
+2026-05-11 14:56:02,287 | INFO    | cache_features |   53248 / 118287 images  |  175.9 img/s  |  ETA 6.2 min
+2026-05-11 14:56:32,343 | INFO    | cache_features |   59072 / 118287 images  |  177.6 img/s  |  ETA 5.6 min
+2026-05-11 14:57:02,381 | INFO    | cache_features |   63552 / 118287 images  |  175.2 img/s  |  ETA 5.2 min
+2026-05-11 14:57:32,549 | INFO    | cache_features |   67840 / 118287 images  |  172.7 img/s  |  ETA 4.9 min
+2026-05-11 14:58:04,321 | INFO    | cache_features |   73664 / 118287 images  |  173.5 img/s  |  ETA 4.3 min
+2026-05-11 14:58:34,600 | INFO    | cache_features |   78528 / 118287 images  |  172.6 img/s  |  ETA 3.8 min
+2026-05-11 14:59:04,986 | INFO    | cache_features |   83072 / 118287 images  |  171.2 img/s  |  ETA 3.4 min
+2026-05-11 14:59:35,125 | INFO    | cache_features |   87936 / 118287 images  |  170.6 img/s  |  ETA 3.0 min
+2026-05-11 15:00:05,261 | INFO    | cache_features |   91968 / 118287 images  |  168.6 img/s  |  ETA 2.6 min
+2026-05-11 15:00:35,338 | INFO    | cache_features |   96640 / 118287 images  |  167.9 img/s  |  ETA 2.1 min
+2026-05-11 15:01:05,423 | INFO    | cache_features |   101120 / 118287 images  |  166.9 img/s  |  ETA 1.7 min
+2026-05-11 15:01:36,044 | INFO    | cache_features |   106560 / 118287 images  |  167.4 img/s  |  ETA 1.2 min
+2026-05-11 15:02:07,239 | INFO    | cache_features |   111552 / 118287 images  |  167.1 img/s  |  ETA 0.7 min
+2026-05-11 15:02:37,432 | INFO    | cache_features |   117312 / 118287 images  |  168.1 img/s  |  ETA 0.1 min
+2026-05-11 15:02:57,359 | INFO    | cache_features | Done. 118287 images in 12.0 min (164.8 img/s).
+2026-05-11 15:02:57,359 | INFO    | cache_features | Wrote features/mae/train2017_features.fp16.bin (44.2 GiB) and train2017_features.meta.json

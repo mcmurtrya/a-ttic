@@ -1,0 +1,3 @@
+encoder,decoder,metric,score,n_images
+clip,beam,cider,1.0172264836386322,4020
+clip,nucleus,cider,0.5584872880440586,4020

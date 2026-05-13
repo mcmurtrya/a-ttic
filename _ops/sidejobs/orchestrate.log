@@ -1,0 +1,23 @@
+=== orchestrate.sh start Mon May 11 14:50:17 UTC 2026 pid=3166227 ===
+[14:50:17] Waiting for GPU 1 training to finish...
+[14:50:17] GPU 1 is free.
+
+=== Stage 1: MAE pre-flight ===
+[14:50:27] Disk free: 53 GiB (need >= 50)
+[14:50:27] MAE cache start...
+[15:03:04] MAE cache done (rc=0)
+[15:03:04] MAE pre-flight train start (seed=99, max-steps=5000)...
+[15:48:02] MAE pre-flight train done (rc=0)
+[15:48:02] Cleaning up MAE pre-flight artifacts...
+[15:48:05] Cleanup done. Disk free: 53 GiB
+
+=== Stage 2: siglip_seed1 caption gen ===
+[15:48:05] siglip_seed1 caption gen start (resume-safe)...
+[17:20:17] siglip_seed1 caption gen done (rc=0)
+10000 captions/captions_siglip_seed1.jsonl
+
+=== Stage 3: linear probes (clip + siglip) ===
+[17:20:17] Probes start...
+[17:49:08] Probes done (rc=0)
+
+=== orchestrate.sh end Mon May 11 17:49:08 UTC 2026 ===

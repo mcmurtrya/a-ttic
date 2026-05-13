@@ -1,0 +1,4 @@
+/home/ubuntu/ttic_embeddings/.venv/lib/python3.12/site-packages/huggingface_hub/cli/download.py:146: UserWarning: Ignoring `--include` since filenames have being explicitly set.
+  warnings.warn("Ignoring `--include` since filenames have being explicitly set.")
+Error: Repository not found. If the repo is private, make sure you are authenticated and your token has the required permissions.
+[90mSet HF_DEBUG=1 as environment variable for full traceback.[0m

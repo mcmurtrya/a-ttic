@@ -1,0 +1,6 @@
+clip_reruns completed Wed May 13 02:41:39 UTC 2026
+Log dir: /home/ubuntu/ttic_embeddings/logs/reruns_20260512_200139
+Trained: clip_seed1, clip_seed2 (native 35k, --no-resume)
+Regen:   captions_clip_seed1.jsonl
+Rescored: scores_seed1.csv, analysis_seed1_{beam,nucleus}_*.csv, quality_results.csv
+Archived old: checkpoints/clip_seed{1,2}_orig/, captions/captions_clip_seed1.jsonl.orig

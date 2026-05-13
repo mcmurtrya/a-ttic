@@ -34,6 +34,7 @@ from pathlib import Path
 from typing import Any
 
 import numpy as np
+import torch
 from PIL import Image
 from torch.utils.data import Dataset
 
@@ -196,6 +197,112 @@ class CocoCaptionPairs(Dataset):
         return {
             "image_id": image_id,
             "pixel_values": pixel_values,
+            "input_ids": enc.input_ids[0],
+            "attention_mask": enc.attention_mask[0],
+            "caption": caption,
+        }
+
+
+class CocoCachedFeaturePairs(Dataset):
+    """Like CocoCaptionPairs but returns precomputed encoder patch tokens.
+
+    Reads an fp16 memmap written by scripts/01_cache_features.py. The
+    encoder forward is the dominant per-step cost when training a
+    frozen-encoder adaptor; loading cached patches turns each step into
+    pure adaptor + decoder compute.
+
+    Each item is a dict:
+        image_id        int
+        patch_features  torch.Tensor (P, D), fp16
+        input_ids       torch.LongTensor (L,)
+        attention_mask  torch.LongTensor (L,)
+        caption         str
+    """
+
+    def __init__(
+        self,
+        coco_root: Path | str | None,
+        split: str,
+        cache_dir: Path | str,
+        tokenizer: Any,
+        max_caption_tokens: int = 32,
+        image_ids_filter: set[int] | None = None,
+        filter_mode: str = "include",
+    ) -> None:
+        if filter_mode not in ("include", "exclude"):
+            raise ValueError(
+                f"filter_mode must be 'include' or 'exclude', got {filter_mode!r}"
+            )
+        if tokenizer.pad_token is None:
+            tokenizer.pad_token = tokenizer.eos_token
+
+        self.coco_root = Path(coco_root) if coco_root else coco_root_from_env()
+        self.split = split
+        self.tokenizer = tokenizer
+        self.max_caption_tokens = max_caption_tokens
+
+        cache_dir = Path(cache_dir)
+        bin_path = cache_dir / f"{split}2017_features.fp16.bin"
+        meta_path = cache_dir / f"{split}2017_features.meta.json"
+        if not bin_path.exists() or not meta_path.exists():
+            raise FileNotFoundError(
+                f"Feature cache not found at {cache_dir} for split={split}. "
+                f"Run scripts/01_cache_features.py first."
+            )
+        meta = json.loads(meta_path.read_text())
+        n, p, d = int(meta["n"]), int(meta["patch_count"]), int(meta["dim"])
+        # Memmap, read-only — workers fork-inherit the mapping safely.
+        self._features = np.memmap(bin_path, dtype=np.float16, mode="r",
+                                   shape=(n, p, d))
+        self._image_id_to_row: dict[int, int] = {
+            int(img_id): i for i, img_id in enumerate(meta["image_ids"])
+        }
+        self.patch_count = p
+        self.dim = d
+
+        annotations_path = (
+            self.coco_root / "annotations" / f"captions_{split}2017.json"
+        )
+        image_index, annotations = _load_captions(annotations_path)
+
+        def _keep(image_id: int) -> bool:
+            if image_id not in image_index:
+                return False
+            if image_id not in self._image_id_to_row:
+                return False
+            if image_ids_filter is None:
+                return True
+            in_set = image_id in image_ids_filter
+            return in_set if filter_mode == "include" else not in_set
+
+        self.items: list[tuple[int, str]] = [
+            (ann["image_id"], ann["caption"].strip())
+            for ann in annotations
+            if _keep(ann["image_id"])
+        ]
+
+    def __len__(self) -> int:
+        return len(self.items)
+
+    def __getitem__(self, idx: int) -> dict:
+        image_id, caption = self.items[idx]
+        row = self._image_id_to_row[image_id]
+        # Copy out of memmap so the returned tensor owns its memory —
+        # avoids cross-worker memmap quirks under fork.
+        patch_features = torch.from_numpy(np.array(self._features[row]))
+
+        text = caption + self.tokenizer.eos_token
+        enc = self.tokenizer(
+            text,
+            max_length=self.max_caption_tokens,
+            padding="max_length",
+            truncation=True,
+            return_tensors="pt",
+            add_special_tokens=False,
+        )
+        return {
+            "image_id": image_id,
+            "patch_features": patch_features,
             "input_ids": enc.input_ids[0],
             "attention_mask": enc.attention_mask[0],
             "caption": caption,

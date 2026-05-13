@@ -109,7 +109,7 @@ def generate_for_encoder(
     log.info("Loaded encoder: %r", encoder)
 
     adaptor = build_adaptor(cfg)
-    ckpt = torch.load(ckpt_path, map_location=device)
+    ckpt = torch.load(ckpt_path, map_location=device, weights_only=False)
     adaptor.load_state_dict(ckpt["adaptor_state_dict"])
     adaptor.to(device)
     adaptor.eval()

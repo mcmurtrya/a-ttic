@@ -1,0 +1,123 @@
+2026-05-10 07:18:37,767 | INFO    | smoke | PyTorch 2.11.0+cu130, CUDA available: True
+2026-05-10 07:18:37,767 | INFO    | smoke | encoders to verify: ['clip', 'dinov2', 'mae', 'siglip']
+2026-05-10 07:18:37,767 | INFO    | smoke | --- clip ---
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Loading weights:   0%|          | 0/391 [00:00<?, ?it/s]Loading weights: 100%|██████████| 391/391 [00:00<00:00, 6068.51it/s]
+[transformers] [1mCLIPVisionModel LOAD REPORT[0m from: openai/clip-vit-large-patch14
+Key                                                          | Status     |  | 
+-------------------------------------------------------------+------------+--+-
+text_model.encoder.layers.{0...11}.self_attn.k_proj.weight   | UNEXPECTED |  | 
+text_model.encoder.layers.{0...11}.mlp.fc1.weight            | UNEXPECTED |  | 
+text_model.encoder.layers.{0...11}.layer_norm1.weight        | UNEXPECTED |  | 
+text_model.encoder.layers.{0...11}.layer_norm2.bias          | UNEXPECTED |  | 
+text_model.encoder.layers.{0...11}.mlp.fc2.bias              | UNEXPECTED |  | 
+text_model.encoder.layers.{0...11}.self_attn.k_proj.bias     | UNEXPECTED |  | 
+text_model.encoder.layers.{0...11}.self_attn.q_proj.weight   | UNEXPECTED |  | 
+text_model.encoder.layers.{0...11}.self_attn.v_proj.bias     | UNEXPECTED |  | 
+text_model.encoder.layers.{0...11}.self_attn.v_proj.weight   | UNEXPECTED |  | 
+text_model.encoder.layers.{0...11}.mlp.fc2.weight            | UNEXPECTED |  | 
+text_model.encoder.layers.{0...11}.layer_norm1.bias          | UNEXPECTED |  | 
+text_model.encoder.layers.{0...11}.layer_norm2.weight        | UNEXPECTED |  | 
+text_model.encoder.layers.{0...11}.self_attn.out_proj.weight | UNEXPECTED |  | 
+text_model.encoder.layers.{0...11}.self_attn.out_proj.bias   | UNEXPECTED |  | 
+text_model.encoder.layers.{0...11}.mlp.fc1.bias              | UNEXPECTED |  | 
+text_model.encoder.layers.{0...11}.self_attn.q_proj.bias     | UNEXPECTED |  | 
+text_model.final_layer_norm.weight                           | UNEXPECTED |  | 
+text_model.final_layer_norm.bias                             | UNEXPECTED |  | 
+text_projection.weight                                       | UNEXPECTED |  | 
+text_model.embeddings.position_embedding.weight              | UNEXPECTED |  | 
+logit_scale                                                  | UNEXPECTED |  | 
+text_model.embeddings.token_embedding.weight                 | UNEXPECTED |  | 
+visual_projection.weight                                     | UNEXPECTED |  | 
+
+Notes:
+- UNEXPECTED:	can be ignored when loading from different task/architecture; not ok if you expect identical arch.
+2026-05-10 07:18:38,595 | INFO    | smoke | loaded: CLIPEncoder(name='clip', patches=256, dim=1024, image_size=224)
+2026-05-10 07:18:38,609 | INFO    | smoke | preprocessed pixel_values: (1, 3, 224, 224)
+2026-05-10 07:18:43,543 | INFO    | smoke | patch tokens:              (1, 256, 1024)
+2026-05-10 07:18:43,546 | INFO    | smoke | clip: OK (303,179,776 params, all frozen)
+2026-05-10 07:18:43,697 | INFO    | smoke | --- siglip ---
+Loading weights:   0%|          | 0/400 [00:00<?, ?it/s]Loading weights: 100%|██████████| 400/400 [00:00<00:00, 5218.11it/s]
+[transformers] [1mSiglipVisionModel LOAD REPORT[0m from: google/siglip-large-patch16-256
+Key                                                          | Status     |  | 
+-------------------------------------------------------------+------------+--+-
+text_model.encoder.layers.{0...23}.mlp.fc1.bias              | UNEXPECTED |  | 
+text_model.encoder.layers.{0...23}.mlp.fc1.weight            | UNEXPECTED |  | 
+text_model.encoder.layers.{0...23}.layer_norm1.weight        | UNEXPECTED |  | 
+text_model.encoder.layers.{0...23}.self_attn.v_proj.weight   | UNEXPECTED |  | 
+text_model.encoder.layers.{0...23}.mlp.fc2.bias              | UNEXPECTED |  | 
+text_model.encoder.layers.{0...23}.self_attn.v_proj.bias     | UNEXPECTED |  | 
+text_model.encoder.layers.{0...23}.mlp.fc2.weight            | UNEXPECTED |  | 
+text_model.encoder.layers.{0...23}.self_attn.q_proj.bias     | UNEXPECTED |  | 
+text_model.encoder.layers.{0...23}.layer_norm1.bias          | UNEXPECTED |  | 
+text_model.encoder.layers.{0...23}.self_attn.out_proj.weight | UNEXPECTED |  | 
+text_model.encoder.layers.{0...23}.self_attn.out_proj.bias   | UNEXPECTED |  | 
+text_model.encoder.layers.{0...23}.layer_norm2.weight        | UNEXPECTED |  | 
+text_model.encoder.layers.{0...23}.self_attn.k_proj.weight   | UNEXPECTED |  | 
+text_model.encoder.layers.{0...23}.self_attn.q_proj.weight   | UNEXPECTED |  | 
+text_model.encoder.layers.{0...23}.self_attn.k_proj.bias     | UNEXPECTED |  | 
+text_model.head.bias                                         | UNEXPECTED |  | 
+logit_bias                                                   | UNEXPECTED |  | 
+text_model.head.weight                                       | UNEXPECTED |  | 
+text_model.encoder.layers.{0...23}.layer_norm2.bias          | UNEXPECTED |  | 
+text_model.embeddings.token_embedding.weight                 | UNEXPECTED |  | 
+text_model.final_layer_norm.weight                           | UNEXPECTED |  | 
+text_model.final_layer_norm.bias                             | UNEXPECTED |  | 
+text_model.embeddings.position_embedding.weight              | UNEXPECTED |  | 
+logit_scale                                                  | UNEXPECTED |  | 
+
+Notes:
+- UNEXPECTED:	can be ignored when loading from different task/architecture; not ok if you expect identical arch.
+2026-05-10 07:18:44,482 | INFO    | smoke | loaded: SigLIPEncoder(name='siglip', patches=256, dim=1024, image_size=256)
+2026-05-10 07:18:44,485 | INFO    | smoke | preprocessed pixel_values: (1, 3, 256, 256)
+2026-05-10 07:18:50,339 | INFO    | smoke | patch tokens:              (1, 256, 1024)
+2026-05-10 07:18:50,343 | INFO    | smoke | siglip: OK (315,956,224 params, all frozen)
+2026-05-10 07:18:50,443 | INFO    | smoke | --- dinov2 ---
+Loading weights:   0%|          | 0/439 [00:00<?, ?it/s]Loading weights:  95%|█████████▍| 417/439 [00:00<00:00, 4169.10it/s]Loading weights: 100%|██████████| 439/439 [00:00<00:00, 4243.18it/s]
+2026-05-10 07:18:52,010 | INFO    | smoke | loaded: DINOv2Encoder(name='dinov2', patches=256, dim=1024, image_size=224)
+2026-05-10 07:18:52,016 | INFO    | smoke | preprocessed pixel_values: (1, 3, 224, 224)
+2026-05-10 07:18:58,345 | INFO    | smoke | patch tokens:              (1, 256, 1024)
+2026-05-10 07:18:58,440 | INFO    | smoke | dinov2: OK (304,368,640 params, all frozen)
+2026-05-10 07:18:58,493 | INFO    | smoke | --- mae ---
+Loading weights:   0%|          | 0/390 [00:00<?, ?it/s]Loading weights: 100%|██████████| 390/390 [00:00<00:00, 25738.81it/s]
+[transformers] [1mViTMAEModel LOAD REPORT[0m from: facebook/vit-mae-large
+Key                                                                              | Status     |  | 
+---------------------------------------------------------------------------------+------------+--+-
+decoder.decoder_layers.{0, 1, 2, 3, 4, 5, 6, 7}.attention.attention.value.weight | UNEXPECTED |  | 
+decoder.decoder_layers.{0, 1, 2, 3, 4, 5, 6, 7}.attention.attention.key.bias     | UNEXPECTED |  | 
+decoder.decoder_layers.{0, 1, 2, 3, 4, 5, 6, 7}.layernorm_before.weight          | UNEXPECTED |  | 
+decoder.decoder_embed.weight                                                     | UNEXPECTED |  | 
+decoder.decoder_layers.{0, 1, 2, 3, 4, 5, 6, 7}.output.dense.weight              | UNEXPECTED |  | 
+decoder.decoder_layers.{0, 1, 2, 3, 4, 5, 6, 7}.attention.attention.query.bias   | UNEXPECTED |  | 
+decoder.decoder_layers.{0, 1, 2, 3, 4, 5, 6, 7}.intermediate.dense.weight        | UNEXPECTED |  | 
+decoder.decoder_layers.{0, 1, 2, 3, 4, 5, 6, 7}.attention.attention.query.weight | UNEXPECTED |  | 
+decoder.decoder_layers.{0, 1, 2, 3, 4, 5, 6, 7}.layernorm_before.bias            | UNEXPECTED |  | 
+decoder.decoder_layers.{0, 1, 2, 3, 4, 5, 6, 7}.layernorm_after.weight           | UNEXPECTED |  | 
+decoder.decoder_layers.{0, 1, 2, 3, 4, 5, 6, 7}.layernorm_after.bias             | UNEXPECTED |  | 
+decoder.decoder_layers.{0, 1, 2, 3, 4, 5, 6, 7}.attention.output.dense.bias      | UNEXPECTED |  | 
+decoder.mask_token                                                               | UNEXPECTED |  | 
+decoder.decoder_layers.{0, 1, 2, 3, 4, 5, 6, 7}.output.dense.bias                | UNEXPECTED |  | 
+decoder.decoder_layers.{0, 1, 2, 3, 4, 5, 6, 7}.attention.attention.value.bias   | UNEXPECTED |  | 
+decoder.decoder_layers.{0, 1, 2, 3, 4, 5, 6, 7}.intermediate.dense.bias          | UNEXPECTED |  | 
+decoder.decoder_layers.{0, 1, 2, 3, 4, 5, 6, 7}.attention.output.dense.weight    | UNEXPECTED |  | 
+decoder.decoder_pos_embed                                                        | UNEXPECTED |  | 
+decoder.decoder_norm.weight                                                      | UNEXPECTED |  | 
+decoder.decoder_layers.{0, 1, 2, 3, 4, 5, 6, 7}.attention.attention.key.weight   | UNEXPECTED |  | 
+decoder.decoder_norm.bias                                                        | UNEXPECTED |  | 
+decoder.decoder_embed.bias                                                       | UNEXPECTED |  | 
+decoder.decoder_pred.weight                                                      | UNEXPECTED |  | 
+decoder.decoder_pred.bias                                                        | UNEXPECTED |  | 
+
+Notes:
+- UNEXPECTED:	can be ignored when loading from different task/architecture; not ok if you expect identical arch.
+2026-05-10 07:18:59,618 | INFO    | smoke | loaded: MAEEncoder(name='mae', patches=196, dim=1024, image_size=224)
+2026-05-10 07:18:59,620 | INFO    | smoke | preprocessed pixel_values: (1, 3, 224, 224)
+2026-05-10 07:19:05,826 | INFO    | smoke | patch tokens:              (1, 196, 1024)
+2026-05-10 07:19:05,829 | INFO    | smoke | mae: OK (303,301,632 params, all frozen)
+2026-05-10 07:19:05,936 | INFO    | smoke | --- gpt2-medium ---
+Loading weights:   0%|          | 0/292 [00:00<?, ?it/s]Loading weights: 100%|██████████| 292/292 [00:00<00:00, 4991.90it/s]
+2026-05-10 07:19:06,977 | INFO    | smoke | hidden_dim: 1024
+2026-05-10 07:19:12,539 | INFO    | smoke | logits shape: (1, 13, 50257)
+2026-05-10 07:19:12,539 | INFO    | smoke | gpt2-medium: OK (accepts soft prefix via inputs_embeds)
+2026-05-10 07:19:12,617 | INFO    | smoke | 
+All Phase 0 checks passed.

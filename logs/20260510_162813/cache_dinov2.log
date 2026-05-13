@@ -1,0 +1,31 @@
+2026-05-11 20:44:46,866 | INFO    | cache_features | Device: cuda:0
+2026-05-11 20:44:48,421 | INFO    | cache_features | Encoder: dinov2 (facebook/dinov2-large)
+2026-05-11 20:44:48,421 | INFO    | cache_features | Images:  118287  |  patches: 256  |  dim: 1024  |  fp16 size: 57.8 GiB
+2026-05-11 20:44:48,421 | INFO    | cache_features | Output:  features/dinov2/train2017_features.fp16.bin
+Loading weights:   0%|          | 0/439 [00:00<?, ?it/s]Loading weights:  34%|███▍      | 150/439 [00:00<00:00, 1469.21it/s]Loading weights:  68%|██████▊   | 297/439 [00:00<00:00, 839.20it/s] Loading weights:  90%|█████████ | 396/439 [00:00<00:00, 765.03it/s]Loading weights: 100%|██████████| 439/439 [00:00<00:00, 859.71it/s]
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+2026-05-11 20:45:01,828 | INFO    | cache_features | Allocating memmap (57.8 GiB)...
+2026-05-11 20:45:32,092 | INFO    | cache_features |   4480 / 118287 images  |  148.0 img/s  |  ETA 12.8 min
+2026-05-11 20:46:02,228 | INFO    | cache_features |   9984 / 118287 images  |  165.3 img/s  |  ETA 10.9 min
+2026-05-11 20:46:32,443 | INFO    | cache_features |   15680 / 118287 images  |  173.0 img/s  |  ETA 9.9 min
+2026-05-11 20:47:02,543 | INFO    | cache_features |   21312 / 118287 images  |  176.6 img/s  |  ETA 9.2 min
+2026-05-11 20:47:32,629 | INFO    | cache_features |   26560 / 118287 images  |  176.1 img/s  |  ETA 8.7 min
+2026-05-11 20:48:02,888 | INFO    | cache_features |   31552 / 118287 images  |  174.3 img/s  |  ETA 8.3 min
+2026-05-11 20:48:32,903 | INFO    | cache_features |   37248 / 118287 images  |  176.5 img/s  |  ETA 7.7 min
+2026-05-11 20:49:03,069 | INFO    | cache_features |   42496 / 118287 images  |  176.2 img/s  |  ETA 7.2 min
+2026-05-11 20:49:33,399 | INFO    | cache_features |   47296 / 118287 images  |  174.2 img/s  |  ETA 6.8 min
+2026-05-11 20:50:03,600 | INFO    | cache_features |   52160 / 118287 images  |  172.8 img/s  |  ETA 6.4 min
+2026-05-11 20:50:34,027 | INFO    | cache_features |   56896 / 118287 images  |  171.3 img/s  |  ETA 6.0 min
+2026-05-11 20:51:04,104 | INFO    | cache_features |   62080 / 118287 images  |  171.4 img/s  |  ETA 5.5 min
+2026-05-11 20:51:34,108 | INFO    | cache_features |   67648 / 118287 images  |  172.4 img/s  |  ETA 4.9 min
+2026-05-11 20:52:04,173 | INFO    | cache_features |   73920 / 118287 images  |  175.0 img/s  |  ETA 4.2 min
+2026-05-11 20:52:34,401 | INFO    | cache_features |   79872 / 118287 images  |  176.5 img/s  |  ETA 3.6 min
+2026-05-11 20:53:04,724 | INFO    | cache_features |   85632 / 118287 images  |  177.3 img/s  |  ETA 3.1 min
+2026-05-11 20:53:34,894 | INFO    | cache_features |   90944 / 118287 images  |  177.3 img/s  |  ETA 2.6 min
+2026-05-11 20:54:04,979 | INFO    | cache_features |   96384 / 118287 images  |  177.5 img/s  |  ETA 2.1 min
+2026-05-11 20:54:35,280 | INFO    | cache_features |   101248 / 118287 images  |  176.6 img/s  |  ETA 1.6 min
+2026-05-11 20:55:05,297 | INFO    | cache_features |   105984 / 118287 images  |  175.6 img/s  |  ETA 1.2 min
+2026-05-11 20:55:35,419 | INFO    | cache_features |   110784 / 118287 images  |  174.9 img/s  |  ETA 0.7 min
+2026-05-11 20:56:05,454 | INFO    | cache_features |   115264 / 118287 images  |  173.7 img/s  |  ETA 0.3 min
+2026-05-11 20:56:40,095 | INFO    | cache_features | Done. 118287 images in 11.6 min (169.4 img/s).
+2026-05-11 20:56:40,096 | INFO    | cache_features | Wrote features/dinov2/train2017_features.fp16.bin (57.8 GiB) and train2017_features.meta.json

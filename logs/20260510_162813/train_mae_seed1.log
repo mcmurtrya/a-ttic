@@ -1,0 +1,886 @@
+2026-05-12 06:55:26,090 | INFO    | train_clip | Device: cuda:0 (CUDA available: True)
+2026-05-12 06:55:26,091 | INFO    | train_clip | Encoder: mae (facebook/vit-mae-large)
+2026-05-12 06:55:26,100 | INFO    | train_clip | Resolved config:
+seed: 1
+paths:
+  coco_root: ${oc.env:COCO_ROOT,./data/coco}
+  vg_root: ${oc.env:VG_ROOT,./data/vg}
+  cache_root: ${oc.env:FEATURE_CACHE_ROOT,./features}
+  checkpoint_root: ${oc.env:CHECKPOINT_ROOT,./checkpoints}
+  caption_root: ${oc.env:CAPTION_ROOT,./captions}
+decoder:
+  name: gpt2-medium
+  hidden_dim: 1024
+adaptor:
+  k_soft_tokens: 10
+  hidden_dim: 1024
+  num_layers: 2
+  activation: gelu
+  dropout: 0.1
+train:
+  optimizer: adamw
+  lr: 0.0001
+  weight_decay: 0.01
+  betas:
+  - 0.9
+  - 0.999
+  batch_size: 256
+  warmup_steps: 500
+  max_steps: 35000
+  val_every_steps: 1000
+  val_max_batches: 20
+  patience_evals: 5
+  grad_clip: 1.0
+  precision: bf16
+  num_seeds: 3
+  num_workers: 8
+  holdout_size: 5000
+  holdout_seed: 0
+generate:
+  beam_size: 5
+  nucleus_p: 0.9
+  max_new_tokens: 30
+  num_val_images: 5000
+logging:
+  wandb_project: ttic-embeddings
+  wandb_entity: null
+  log_every_steps: 50
+encoder:
+  name: mae
+  checkpoint: facebook/vit-mae-large
+  hidden_dim: 1024
+  patch_count: 196
+  image_size: 224
+  supervision: self
+
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Loading weights:   0%|          | 0/390 [00:00<?, ?it/s]Loading weights: 100%|██████████| 390/390 [00:00<00:00, 32443.05it/s]
+[transformers] [1mViTMAEModel LOAD REPORT[0m from: facebook/vit-mae-large
+Key                                                                              | Status     |  | 
+---------------------------------------------------------------------------------+------------+--+-
+decoder.decoder_layers.{0, 1, 2, 3, 4, 5, 6, 7}.attention.attention.key.bias     | UNEXPECTED |  | 
+decoder.decoder_layers.{0, 1, 2, 3, 4, 5, 6, 7}.attention.attention.value.weight | UNEXPECTED |  | 
+decoder.decoder_layers.{0, 1, 2, 3, 4, 5, 6, 7}.attention.attention.query.weight | UNEXPECTED |  | 
+decoder.decoder_layers.{0, 1, 2, 3, 4, 5, 6, 7}.attention.output.dense.bias      | UNEXPECTED |  | 
+decoder.decoder_layers.{0, 1, 2, 3, 4, 5, 6, 7}.output.dense.weight              | UNEXPECTED |  | 
+decoder.decoder_layers.{0, 1, 2, 3, 4, 5, 6, 7}.layernorm_after.bias             | UNEXPECTED |  | 
+decoder.decoder_layers.{0, 1, 2, 3, 4, 5, 6, 7}.layernorm_before.bias            | UNEXPECTED |  | 
+decoder.decoder_layers.{0, 1, 2, 3, 4, 5, 6, 7}.output.dense.bias                | UNEXPECTED |  | 
+decoder.decoder_layers.{0, 1, 2, 3, 4, 5, 6, 7}.attention.attention.value.bias   | UNEXPECTED |  | 
+decoder.decoder_layers.{0, 1, 2, 3, 4, 5, 6, 7}.layernorm_before.weight          | UNEXPECTED |  | 
+decoder.decoder_embed.bias                                                       | UNEXPECTED |  | 
+decoder.decoder_layers.{0, 1, 2, 3, 4, 5, 6, 7}.attention.attention.key.weight   | UNEXPECTED |  | 
+decoder.decoder_layers.{0, 1, 2, 3, 4, 5, 6, 7}.attention.attention.query.bias   | UNEXPECTED |  | 
+decoder.decoder_norm.weight                                                      | UNEXPECTED |  | 
+decoder.decoder_pos_embed                                                        | UNEXPECTED |  | 
+decoder.decoder_layers.{0, 1, 2, 3, 4, 5, 6, 7}.intermediate.dense.weight        | UNEXPECTED |  | 
+decoder.decoder_layers.{0, 1, 2, 3, 4, 5, 6, 7}.attention.output.dense.weight    | UNEXPECTED |  | 
+decoder.decoder_layers.{0, 1, 2, 3, 4, 5, 6, 7}.layernorm_after.weight           | UNEXPECTED |  | 
+decoder.decoder_norm.bias                                                        | UNEXPECTED |  | 
+decoder.decoder_layers.{0, 1, 2, 3, 4, 5, 6, 7}.intermediate.dense.bias          | UNEXPECTED |  | 
+decoder.decoder_pred.weight                                                      | UNEXPECTED |  | 
+decoder.decoder_embed.weight                                                     | UNEXPECTED |  | 
+decoder.mask_token                                                               | UNEXPECTED |  | 
+decoder.decoder_pred.bias                                                        | UNEXPECTED |  | 
+
+Notes:
+- UNEXPECTED:	can be ignored when loading from different task/architecture; not ok if you expect identical arch.
+Loading weights:   0%|          | 0/292 [00:00<?, ?it/s]Loading weights:  40%|███▉      | 116/292 [00:00<00:00, 1159.04it/s]Loading weights:  79%|███████▉  | 232/292 [00:00<00:00, 820.50it/s] Loading weights: 100%|██████████| 292/292 [00:00<00:00, 899.50it/s]
+2026-05-12 06:55:29,324 | INFO    | train_clip | Model assembled. Adaptor: PrefixAdaptor(encoder_dim=1024, decoder_dim=1024, k=10, hidden_dim=1024, num_layers=2, params=2,099,200)
+2026-05-12 06:55:30,384 | INFO    | train_clip | Held 5000 train2017 images out for val PPL (holdout_seed=0)
+2026-05-12 06:55:30,386 | INFO    | train_clip | Using cached features from features/mae
+2026-05-12 06:55:31,060 | INFO    | train_clip | Loaders built. train batches: 2213, val batches: 98
+2026-05-12 06:55:31,062 | INFO    | train_clip | Checkpoints will be saved under: checkpoints/mae_seed1
+2026-05-12 06:55:46,812 | INFO    | ttic_embeddings.train | Starting training. max_steps=35000, val_every=1000, patience=5, batch_size=256, device=cuda:0, amp=True
+2026-05-12 06:55:46,812 | INFO    | ttic_embeddings.train | Trainable params (adaptor only): 2,099,200
+[transformers] `loss_type=None` was set in the config but it is unrecognized. Using the default loss: `ForCausalLMLoss`.
+2026-05-12 06:56:14,308 | INFO    | ttic_embeddings.train | step     50 | loss 6.3065 | lr 1.00e-05 | gnorm 7.30 | 1.82 step/s
+2026-05-12 06:56:36,449 | INFO    | ttic_embeddings.train | step    100 | loss 4.2702 | lr 2.00e-05 | gnorm 2.93 | 2.01 step/s
+2026-05-12 06:56:58,881 | INFO    | ttic_embeddings.train | step    150 | loss 3.4905 | lr 3.00e-05 | gnorm 1.46 | 2.08 step/s
+2026-05-12 06:57:23,055 | INFO    | ttic_embeddings.train | step    200 | loss 3.1882 | lr 4.00e-05 | gnorm 1.41 | 2.08 step/s
+2026-05-12 06:57:47,280 | INFO    | ttic_embeddings.train | step    250 | loss 3.0771 | lr 5.00e-05 | gnorm 2.14 | 2.08 step/s
+2026-05-12 06:58:11,526 | INFO    | ttic_embeddings.train | step    300 | loss 3.0174 | lr 6.00e-05 | gnorm 1.33 | 2.07 step/s
+2026-05-12 06:58:36,468 | INFO    | ttic_embeddings.train | step    350 | loss 2.9743 | lr 7.00e-05 | gnorm 1.44 | 2.06 step/s
+2026-05-12 06:59:00,188 | INFO    | ttic_embeddings.train | step    400 | loss 2.9288 | lr 8.00e-05 | gnorm 1.55 | 2.07 step/s
+2026-05-12 06:59:23,820 | INFO    | ttic_embeddings.train | step    450 | loss 2.8904 | lr 9.00e-05 | gnorm 1.80 | 2.07 step/s
+2026-05-12 06:59:47,942 | INFO    | ttic_embeddings.train | step    500 | loss 2.8622 | lr 1.00e-04 | gnorm 1.50 | 2.07 step/s
+2026-05-12 07:00:11,955 | INFO    | ttic_embeddings.train | step    550 | loss 2.8208 | lr 1.00e-04 | gnorm 1.90 | 2.07 step/s
+2026-05-12 07:00:36,173 | INFO    | ttic_embeddings.train | step    600 | loss 2.8080 | lr 1.00e-04 | gnorm 1.80 | 2.07 step/s
+2026-05-12 07:01:00,632 | INFO    | ttic_embeddings.train | step    650 | loss 2.7821 | lr 1.00e-04 | gnorm 1.49 | 2.07 step/s
+2026-05-12 07:01:24,936 | INFO    | ttic_embeddings.train | step    700 | loss 2.7578 | lr 1.00e-04 | gnorm 1.50 | 2.07 step/s
+2026-05-12 07:01:49,316 | INFO    | ttic_embeddings.train | step    750 | loss 2.7393 | lr 1.00e-04 | gnorm 1.34 | 2.07 step/s
+2026-05-12 07:02:14,114 | INFO    | ttic_embeddings.train | step    800 | loss 2.7183 | lr 1.00e-04 | gnorm 1.32 | 2.07 step/s
+2026-05-12 07:02:38,925 | INFO    | ttic_embeddings.train | step    850 | loss 2.7052 | lr 1.00e-04 | gnorm 1.41 | 2.06 step/s
+2026-05-12 07:03:03,746 | INFO    | ttic_embeddings.train | step    900 | loss 2.6774 | lr 1.00e-04 | gnorm 1.46 | 2.06 step/s
+2026-05-12 07:03:27,780 | INFO    | ttic_embeddings.train | step    950 | loss 2.6679 | lr 1.00e-04 | gnorm 1.50 | 2.06 step/s
+2026-05-12 07:03:54,052 | INFO    | ttic_embeddings.train | step   1000 | loss 2.6524 | lr 9.99e-05 | gnorm 1.34 | 2.05 step/s
+2026-05-12 07:04:03,516 | INFO    | ttic_embeddings.train | step   1000 | val/ppl 14.442
+2026-05-12 07:04:03,634 | INFO    | ttic_embeddings.train |   best val/ppl so far (14.442) -> saved checkpoints/mae_seed1/adaptor_best.pt
+2026-05-12 07:04:30,827 | INFO    | ttic_embeddings.train | step   1050 | loss 2.6572 | lr 9.99e-05 | gnorm 1.68 | 2.00 step/s
+2026-05-12 07:04:55,794 | INFO    | ttic_embeddings.train | step   1100 | loss 2.6506 | lr 9.99e-05 | gnorm 1.57 | 2.00 step/s
+2026-05-12 07:05:19,780 | INFO    | ttic_embeddings.train | step   1150 | loss 2.6432 | lr 9.99e-05 | gnorm 1.38 | 2.01 step/s
+2026-05-12 07:05:44,547 | INFO    | ttic_embeddings.train | step   1200 | loss 2.6296 | lr 9.99e-05 | gnorm 1.56 | 2.01 step/s
+2026-05-12 07:06:07,173 | INFO    | ttic_embeddings.train | step   1250 | loss 2.6020 | lr 9.99e-05 | gnorm 1.55 | 2.01 step/s
+2026-05-12 07:06:30,608 | INFO    | ttic_embeddings.train | step   1300 | loss 2.6100 | lr 9.99e-05 | gnorm 1.33 | 2.02 step/s
+2026-05-12 07:06:55,597 | INFO    | ttic_embeddings.train | step   1350 | loss 2.5994 | lr 9.99e-05 | gnorm 1.47 | 2.02 step/s
+2026-05-12 07:07:21,343 | INFO    | ttic_embeddings.train | step   1400 | loss 2.6010 | lr 9.98e-05 | gnorm 1.46 | 2.02 step/s
+2026-05-12 07:07:46,023 | INFO    | ttic_embeddings.train | step   1450 | loss 2.5875 | lr 9.98e-05 | gnorm 1.24 | 2.02 step/s
+2026-05-12 07:08:10,644 | INFO    | ttic_embeddings.train | step   1500 | loss 2.5853 | lr 9.98e-05 | gnorm 1.46 | 2.02 step/s
+2026-05-12 07:08:35,142 | INFO    | ttic_embeddings.train | step   1550 | loss 2.5715 | lr 9.98e-05 | gnorm 1.40 | 2.02 step/s
+2026-05-12 07:08:58,534 | INFO    | ttic_embeddings.train | step   1600 | loss 2.5707 | lr 9.97e-05 | gnorm 1.37 | 2.02 step/s
+2026-05-12 07:09:22,616 | INFO    | ttic_embeddings.train | step   1650 | loss 2.5671 | lr 9.97e-05 | gnorm 1.54 | 2.02 step/s
+2026-05-12 07:09:44,390 | INFO    | ttic_embeddings.train | step   1700 | loss 2.5596 | lr 9.97e-05 | gnorm 1.48 | 2.03 step/s
+2026-05-12 07:10:05,876 | INFO    | ttic_embeddings.train | step   1750 | loss 2.5553 | lr 9.97e-05 | gnorm 1.33 | 2.04 step/s
+2026-05-12 07:10:27,348 | INFO    | ttic_embeddings.train | step   1800 | loss 2.5492 | lr 9.97e-05 | gnorm 1.39 | 2.04 step/s
+2026-05-12 07:10:48,415 | INFO    | ttic_embeddings.train | step   1850 | loss 2.5411 | lr 9.96e-05 | gnorm 1.53 | 2.05 step/s
+2026-05-12 07:11:11,585 | INFO    | ttic_embeddings.train | step   1900 | loss 2.5517 | lr 9.96e-05 | gnorm 1.27 | 2.05 step/s
+2026-05-12 07:11:36,787 | INFO    | ttic_embeddings.train | step   1950 | loss 2.5285 | lr 9.96e-05 | gnorm 1.39 | 2.05 step/s
+2026-05-12 07:12:02,136 | INFO    | ttic_embeddings.train | step   2000 | loss 2.5276 | lr 9.95e-05 | gnorm 1.40 | 2.05 step/s
+2026-05-12 07:12:11,371 | INFO    | ttic_embeddings.train | step   2000 | val/ppl 12.751
+2026-05-12 07:12:11,616 | INFO    | ttic_embeddings.train |   best val/ppl so far (12.751) -> saved checkpoints/mae_seed1/adaptor_best.pt
+2026-05-12 07:12:37,178 | INFO    | ttic_embeddings.train | step   2050 | loss 2.5304 | lr 9.95e-05 | gnorm 1.40 | 2.03 step/s
+2026-05-12 07:13:02,190 | INFO    | ttic_embeddings.train | step   2100 | loss 2.5212 | lr 9.95e-05 | gnorm 1.28 | 2.03 step/s
+2026-05-12 07:13:25,796 | INFO    | ttic_embeddings.train | step   2150 | loss 2.5124 | lr 9.94e-05 | gnorm 1.29 | 2.03 step/s
+2026-05-12 07:13:51,505 | INFO    | ttic_embeddings.train | step   2200 | loss 2.5053 | lr 9.94e-05 | gnorm 1.30 | 2.03 step/s
+2026-05-12 07:14:17,116 | INFO    | ttic_embeddings.train | step   2250 | loss 2.5013 | lr 9.94e-05 | gnorm 1.28 | 2.03 step/s
+2026-05-12 07:14:42,557 | INFO    | ttic_embeddings.train | step   2300 | loss 2.5048 | lr 9.93e-05 | gnorm 1.21 | 2.03 step/s
+2026-05-12 07:15:07,437 | INFO    | ttic_embeddings.train | step   2350 | loss 2.5129 | lr 9.93e-05 | gnorm 1.40 | 2.02 step/s
+2026-05-12 07:15:32,059 | INFO    | ttic_embeddings.train | step   2400 | loss 2.5052 | lr 9.93e-05 | gnorm 1.42 | 2.02 step/s
+2026-05-12 07:15:56,060 | INFO    | ttic_embeddings.train | step   2450 | loss 2.5027 | lr 9.92e-05 | gnorm 1.34 | 2.03 step/s
+2026-05-12 07:16:20,465 | INFO    | ttic_embeddings.train | step   2500 | loss 2.4964 | lr 9.92e-05 | gnorm 1.21 | 2.03 step/s
+2026-05-12 07:16:45,731 | INFO    | ttic_embeddings.train | step   2550 | loss 2.4897 | lr 9.91e-05 | gnorm 1.55 | 2.03 step/s
+2026-05-12 07:17:10,230 | INFO    | ttic_embeddings.train | step   2600 | loss 2.4881 | lr 9.91e-05 | gnorm 1.31 | 2.03 step/s
+2026-05-12 07:17:35,089 | INFO    | ttic_embeddings.train | step   2650 | loss 2.4921 | lr 9.90e-05 | gnorm 1.44 | 2.03 step/s
+2026-05-12 07:17:59,600 | INFO    | ttic_embeddings.train | step   2700 | loss 2.4919 | lr 9.90e-05 | gnorm 1.54 | 2.03 step/s
+2026-05-12 07:18:25,178 | INFO    | ttic_embeddings.train | step   2750 | loss 2.4765 | lr 9.90e-05 | gnorm 1.25 | 2.02 step/s
+2026-05-12 07:18:50,695 | INFO    | ttic_embeddings.train | step   2800 | loss 2.4793 | lr 9.89e-05 | gnorm 1.39 | 2.02 step/s
+2026-05-12 07:19:15,690 | INFO    | ttic_embeddings.train | step   2850 | loss 2.4772 | lr 9.89e-05 | gnorm 1.20 | 2.02 step/s
+2026-05-12 07:19:40,871 | INFO    | ttic_embeddings.train | step   2900 | loss 2.4983 | lr 9.88e-05 | gnorm 1.29 | 2.02 step/s
+2026-05-12 07:20:06,305 | INFO    | ttic_embeddings.train | step   2950 | loss 2.4713 | lr 9.88e-05 | gnorm 1.28 | 2.02 step/s
+2026-05-12 07:20:31,376 | INFO    | ttic_embeddings.train | step   3000 | loss 2.4757 | lr 9.87e-05 | gnorm 1.44 | 2.02 step/s
+2026-05-12 07:20:39,891 | INFO    | ttic_embeddings.train | step   3000 | val/ppl 12.169
+2026-05-12 07:20:40,143 | INFO    | ttic_embeddings.train |   best val/ppl so far (12.169) -> saved checkpoints/mae_seed1/adaptor_best.pt
+2026-05-12 07:21:06,033 | INFO    | ttic_embeddings.train | step   3050 | loss 2.4834 | lr 9.87e-05 | gnorm 1.38 | 2.01 step/s
+2026-05-12 07:21:31,262 | INFO    | ttic_embeddings.train | step   3100 | loss 2.4808 | lr 9.86e-05 | gnorm 1.45 | 2.01 step/s
+2026-05-12 07:21:56,228 | INFO    | ttic_embeddings.train | step   3150 | loss 2.4745 | lr 9.86e-05 | gnorm 1.36 | 2.01 step/s
+2026-05-12 07:22:20,126 | INFO    | ttic_embeddings.train | step   3200 | loss 2.4827 | lr 9.85e-05 | gnorm 1.33 | 2.01 step/s
+2026-05-12 07:22:45,113 | INFO    | ttic_embeddings.train | step   3250 | loss 2.4665 | lr 9.84e-05 | gnorm 1.34 | 2.01 step/s
+2026-05-12 07:23:10,542 | INFO    | ttic_embeddings.train | step   3300 | loss 2.4755 | lr 9.84e-05 | gnorm 1.37 | 2.01 step/s
+2026-05-12 07:23:35,371 | INFO    | ttic_embeddings.train | step   3350 | loss 2.4617 | lr 9.83e-05 | gnorm 1.15 | 2.01 step/s
+2026-05-12 07:24:01,115 | INFO    | ttic_embeddings.train | step   3400 | loss 2.4734 | lr 9.83e-05 | gnorm 1.33 | 2.01 step/s
+2026-05-12 07:24:27,600 | INFO    | ttic_embeddings.train | step   3450 | loss 2.4660 | lr 9.82e-05 | gnorm 1.38 | 2.00 step/s
+2026-05-12 07:24:53,225 | INFO    | ttic_embeddings.train | step   3500 | loss 2.4561 | lr 9.81e-05 | gnorm 1.30 | 2.00 step/s
+2026-05-12 07:25:17,857 | INFO    | ttic_embeddings.train | step   3550 | loss 2.4673 | lr 9.81e-05 | gnorm 1.27 | 2.00 step/s
+2026-05-12 07:25:42,903 | INFO    | ttic_embeddings.train | step   3600 | loss 2.4569 | lr 9.80e-05 | gnorm 1.27 | 2.00 step/s
+2026-05-12 07:26:08,500 | INFO    | ttic_embeddings.train | step   3650 | loss 2.4542 | lr 9.80e-05 | gnorm 1.22 | 2.00 step/s
+2026-05-12 07:26:34,077 | INFO    | ttic_embeddings.train | step   3700 | loss 2.4527 | lr 9.79e-05 | gnorm 1.21 | 2.00 step/s
+2026-05-12 07:26:59,654 | INFO    | ttic_embeddings.train | step   3750 | loss 2.4667 | lr 9.78e-05 | gnorm 1.53 | 2.00 step/s
+2026-05-12 07:27:24,186 | INFO    | ttic_embeddings.train | step   3800 | loss 2.4592 | lr 9.78e-05 | gnorm 1.33 | 2.00 step/s
+2026-05-12 07:27:50,003 | INFO    | ttic_embeddings.train | step   3850 | loss 2.4522 | lr 9.77e-05 | gnorm 1.41 | 2.00 step/s
+2026-05-12 07:28:15,415 | INFO    | ttic_embeddings.train | step   3900 | loss 2.4402 | lr 9.76e-05 | gnorm 1.34 | 2.00 step/s
+2026-05-12 07:28:40,742 | INFO    | ttic_embeddings.train | step   3950 | loss 2.4625 | lr 9.76e-05 | gnorm 1.39 | 2.00 step/s
+2026-05-12 07:29:08,622 | INFO    | ttic_embeddings.train | step   4000 | loss 2.4543 | lr 9.75e-05 | gnorm 1.28 | 2.00 step/s
+2026-05-12 07:29:18,427 | INFO    | ttic_embeddings.train | step   4000 | val/ppl 11.855
+2026-05-12 07:29:18,737 | INFO    | ttic_embeddings.train |   best val/ppl so far (11.855) -> saved checkpoints/mae_seed1/adaptor_best.pt
+2026-05-12 07:29:44,456 | INFO    | ttic_embeddings.train | step   4050 | loss 2.4475 | lr 9.74e-05 | gnorm 1.39 | 1.99 step/s
+2026-05-12 07:30:09,228 | INFO    | ttic_embeddings.train | step   4100 | loss 2.4386 | lr 9.73e-05 | gnorm 1.45 | 1.99 step/s
+2026-05-12 07:30:33,887 | INFO    | ttic_embeddings.train | step   4150 | loss 2.4537 | lr 9.73e-05 | gnorm 1.32 | 1.99 step/s
+2026-05-12 07:30:58,612 | INFO    | ttic_embeddings.train | step   4200 | loss 2.4521 | lr 9.72e-05 | gnorm 1.34 | 1.99 step/s
+2026-05-12 07:31:23,627 | INFO    | ttic_embeddings.train | step   4250 | loss 2.4622 | lr 9.71e-05 | gnorm 1.26 | 1.99 step/s
+2026-05-12 07:31:49,093 | INFO    | ttic_embeddings.train | step   4300 | loss 2.4496 | lr 9.70e-05 | gnorm 1.30 | 1.99 step/s
+2026-05-12 07:32:14,367 | INFO    | ttic_embeddings.train | step   4350 | loss 2.4463 | lr 9.70e-05 | gnorm 1.41 | 1.99 step/s
+2026-05-12 07:32:39,312 | INFO    | ttic_embeddings.train | step   4400 | loss 2.4490 | lr 9.69e-05 | gnorm 1.25 | 1.99 step/s
+2026-05-12 07:33:05,605 | INFO    | ttic_embeddings.train | step   4450 | loss 2.4281 | lr 9.68e-05 | gnorm 1.43 | 1.99 step/s
+2026-05-12 07:33:31,044 | INFO    | ttic_embeddings.train | step   4500 | loss 2.4372 | lr 9.67e-05 | gnorm 1.38 | 1.99 step/s
+2026-05-12 07:33:58,657 | INFO    | ttic_embeddings.train | step   4550 | loss 2.4362 | lr 9.66e-05 | gnorm 1.35 | 1.99 step/s
+2026-05-12 07:34:26,018 | INFO    | ttic_embeddings.train | step   4600 | loss 2.4389 | lr 9.66e-05 | gnorm 1.32 | 1.98 step/s
+2026-05-12 07:34:53,590 | INFO    | ttic_embeddings.train | step   4650 | loss 2.4368 | lr 9.65e-05 | gnorm 1.41 | 1.98 step/s
+2026-05-12 07:35:21,172 | INFO    | ttic_embeddings.train | step   4700 | loss 2.4415 | lr 9.64e-05 | gnorm 1.34 | 1.98 step/s
+2026-05-12 07:35:49,264 | INFO    | ttic_embeddings.train | step   4750 | loss 2.4284 | lr 9.63e-05 | gnorm 1.35 | 1.98 step/s
+2026-05-12 07:36:16,859 | INFO    | ttic_embeddings.train | step   4800 | loss 2.4323 | lr 9.62e-05 | gnorm 1.40 | 1.98 step/s
+2026-05-12 07:36:44,271 | INFO    | ttic_embeddings.train | step   4850 | loss 2.4172 | lr 9.61e-05 | gnorm 1.40 | 1.97 step/s
+2026-05-12 07:37:11,912 | INFO    | ttic_embeddings.train | step   4900 | loss 2.4249 | lr 9.60e-05 | gnorm 1.47 | 1.97 step/s
+2026-05-12 07:37:39,303 | INFO    | ttic_embeddings.train | step   4950 | loss 2.4310 | lr 9.60e-05 | gnorm 1.42 | 1.97 step/s
+2026-05-12 07:38:08,585 | INFO    | ttic_embeddings.train | step   5000 | loss 2.4327 | lr 9.59e-05 | gnorm 1.37 | 1.97 step/s
+2026-05-12 07:38:19,019 | INFO    | ttic_embeddings.train | step   5000 | val/ppl 11.667
+2026-05-12 07:38:19,317 | INFO    | ttic_embeddings.train |   best val/ppl so far (11.667) -> saved checkpoints/mae_seed1/adaptor_best.pt
+2026-05-12 07:38:45,789 | INFO    | ttic_embeddings.train | step   5050 | loss 2.4195 | lr 9.58e-05 | gnorm 1.46 | 1.96 step/s
+2026-05-12 07:39:13,307 | INFO    | ttic_embeddings.train | step   5100 | loss 2.4293 | lr 9.57e-05 | gnorm 1.49 | 1.96 step/s
+2026-05-12 07:39:40,886 | INFO    | ttic_embeddings.train | step   5150 | loss 2.4232 | lr 9.56e-05 | gnorm 1.35 | 1.96 step/s
+2026-05-12 07:40:08,779 | INFO    | ttic_embeddings.train | step   5200 | loss 2.4188 | lr 9.55e-05 | gnorm 1.55 | 1.95 step/s
+2026-05-12 07:40:36,421 | INFO    | ttic_embeddings.train | step   5250 | loss 2.4178 | lr 9.54e-05 | gnorm 1.53 | 1.95 step/s
+2026-05-12 07:41:02,829 | INFO    | ttic_embeddings.train | step   5300 | loss 2.4155 | lr 9.53e-05 | gnorm 1.32 | 1.95 step/s
+2026-05-12 07:41:29,832 | INFO    | ttic_embeddings.train | step   5350 | loss 2.4133 | lr 9.52e-05 | gnorm 1.31 | 1.95 step/s
+2026-05-12 07:41:56,486 | INFO    | ttic_embeddings.train | step   5400 | loss 2.4265 | lr 9.51e-05 | gnorm 1.31 | 1.95 step/s
+2026-05-12 07:42:24,233 | INFO    | ttic_embeddings.train | step   5450 | loss 2.4206 | lr 9.50e-05 | gnorm 1.38 | 1.95 step/s
+2026-05-12 07:42:51,807 | INFO    | ttic_embeddings.train | step   5500 | loss 2.4168 | lr 9.49e-05 | gnorm 1.36 | 1.95 step/s
+2026-05-12 07:43:19,215 | INFO    | ttic_embeddings.train | step   5550 | loss 2.4200 | lr 9.48e-05 | gnorm 1.37 | 1.95 step/s
+2026-05-12 07:43:46,535 | INFO    | ttic_embeddings.train | step   5600 | loss 2.4219 | lr 9.47e-05 | gnorm 1.27 | 1.94 step/s
+2026-05-12 07:44:12,091 | INFO    | ttic_embeddings.train | step   5650 | loss 2.4157 | lr 9.46e-05 | gnorm 1.45 | 1.94 step/s
+2026-05-12 07:44:36,986 | INFO    | ttic_embeddings.train | step   5700 | loss 2.4163 | lr 9.45e-05 | gnorm 1.43 | 1.95 step/s
+2026-05-12 07:45:02,016 | INFO    | ttic_embeddings.train | step   5750 | loss 2.4075 | lr 9.44e-05 | gnorm 1.36 | 1.95 step/s
+2026-05-12 07:45:28,426 | INFO    | ttic_embeddings.train | step   5800 | loss 2.4236 | lr 9.43e-05 | gnorm 1.40 | 1.95 step/s
+2026-05-12 07:45:53,965 | INFO    | ttic_embeddings.train | step   5850 | loss 2.4203 | lr 9.42e-05 | gnorm 1.33 | 1.95 step/s
+2026-05-12 07:46:18,904 | INFO    | ttic_embeddings.train | step   5900 | loss 2.4100 | lr 9.41e-05 | gnorm 1.45 | 1.95 step/s
+2026-05-12 07:46:43,703 | INFO    | ttic_embeddings.train | step   5950 | loss 2.4057 | lr 9.40e-05 | gnorm 1.44 | 1.95 step/s
+2026-05-12 07:47:11,432 | INFO    | ttic_embeddings.train | step   6000 | loss 2.4193 | lr 9.39e-05 | gnorm 1.47 | 1.95 step/s
+2026-05-12 07:47:20,760 | INFO    | ttic_embeddings.train | step   6000 | val/ppl 11.496
+2026-05-12 07:47:20,998 | INFO    | ttic_embeddings.train |   best val/ppl so far (11.496) -> saved checkpoints/mae_seed1/adaptor_best.pt
+2026-05-12 07:47:48,076 | INFO    | ttic_embeddings.train | step   6050 | loss 2.4210 | lr 9.37e-05 | gnorm 1.38 | 1.94 step/s
+2026-05-12 07:48:13,035 | INFO    | ttic_embeddings.train | step   6100 | loss 2.4180 | lr 9.36e-05 | gnorm 1.35 | 1.94 step/s
+2026-05-12 07:48:37,991 | INFO    | ttic_embeddings.train | step   6150 | loss 2.4058 | lr 9.35e-05 | gnorm 1.54 | 1.94 step/s
+2026-05-12 07:49:03,955 | INFO    | ttic_embeddings.train | step   6200 | loss 2.4177 | lr 9.34e-05 | gnorm 1.39 | 1.94 step/s
+2026-05-12 07:49:29,098 | INFO    | ttic_embeddings.train | step   6250 | loss 2.4211 | lr 9.33e-05 | gnorm 1.39 | 1.94 step/s
+2026-05-12 07:49:54,779 | INFO    | ttic_embeddings.train | step   6300 | loss 2.4257 | lr 9.32e-05 | gnorm 1.50 | 1.94 step/s
+2026-05-12 07:50:19,511 | INFO    | ttic_embeddings.train | step   6350 | loss 2.4096 | lr 9.31e-05 | gnorm 1.37 | 1.94 step/s
+2026-05-12 07:50:41,705 | INFO    | ttic_embeddings.train | step   6400 | loss 2.4138 | lr 9.30e-05 | gnorm 1.35 | 1.94 step/s
+2026-05-12 07:51:06,009 | INFO    | ttic_embeddings.train | step   6450 | loss 2.4132 | lr 9.28e-05 | gnorm 1.53 | 1.94 step/s
+2026-05-12 07:51:31,190 | INFO    | ttic_embeddings.train | step   6500 | loss 2.4139 | lr 9.27e-05 | gnorm 1.34 | 1.94 step/s
+2026-05-12 07:51:56,445 | INFO    | ttic_embeddings.train | step   6550 | loss 2.4064 | lr 9.26e-05 | gnorm 1.59 | 1.94 step/s
+2026-05-12 07:52:20,468 | INFO    | ttic_embeddings.train | step   6600 | loss 2.4123 | lr 9.25e-05 | gnorm 1.29 | 1.94 step/s
+2026-05-12 07:52:45,687 | INFO    | ttic_embeddings.train | step   6650 | loss 2.4043 | lr 9.24e-05 | gnorm 1.41 | 1.95 step/s
+2026-05-12 07:53:07,761 | INFO    | ttic_embeddings.train | step   6700 | loss 2.3847 | lr 9.22e-05 | gnorm 1.41 | 1.95 step/s
+2026-05-12 07:53:29,150 | INFO    | ttic_embeddings.train | step   6750 | loss 2.3957 | lr 9.21e-05 | gnorm 1.60 | 1.95 step/s
+2026-05-12 07:53:50,703 | INFO    | ttic_embeddings.train | step   6800 | loss 2.4006 | lr 9.20e-05 | gnorm 1.39 | 1.95 step/s
+2026-05-12 07:54:12,015 | INFO    | ttic_embeddings.train | step   6850 | loss 2.3963 | lr 9.19e-05 | gnorm 1.31 | 1.95 step/s
+2026-05-12 07:54:36,518 | INFO    | ttic_embeddings.train | step   6900 | loss 2.4136 | lr 9.17e-05 | gnorm 1.41 | 1.95 step/s
+2026-05-12 07:55:01,370 | INFO    | ttic_embeddings.train | step   6950 | loss 2.3883 | lr 9.16e-05 | gnorm 1.31 | 1.96 step/s
+2026-05-12 07:55:26,036 | INFO    | ttic_embeddings.train | step   7000 | loss 2.3975 | lr 9.15e-05 | gnorm 1.35 | 1.96 step/s
+2026-05-12 07:55:35,372 | INFO    | ttic_embeddings.train | step   7000 | val/ppl 11.392
+2026-05-12 07:55:35,686 | INFO    | ttic_embeddings.train |   best val/ppl so far (11.392) -> saved checkpoints/mae_seed1/adaptor_best.pt
+2026-05-12 07:56:01,645 | INFO    | ttic_embeddings.train | step   7050 | loss 2.3965 | lr 9.14e-05 | gnorm 1.30 | 1.95 step/s
+2026-05-12 07:56:27,486 | INFO    | ttic_embeddings.train | step   7100 | loss 2.3923 | lr 9.12e-05 | gnorm 1.28 | 1.95 step/s
+2026-05-12 07:56:51,336 | INFO    | ttic_embeddings.train | step   7150 | loss 2.3988 | lr 9.11e-05 | gnorm 1.44 | 1.95 step/s
+2026-05-12 07:57:16,205 | INFO    | ttic_embeddings.train | step   7200 | loss 2.4045 | lr 9.10e-05 | gnorm 1.47 | 1.95 step/s
+2026-05-12 07:57:41,717 | INFO    | ttic_embeddings.train | step   7250 | loss 2.4037 | lr 9.08e-05 | gnorm 1.43 | 1.95 step/s
+2026-05-12 07:58:07,053 | INFO    | ttic_embeddings.train | step   7300 | loss 2.3857 | lr 9.07e-05 | gnorm 1.46 | 1.95 step/s
+2026-05-12 07:58:31,985 | INFO    | ttic_embeddings.train | step   7350 | loss 2.3956 | lr 9.06e-05 | gnorm 1.48 | 1.95 step/s
+2026-05-12 07:58:57,192 | INFO    | ttic_embeddings.train | step   7400 | loss 2.3922 | lr 9.05e-05 | gnorm 1.37 | 1.95 step/s
+2026-05-12 07:59:22,441 | INFO    | ttic_embeddings.train | step   7450 | loss 2.4018 | lr 9.03e-05 | gnorm 1.51 | 1.95 step/s
+2026-05-12 07:59:47,419 | INFO    | ttic_embeddings.train | step   7500 | loss 2.3803 | lr 9.02e-05 | gnorm 1.54 | 1.95 step/s
+2026-05-12 08:00:12,023 | INFO    | ttic_embeddings.train | step   7550 | loss 2.3958 | lr 9.00e-05 | gnorm 1.34 | 1.95 step/s
+2026-05-12 08:00:37,217 | INFO    | ttic_embeddings.train | step   7600 | loss 2.3875 | lr 8.99e-05 | gnorm 1.37 | 1.95 step/s
+2026-05-12 08:01:02,614 | INFO    | ttic_embeddings.train | step   7650 | loss 2.3874 | lr 8.98e-05 | gnorm 1.53 | 1.95 step/s
+2026-05-12 08:01:28,011 | INFO    | ttic_embeddings.train | step   7700 | loss 2.3931 | lr 8.96e-05 | gnorm 1.38 | 1.95 step/s
+2026-05-12 08:01:52,923 | INFO    | ttic_embeddings.train | step   7750 | loss 2.3798 | lr 8.95e-05 | gnorm 1.57 | 1.95 step/s
+2026-05-12 08:02:17,734 | INFO    | ttic_embeddings.train | step   7800 | loss 2.3881 | lr 8.94e-05 | gnorm 1.34 | 1.95 step/s
+2026-05-12 08:02:42,636 | INFO    | ttic_embeddings.train | step   7850 | loss 2.3977 | lr 8.92e-05 | gnorm 1.39 | 1.95 step/s
+2026-05-12 08:03:07,657 | INFO    | ttic_embeddings.train | step   7900 | loss 2.3981 | lr 8.91e-05 | gnorm 1.37 | 1.96 step/s
+2026-05-12 08:03:32,549 | INFO    | ttic_embeddings.train | step   7950 | loss 2.3890 | lr 8.89e-05 | gnorm 1.54 | 1.96 step/s
+2026-05-12 08:04:00,482 | INFO    | ttic_embeddings.train | step   8000 | loss 2.4034 | lr 8.88e-05 | gnorm 1.46 | 1.95 step/s
+2026-05-12 08:04:09,118 | INFO    | ttic_embeddings.train | step   8000 | val/ppl 11.308
+2026-05-12 08:04:09,407 | INFO    | ttic_embeddings.train |   best val/ppl so far (11.308) -> saved checkpoints/mae_seed1/adaptor_best.pt
+2026-05-12 08:04:36,767 | INFO    | ttic_embeddings.train | step   8050 | loss 2.3855 | lr 8.86e-05 | gnorm 1.19 | 1.95 step/s
+2026-05-12 08:05:02,029 | INFO    | ttic_embeddings.train | step   8100 | loss 2.3990 | lr 8.85e-05 | gnorm 1.36 | 1.95 step/s
+2026-05-12 08:05:26,559 | INFO    | ttic_embeddings.train | step   8150 | loss 2.3858 | lr 8.84e-05 | gnorm 1.48 | 1.95 step/s
+2026-05-12 08:05:52,145 | INFO    | ttic_embeddings.train | step   8200 | loss 2.3939 | lr 8.82e-05 | gnorm 1.38 | 1.95 step/s
+2026-05-12 08:06:16,394 | INFO    | ttic_embeddings.train | step   8250 | loss 2.3792 | lr 8.81e-05 | gnorm 1.30 | 1.95 step/s
+2026-05-12 08:06:41,144 | INFO    | ttic_embeddings.train | step   8300 | loss 2.3879 | lr 8.79e-05 | gnorm 1.52 | 1.95 step/s
+2026-05-12 08:07:08,628 | INFO    | ttic_embeddings.train | step   8350 | loss 2.3846 | lr 8.78e-05 | gnorm 1.39 | 1.95 step/s
+2026-05-12 08:07:33,593 | INFO    | ttic_embeddings.train | step   8400 | loss 2.3959 | lr 8.76e-05 | gnorm 1.40 | 1.95 step/s
+2026-05-12 08:07:58,591 | INFO    | ttic_embeddings.train | step   8450 | loss 2.3898 | lr 8.75e-05 | gnorm 1.48 | 1.95 step/s
+2026-05-12 08:08:23,646 | INFO    | ttic_embeddings.train | step   8500 | loss 2.3917 | lr 8.73e-05 | gnorm 1.34 | 1.95 step/s
+2026-05-12 08:08:50,349 | INFO    | ttic_embeddings.train | step   8550 | loss 2.3830 | lr 8.72e-05 | gnorm 1.41 | 1.95 step/s
+2026-05-12 08:09:17,715 | INFO    | ttic_embeddings.train | step   8600 | loss 2.3795 | lr 8.70e-05 | gnorm 1.35 | 1.95 step/s
+2026-05-12 08:09:42,914 | INFO    | ttic_embeddings.train | step   8650 | loss 2.3870 | lr 8.69e-05 | gnorm 1.41 | 1.95 step/s
+2026-05-12 08:10:08,667 | INFO    | ttic_embeddings.train | step   8700 | loss 2.3948 | lr 8.67e-05 | gnorm 1.43 | 1.95 step/s
+2026-05-12 08:10:35,993 | INFO    | ttic_embeddings.train | step   8750 | loss 2.3966 | lr 8.65e-05 | gnorm 1.33 | 1.95 step/s
+2026-05-12 08:11:00,661 | INFO    | ttic_embeddings.train | step   8800 | loss 2.3836 | lr 8.64e-05 | gnorm 1.49 | 1.95 step/s
+2026-05-12 08:11:25,142 | INFO    | ttic_embeddings.train | step   8850 | loss 2.4069 | lr 8.62e-05 | gnorm 1.40 | 1.95 step/s
+2026-05-12 08:11:52,654 | INFO    | ttic_embeddings.train | step   8900 | loss 2.3711 | lr 8.61e-05 | gnorm 1.38 | 1.95 step/s
+2026-05-12 08:12:17,868 | INFO    | ttic_embeddings.train | step   8950 | loss 2.3687 | lr 8.59e-05 | gnorm 1.39 | 1.95 step/s
+2026-05-12 08:12:45,353 | INFO    | ttic_embeddings.train | step   9000 | loss 2.3778 | lr 8.58e-05 | gnorm 1.47 | 1.95 step/s
+2026-05-12 08:12:55,382 | INFO    | ttic_embeddings.train | step   9000 | val/ppl 11.234
+2026-05-12 08:12:55,635 | INFO    | ttic_embeddings.train |   best val/ppl so far (11.234) -> saved checkpoints/mae_seed1/adaptor_best.pt
+2026-05-12 08:13:22,588 | INFO    | ttic_embeddings.train | step   9050 | loss 2.3741 | lr 8.56e-05 | gnorm 1.37 | 1.94 step/s
+2026-05-12 08:13:47,760 | INFO    | ttic_embeddings.train | step   9100 | loss 2.3800 | lr 8.54e-05 | gnorm 1.42 | 1.94 step/s
+2026-05-12 08:14:12,390 | INFO    | ttic_embeddings.train | step   9150 | loss 2.3772 | lr 8.53e-05 | gnorm 1.56 | 1.94 step/s
+2026-05-12 08:14:37,569 | INFO    | ttic_embeddings.train | step   9200 | loss 2.3733 | lr 8.51e-05 | gnorm 1.30 | 1.94 step/s
+2026-05-12 08:15:02,762 | INFO    | ttic_embeddings.train | step   9250 | loss 2.3698 | lr 8.50e-05 | gnorm 1.54 | 1.94 step/s
+2026-05-12 08:15:28,028 | INFO    | ttic_embeddings.train | step   9300 | loss 2.3791 | lr 8.48e-05 | gnorm 1.40 | 1.95 step/s
+2026-05-12 08:15:52,642 | INFO    | ttic_embeddings.train | step   9350 | loss 2.3760 | lr 8.46e-05 | gnorm 1.46 | 1.95 step/s
+2026-05-12 08:16:17,195 | INFO    | ttic_embeddings.train | step   9400 | loss 2.3616 | lr 8.45e-05 | gnorm 1.51 | 1.95 step/s
+2026-05-12 08:16:43,576 | INFO    | ttic_embeddings.train | step   9450 | loss 2.3705 | lr 8.43e-05 | gnorm 1.54 | 1.95 step/s
+2026-05-12 08:17:10,769 | INFO    | ttic_embeddings.train | step   9500 | loss 2.3653 | lr 8.41e-05 | gnorm 1.60 | 1.95 step/s
+2026-05-12 08:17:36,860 | INFO    | ttic_embeddings.train | step   9550 | loss 2.3666 | lr 8.40e-05 | gnorm 1.60 | 1.94 step/s
+2026-05-12 08:18:01,606 | INFO    | ttic_embeddings.train | step   9600 | loss 2.3705 | lr 8.38e-05 | gnorm 1.36 | 1.95 step/s
+2026-05-12 08:18:26,001 | INFO    | ttic_embeddings.train | step   9650 | loss 2.3886 | lr 8.36e-05 | gnorm 1.52 | 1.95 step/s
+2026-05-12 08:18:52,157 | INFO    | ttic_embeddings.train | step   9700 | loss 2.3774 | lr 8.35e-05 | gnorm 1.38 | 1.95 step/s
+2026-05-12 08:19:19,158 | INFO    | ttic_embeddings.train | step   9750 | loss 2.3796 | lr 8.33e-05 | gnorm 1.36 | 1.95 step/s
+2026-05-12 08:19:45,587 | INFO    | ttic_embeddings.train | step   9800 | loss 2.3777 | lr 8.31e-05 | gnorm 1.39 | 1.94 step/s
+2026-05-12 08:20:10,632 | INFO    | ttic_embeddings.train | step   9850 | loss 2.3783 | lr 8.29e-05 | gnorm 1.40 | 1.95 step/s
+2026-05-12 08:20:36,175 | INFO    | ttic_embeddings.train | step   9900 | loss 2.3686 | lr 8.28e-05 | gnorm 1.42 | 1.95 step/s
+2026-05-12 08:21:02,533 | INFO    | ttic_embeddings.train | step   9950 | loss 2.3639 | lr 8.26e-05 | gnorm 1.47 | 1.94 step/s
+2026-05-12 08:21:30,182 | INFO    | ttic_embeddings.train | step  10000 | loss 2.3723 | lr 8.24e-05 | gnorm 1.43 | 1.94 step/s
+2026-05-12 08:21:39,891 | INFO    | ttic_embeddings.train | step  10000 | val/ppl 11.155
+2026-05-12 08:21:40,151 | INFO    | ttic_embeddings.train |   best val/ppl so far (11.155) -> saved checkpoints/mae_seed1/adaptor_best.pt
+2026-05-12 08:22:05,590 | INFO    | ttic_embeddings.train | step  10050 | loss 2.3768 | lr 8.23e-05 | gnorm 1.32 | 1.94 step/s
+2026-05-12 08:22:30,979 | INFO    | ttic_embeddings.train | step  10100 | loss 2.3776 | lr 8.21e-05 | gnorm 1.50 | 1.94 step/s
+2026-05-12 08:22:55,697 | INFO    | ttic_embeddings.train | step  10150 | loss 2.3646 | lr 8.19e-05 | gnorm 1.45 | 1.94 step/s
+2026-05-12 08:23:20,437 | INFO    | ttic_embeddings.train | step  10200 | loss 2.3828 | lr 8.17e-05 | gnorm 1.41 | 1.94 step/s
+2026-05-12 08:23:46,082 | INFO    | ttic_embeddings.train | step  10250 | loss 2.3753 | lr 8.16e-05 | gnorm 1.34 | 1.94 step/s
+2026-05-12 08:24:11,560 | INFO    | ttic_embeddings.train | step  10300 | loss 2.3699 | lr 8.14e-05 | gnorm 1.62 | 1.94 step/s
+2026-05-12 08:24:35,678 | INFO    | ttic_embeddings.train | step  10350 | loss 2.3755 | lr 8.12e-05 | gnorm 1.37 | 1.94 step/s
+2026-05-12 08:25:00,719 | INFO    | ttic_embeddings.train | step  10400 | loss 2.3723 | lr 8.10e-05 | gnorm 1.49 | 1.94 step/s
+2026-05-12 08:25:25,631 | INFO    | ttic_embeddings.train | step  10450 | loss 2.3842 | lr 8.08e-05 | gnorm 1.49 | 1.94 step/s
+2026-05-12 08:25:50,468 | INFO    | ttic_embeddings.train | step  10500 | loss 2.3713 | lr 8.07e-05 | gnorm 1.38 | 1.94 step/s
+2026-05-12 08:26:14,852 | INFO    | ttic_embeddings.train | step  10550 | loss 2.3775 | lr 8.05e-05 | gnorm 1.49 | 1.94 step/s
+2026-05-12 08:26:39,865 | INFO    | ttic_embeddings.train | step  10600 | loss 2.3661 | lr 8.03e-05 | gnorm 1.37 | 1.94 step/s
+2026-05-12 08:27:06,862 | INFO    | ttic_embeddings.train | step  10650 | loss 2.3854 | lr 8.01e-05 | gnorm 1.51 | 1.94 step/s
+2026-05-12 08:27:34,067 | INFO    | ttic_embeddings.train | step  10700 | loss 2.3611 | lr 7.99e-05 | gnorm 1.48 | 1.94 step/s
+2026-05-12 08:27:59,975 | INFO    | ttic_embeddings.train | step  10750 | loss 2.3652 | lr 7.98e-05 | gnorm 1.48 | 1.94 step/s
+2026-05-12 08:28:25,036 | INFO    | ttic_embeddings.train | step  10800 | loss 2.3634 | lr 7.96e-05 | gnorm 1.38 | 1.94 step/s
+2026-05-12 08:28:50,363 | INFO    | ttic_embeddings.train | step  10850 | loss 2.3879 | lr 7.94e-05 | gnorm 1.40 | 1.94 step/s
+2026-05-12 08:29:15,408 | INFO    | ttic_embeddings.train | step  10900 | loss 2.3711 | lr 7.92e-05 | gnorm 1.46 | 1.94 step/s
+2026-05-12 08:29:40,892 | INFO    | ttic_embeddings.train | step  10950 | loss 2.3715 | lr 7.90e-05 | gnorm 1.43 | 1.94 step/s
+2026-05-12 08:30:08,984 | INFO    | ttic_embeddings.train | step  11000 | loss 2.3712 | lr 7.88e-05 | gnorm 1.36 | 1.94 step/s
+2026-05-12 08:30:18,259 | INFO    | ttic_embeddings.train | step  11000 | val/ppl 11.074
+2026-05-12 08:30:18,594 | INFO    | ttic_embeddings.train |   best val/ppl so far (11.074) -> saved checkpoints/mae_seed1/adaptor_best.pt
+2026-05-12 08:30:43,465 | INFO    | ttic_embeddings.train | step  11050 | loss 2.3683 | lr 7.86e-05 | gnorm 1.43 | 1.94 step/s
+2026-05-12 08:31:12,687 | INFO    | ttic_embeddings.train | step  11100 | loss 2.3681 | lr 7.85e-05 | gnorm 1.40 | 1.94 step/s
+2026-05-12 08:31:37,764 | INFO    | ttic_embeddings.train | step  11150 | loss 2.3588 | lr 7.83e-05 | gnorm 1.52 | 1.94 step/s
+2026-05-12 08:32:02,727 | INFO    | ttic_embeddings.train | step  11200 | loss 2.3636 | lr 7.81e-05 | gnorm 1.42 | 1.94 step/s
+2026-05-12 08:32:27,853 | INFO    | ttic_embeddings.train | step  11250 | loss 2.3607 | lr 7.79e-05 | gnorm 1.34 | 1.94 step/s
+2026-05-12 08:32:53,803 | INFO    | ttic_embeddings.train | step  11300 | loss 2.3648 | lr 7.77e-05 | gnorm 1.39 | 1.94 step/s
+2026-05-12 08:33:20,948 | INFO    | ttic_embeddings.train | step  11350 | loss 2.3651 | lr 7.75e-05 | gnorm 1.49 | 1.94 step/s
+2026-05-12 08:33:47,465 | INFO    | ttic_embeddings.train | step  11400 | loss 2.3735 | lr 7.73e-05 | gnorm 1.48 | 1.94 step/s
+2026-05-12 08:34:13,946 | INFO    | ttic_embeddings.train | step  11450 | loss 2.3568 | lr 7.71e-05 | gnorm 1.48 | 1.94 step/s
+2026-05-12 08:34:39,923 | INFO    | ttic_embeddings.train | step  11500 | loss 2.3673 | lr 7.69e-05 | gnorm 1.43 | 1.94 step/s
+2026-05-12 08:35:08,261 | INFO    | ttic_embeddings.train | step  11550 | loss 2.3476 | lr 7.68e-05 | gnorm 1.40 | 1.94 step/s
+2026-05-12 08:35:34,238 | INFO    | ttic_embeddings.train | step  11600 | loss 2.3555 | lr 7.66e-05 | gnorm 1.47 | 1.94 step/s
+2026-05-12 08:36:00,510 | INFO    | ttic_embeddings.train | step  11650 | loss 2.3548 | lr 7.64e-05 | gnorm 1.50 | 1.94 step/s
+2026-05-12 08:36:25,688 | INFO    | ttic_embeddings.train | step  11700 | loss 2.3677 | lr 7.62e-05 | gnorm 1.62 | 1.94 step/s
+2026-05-12 08:36:52,596 | INFO    | ttic_embeddings.train | step  11750 | loss 2.3569 | lr 7.60e-05 | gnorm 1.44 | 1.94 step/s
+2026-05-12 08:37:17,607 | INFO    | ttic_embeddings.train | step  11800 | loss 2.3600 | lr 7.58e-05 | gnorm 1.54 | 1.94 step/s
+2026-05-12 08:37:42,341 | INFO    | ttic_embeddings.train | step  11850 | loss 2.3654 | lr 7.56e-05 | gnorm 1.38 | 1.94 step/s
+2026-05-12 08:38:07,135 | INFO    | ttic_embeddings.train | step  11900 | loss 2.3602 | lr 7.54e-05 | gnorm 1.59 | 1.94 step/s
+2026-05-12 08:38:33,409 | INFO    | ttic_embeddings.train | step  11950 | loss 2.3552 | lr 7.52e-05 | gnorm 1.46 | 1.94 step/s
+2026-05-12 08:39:01,279 | INFO    | ttic_embeddings.train | step  12000 | loss 2.3739 | lr 7.50e-05 | gnorm 1.52 | 1.94 step/s
+2026-05-12 08:39:10,566 | INFO    | ttic_embeddings.train | step  12000 | val/ppl 11.033
+2026-05-12 08:39:10,809 | INFO    | ttic_embeddings.train |   best val/ppl so far (11.033) -> saved checkpoints/mae_seed1/adaptor_best.pt
+2026-05-12 08:39:35,577 | INFO    | ttic_embeddings.train | step  12050 | loss 2.3601 | lr 7.48e-05 | gnorm 1.33 | 1.93 step/s
+2026-05-12 08:40:00,540 | INFO    | ttic_embeddings.train | step  12100 | loss 2.3631 | lr 7.46e-05 | gnorm 1.54 | 1.93 step/s
+2026-05-12 08:40:28,771 | INFO    | ttic_embeddings.train | step  12150 | loss 2.3529 | lr 7.44e-05 | gnorm 1.42 | 1.93 step/s
+2026-05-12 08:40:55,590 | INFO    | ttic_embeddings.train | step  12200 | loss 2.3592 | lr 7.42e-05 | gnorm 1.53 | 1.93 step/s
+2026-05-12 08:41:20,433 | INFO    | ttic_embeddings.train | step  12250 | loss 2.3522 | lr 7.40e-05 | gnorm 1.50 | 1.93 step/s
+2026-05-12 08:41:45,928 | INFO    | ttic_embeddings.train | step  12300 | loss 2.3549 | lr 7.38e-05 | gnorm 1.43 | 1.93 step/s
+2026-05-12 08:42:10,760 | INFO    | ttic_embeddings.train | step  12350 | loss 2.3562 | lr 7.36e-05 | gnorm 1.47 | 1.93 step/s
+2026-05-12 08:42:36,324 | INFO    | ttic_embeddings.train | step  12400 | loss 2.3540 | lr 7.34e-05 | gnorm 1.48 | 1.93 step/s
+2026-05-12 08:43:01,034 | INFO    | ttic_embeddings.train | step  12450 | loss 2.3539 | lr 7.32e-05 | gnorm 1.41 | 1.93 step/s
+2026-05-12 08:43:25,777 | INFO    | ttic_embeddings.train | step  12500 | loss 2.3635 | lr 7.30e-05 | gnorm 1.44 | 1.94 step/s
+2026-05-12 08:43:50,811 | INFO    | ttic_embeddings.train | step  12550 | loss 2.3599 | lr 7.28e-05 | gnorm 1.38 | 1.94 step/s
+2026-05-12 08:44:15,555 | INFO    | ttic_embeddings.train | step  12600 | loss 2.3534 | lr 7.26e-05 | gnorm 1.45 | 1.94 step/s
+2026-05-12 08:44:40,221 | INFO    | ttic_embeddings.train | step  12650 | loss 2.3518 | lr 7.24e-05 | gnorm 1.46 | 1.94 step/s
+2026-05-12 08:45:04,585 | INFO    | ttic_embeddings.train | step  12700 | loss 2.3490 | lr 7.22e-05 | gnorm 1.48 | 1.94 step/s
+2026-05-12 08:45:30,766 | INFO    | ttic_embeddings.train | step  12750 | loss 2.3668 | lr 7.20e-05 | gnorm 1.66 | 1.94 step/s
+2026-05-12 08:45:58,332 | INFO    | ttic_embeddings.train | step  12800 | loss 2.3571 | lr 7.18e-05 | gnorm 1.42 | 1.94 step/s
+2026-05-12 08:46:23,589 | INFO    | ttic_embeddings.train | step  12850 | loss 2.3477 | lr 7.16e-05 | gnorm 1.30 | 1.94 step/s
+2026-05-12 08:46:48,996 | INFO    | ttic_embeddings.train | step  12900 | loss 2.3623 | lr 7.14e-05 | gnorm 1.42 | 1.94 step/s
+2026-05-12 08:47:13,845 | INFO    | ttic_embeddings.train | step  12950 | loss 2.3675 | lr 7.12e-05 | gnorm 1.57 | 1.94 step/s
+2026-05-12 08:47:39,843 | INFO    | ttic_embeddings.train | step  13000 | loss 2.3621 | lr 7.10e-05 | gnorm 1.54 | 1.94 step/s
+2026-05-12 08:47:49,210 | INFO    | ttic_embeddings.train | step  13000 | val/ppl 10.994
+2026-05-12 08:47:49,402 | INFO    | ttic_embeddings.train |   best val/ppl so far (10.994) -> saved checkpoints/mae_seed1/adaptor_best.pt
+2026-05-12 08:48:12,057 | INFO    | ttic_embeddings.train | step  13050 | loss 2.3269 | lr 7.08e-05 | gnorm 1.42 | 1.93 step/s
+2026-05-12 08:48:35,447 | INFO    | ttic_embeddings.train | step  13100 | loss 2.3655 | lr 7.05e-05 | gnorm 1.54 | 1.94 step/s
+2026-05-12 08:48:59,920 | INFO    | ttic_embeddings.train | step  13150 | loss 2.3490 | lr 7.03e-05 | gnorm 1.38 | 1.94 step/s
+2026-05-12 08:49:24,862 | INFO    | ttic_embeddings.train | step  13200 | loss 2.3609 | lr 7.01e-05 | gnorm 1.49 | 1.94 step/s
+2026-05-12 08:49:49,954 | INFO    | ttic_embeddings.train | step  13250 | loss 2.3603 | lr 6.99e-05 | gnorm 1.52 | 1.94 step/s
+2026-05-12 08:50:16,379 | INFO    | ttic_embeddings.train | step  13300 | loss 2.3558 | lr 6.97e-05 | gnorm 1.67 | 1.94 step/s
+2026-05-12 08:50:41,639 | INFO    | ttic_embeddings.train | step  13350 | loss 2.3501 | lr 6.95e-05 | gnorm 1.39 | 1.94 step/s
+2026-05-12 08:51:06,664 | INFO    | ttic_embeddings.train | step  13400 | loss 2.3474 | lr 6.93e-05 | gnorm 1.58 | 1.94 step/s
+2026-05-12 08:51:33,104 | INFO    | ttic_embeddings.train | step  13450 | loss 2.3426 | lr 6.91e-05 | gnorm 1.52 | 1.94 step/s
+2026-05-12 08:51:58,387 | INFO    | ttic_embeddings.train | step  13500 | loss 2.3432 | lr 6.89e-05 | gnorm 1.43 | 1.94 step/s
+2026-05-12 08:52:22,989 | INFO    | ttic_embeddings.train | step  13550 | loss 2.3497 | lr 6.87e-05 | gnorm 1.47 | 1.94 step/s
+2026-05-12 08:52:48,312 | INFO    | ttic_embeddings.train | step  13600 | loss 2.3609 | lr 6.84e-05 | gnorm 1.53 | 1.94 step/s
+2026-05-12 08:53:14,675 | INFO    | ttic_embeddings.train | step  13650 | loss 2.3430 | lr 6.82e-05 | gnorm 1.42 | 1.94 step/s
+2026-05-12 08:53:39,434 | INFO    | ttic_embeddings.train | step  13700 | loss 2.3399 | lr 6.80e-05 | gnorm 1.42 | 1.94 step/s
+2026-05-12 08:54:04,946 | INFO    | ttic_embeddings.train | step  13750 | loss 2.3577 | lr 6.78e-05 | gnorm 1.45 | 1.94 step/s
+2026-05-12 08:54:30,603 | INFO    | ttic_embeddings.train | step  13800 | loss 2.3477 | lr 6.76e-05 | gnorm 1.48 | 1.94 step/s
+2026-05-12 08:54:54,422 | INFO    | ttic_embeddings.train | step  13850 | loss 2.3423 | lr 6.74e-05 | gnorm 1.63 | 1.94 step/s
+2026-05-12 08:55:16,723 | INFO    | ttic_embeddings.train | step  13900 | loss 2.3461 | lr 6.72e-05 | gnorm 1.47 | 1.94 step/s
+2026-05-12 08:55:41,205 | INFO    | ttic_embeddings.train | step  13950 | loss 2.3569 | lr 6.70e-05 | gnorm 1.54 | 1.94 step/s
+2026-05-12 08:56:05,279 | INFO    | ttic_embeddings.train | step  14000 | loss 2.3484 | lr 6.67e-05 | gnorm 1.43 | 1.94 step/s
+2026-05-12 08:56:14,772 | INFO    | ttic_embeddings.train | step  14000 | val/ppl 10.958
+2026-05-12 08:56:14,989 | INFO    | ttic_embeddings.train |   best val/ppl so far (10.958) -> saved checkpoints/mae_seed1/adaptor_best.pt
+2026-05-12 08:56:40,456 | INFO    | ttic_embeddings.train | step  14050 | loss 2.3501 | lr 6.65e-05 | gnorm 1.47 | 1.94 step/s
+2026-05-12 08:57:05,492 | INFO    | ttic_embeddings.train | step  14100 | loss 2.3465 | lr 6.63e-05 | gnorm 1.54 | 1.94 step/s
+2026-05-12 08:57:29,757 | INFO    | ttic_embeddings.train | step  14150 | loss 2.3434 | lr 6.61e-05 | gnorm 1.43 | 1.94 step/s
+2026-05-12 08:57:53,599 | INFO    | ttic_embeddings.train | step  14200 | loss 2.3526 | lr 6.59e-05 | gnorm 1.51 | 1.94 step/s
+2026-05-12 08:58:16,741 | INFO    | ttic_embeddings.train | step  14250 | loss 2.3474 | lr 6.57e-05 | gnorm 1.40 | 1.94 step/s
+2026-05-12 08:58:39,039 | INFO    | ttic_embeddings.train | step  14300 | loss 2.3508 | lr 6.55e-05 | gnorm 1.50 | 1.94 step/s
+2026-05-12 08:59:00,603 | INFO    | ttic_embeddings.train | step  14350 | loss 2.3472 | lr 6.52e-05 | gnorm 1.57 | 1.94 step/s
+2026-05-12 08:59:21,829 | INFO    | ttic_embeddings.train | step  14400 | loss 2.3367 | lr 6.50e-05 | gnorm 1.40 | 1.94 step/s
+2026-05-12 08:59:43,230 | INFO    | ttic_embeddings.train | step  14450 | loss 2.3540 | lr 6.48e-05 | gnorm 1.44 | 1.94 step/s
+2026-05-12 09:00:07,084 | INFO    | ttic_embeddings.train | step  14500 | loss 2.3353 | lr 6.46e-05 | gnorm 1.37 | 1.94 step/s
+2026-05-12 09:00:31,930 | INFO    | ttic_embeddings.train | step  14550 | loss 2.3538 | lr 6.44e-05 | gnorm 1.58 | 1.94 step/s
+2026-05-12 09:00:56,872 | INFO    | ttic_embeddings.train | step  14600 | loss 2.3489 | lr 6.41e-05 | gnorm 1.49 | 1.94 step/s
+2026-05-12 09:01:22,840 | INFO    | ttic_embeddings.train | step  14650 | loss 2.3434 | lr 6.39e-05 | gnorm 1.60 | 1.94 step/s
+2026-05-12 09:01:47,548 | INFO    | ttic_embeddings.train | step  14700 | loss 2.3326 | lr 6.37e-05 | gnorm 1.57 | 1.94 step/s
+2026-05-12 09:02:11,007 | INFO    | ttic_embeddings.train | step  14750 | loss 2.3463 | lr 6.35e-05 | gnorm 1.49 | 1.94 step/s
+2026-05-12 09:02:35,180 | INFO    | ttic_embeddings.train | step  14800 | loss 2.3537 | lr 6.33e-05 | gnorm 1.40 | 1.95 step/s
+2026-05-12 09:03:00,033 | INFO    | ttic_embeddings.train | step  14850 | loss 2.3411 | lr 6.31e-05 | gnorm 1.57 | 1.95 step/s
+2026-05-12 09:03:23,953 | INFO    | ttic_embeddings.train | step  14900 | loss 2.3480 | lr 6.28e-05 | gnorm 1.44 | 1.95 step/s
+2026-05-12 09:03:48,632 | INFO    | ttic_embeddings.train | step  14950 | loss 2.3387 | lr 6.26e-05 | gnorm 1.53 | 1.95 step/s
+2026-05-12 09:04:13,243 | INFO    | ttic_embeddings.train | step  15000 | loss 2.3447 | lr 6.24e-05 | gnorm 1.46 | 1.95 step/s
+2026-05-12 09:04:22,618 | INFO    | ttic_embeddings.train | step  15000 | val/ppl 10.937
+2026-05-12 09:04:22,864 | INFO    | ttic_embeddings.train |   best val/ppl so far (10.937) -> saved checkpoints/mae_seed1/adaptor_best.pt
+2026-05-12 09:04:49,837 | INFO    | ttic_embeddings.train | step  15050 | loss 2.3484 | lr 6.22e-05 | gnorm 1.34 | 1.94 step/s
+2026-05-12 09:05:15,700 | INFO    | ttic_embeddings.train | step  15100 | loss 2.3585 | lr 6.19e-05 | gnorm 1.53 | 1.94 step/s
+2026-05-12 09:05:41,327 | INFO    | ttic_embeddings.train | step  15150 | loss 2.3522 | lr 6.17e-05 | gnorm 1.46 | 1.94 step/s
+2026-05-12 09:06:06,308 | INFO    | ttic_embeddings.train | step  15200 | loss 2.3450 | lr 6.15e-05 | gnorm 1.47 | 1.94 step/s
+2026-05-12 09:06:31,119 | INFO    | ttic_embeddings.train | step  15250 | loss 2.3503 | lr 6.13e-05 | gnorm 1.55 | 1.94 step/s
+2026-05-12 09:06:58,220 | INFO    | ttic_embeddings.train | step  15300 | loss 2.3443 | lr 6.11e-05 | gnorm 1.53 | 1.94 step/s
+2026-05-12 09:07:23,198 | INFO    | ttic_embeddings.train | step  15350 | loss 2.3410 | lr 6.08e-05 | gnorm 1.67 | 1.94 step/s
+2026-05-12 09:07:47,995 | INFO    | ttic_embeddings.train | step  15400 | loss 2.3401 | lr 6.06e-05 | gnorm 1.43 | 1.94 step/s
+2026-05-12 09:08:13,013 | INFO    | ttic_embeddings.train | step  15450 | loss 2.3499 | lr 6.04e-05 | gnorm 1.50 | 1.94 step/s
+2026-05-12 09:08:39,210 | INFO    | ttic_embeddings.train | step  15500 | loss 2.3444 | lr 6.02e-05 | gnorm 1.62 | 1.94 step/s
+2026-05-12 09:09:05,389 | INFO    | ttic_embeddings.train | step  15550 | loss 2.3416 | lr 5.99e-05 | gnorm 1.57 | 1.94 step/s
+2026-05-12 09:09:30,245 | INFO    | ttic_embeddings.train | step  15600 | loss 2.3322 | lr 5.97e-05 | gnorm 1.48 | 1.94 step/s
+2026-05-12 09:09:55,509 | INFO    | ttic_embeddings.train | step  15650 | loss 2.3295 | lr 5.95e-05 | gnorm 1.58 | 1.94 step/s
+2026-05-12 09:10:20,502 | INFO    | ttic_embeddings.train | step  15700 | loss 2.3405 | lr 5.93e-05 | gnorm 1.46 | 1.94 step/s
+2026-05-12 09:10:45,795 | INFO    | ttic_embeddings.train | step  15750 | loss 2.3254 | lr 5.91e-05 | gnorm 1.45 | 1.94 step/s
+2026-05-12 09:11:10,761 | INFO    | ttic_embeddings.train | step  15800 | loss 2.3308 | lr 5.88e-05 | gnorm 1.61 | 1.94 step/s
+2026-05-12 09:11:35,715 | INFO    | ttic_embeddings.train | step  15850 | loss 2.3311 | lr 5.86e-05 | gnorm 1.61 | 1.95 step/s
+2026-05-12 09:12:00,411 | INFO    | ttic_embeddings.train | step  15900 | loss 2.3317 | lr 5.84e-05 | gnorm 1.47 | 1.95 step/s
+2026-05-12 09:12:26,946 | INFO    | ttic_embeddings.train | step  15950 | loss 2.3410 | lr 5.82e-05 | gnorm 1.53 | 1.95 step/s
+2026-05-12 09:12:52,044 | INFO    | ttic_embeddings.train | step  16000 | loss 2.3465 | lr 5.79e-05 | gnorm 1.77 | 1.95 step/s
+2026-05-12 09:13:01,751 | INFO    | ttic_embeddings.train | step  16000 | val/ppl 10.897
+2026-05-12 09:13:02,026 | INFO    | ttic_embeddings.train |   best val/ppl so far (10.897) -> saved checkpoints/mae_seed1/adaptor_best.pt
+2026-05-12 09:13:27,097 | INFO    | ttic_embeddings.train | step  16050 | loss 2.3389 | lr 5.77e-05 | gnorm 1.49 | 1.94 step/s
+2026-05-12 09:13:52,297 | INFO    | ttic_embeddings.train | step  16100 | loss 2.3411 | lr 5.75e-05 | gnorm 1.45 | 1.94 step/s
+2026-05-12 09:14:16,539 | INFO    | ttic_embeddings.train | step  16150 | loss 2.3425 | lr 5.73e-05 | gnorm 1.56 | 1.94 step/s
+2026-05-12 09:14:41,405 | INFO    | ttic_embeddings.train | step  16200 | loss 2.3309 | lr 5.70e-05 | gnorm 1.50 | 1.94 step/s
+2026-05-12 09:15:06,183 | INFO    | ttic_embeddings.train | step  16250 | loss 2.3341 | lr 5.68e-05 | gnorm 1.51 | 1.94 step/s
+2026-05-12 09:15:30,481 | INFO    | ttic_embeddings.train | step  16300 | loss 2.3323 | lr 5.66e-05 | gnorm 1.63 | 1.94 step/s
+2026-05-12 09:15:55,402 | INFO    | ttic_embeddings.train | step  16350 | loss 2.3218 | lr 5.64e-05 | gnorm 1.46 | 1.94 step/s
+2026-05-12 09:16:19,766 | INFO    | ttic_embeddings.train | step  16400 | loss 2.3378 | lr 5.61e-05 | gnorm 1.48 | 1.94 step/s
+2026-05-12 09:16:45,094 | INFO    | ttic_embeddings.train | step  16450 | loss 2.3293 | lr 5.59e-05 | gnorm 1.48 | 1.94 step/s
+2026-05-12 09:17:10,017 | INFO    | ttic_embeddings.train | step  16500 | loss 2.3456 | lr 5.57e-05 | gnorm 1.54 | 1.95 step/s
+2026-05-12 09:17:34,589 | INFO    | ttic_embeddings.train | step  16550 | loss 2.3529 | lr 5.55e-05 | gnorm 1.59 | 1.95 step/s
+2026-05-12 09:17:58,930 | INFO    | ttic_embeddings.train | step  16600 | loss 2.3382 | lr 5.52e-05 | gnorm 1.64 | 1.95 step/s
+2026-05-12 09:18:20,541 | INFO    | ttic_embeddings.train | step  16650 | loss 2.3326 | lr 5.50e-05 | gnorm 1.57 | 1.95 step/s
+2026-05-12 09:18:42,942 | INFO    | ttic_embeddings.train | step  16700 | loss 2.3411 | lr 5.48e-05 | gnorm 1.47 | 1.95 step/s
+2026-05-12 09:19:04,694 | INFO    | ttic_embeddings.train | step  16750 | loss 2.3455 | lr 5.45e-05 | gnorm 1.51 | 1.95 step/s
+2026-05-12 09:19:26,249 | INFO    | ttic_embeddings.train | step  16800 | loss 2.3398 | lr 5.43e-05 | gnorm 1.51 | 1.95 step/s
+2026-05-12 09:19:48,402 | INFO    | ttic_embeddings.train | step  16850 | loss 2.3287 | lr 5.41e-05 | gnorm 1.62 | 1.95 step/s
+2026-05-12 09:20:11,270 | INFO    | ttic_embeddings.train | step  16900 | loss 2.3411 | lr 5.39e-05 | gnorm 1.40 | 1.95 step/s
+2026-05-12 09:20:33,385 | INFO    | ttic_embeddings.train | step  16950 | loss 2.3196 | lr 5.36e-05 | gnorm 1.47 | 1.95 step/s
+2026-05-12 09:20:55,917 | INFO    | ttic_embeddings.train | step  17000 | loss 2.3454 | lr 5.34e-05 | gnorm 1.68 | 1.95 step/s
+2026-05-12 09:21:03,491 | INFO    | ttic_embeddings.train | step  17000 | val/ppl 10.858
+2026-05-12 09:21:03,703 | INFO    | ttic_embeddings.train |   best val/ppl so far (10.858) -> saved checkpoints/mae_seed1/adaptor_best.pt
+2026-05-12 09:21:25,348 | INFO    | ttic_embeddings.train | step  17050 | loss 2.3494 | lr 5.32e-05 | gnorm 1.55 | 1.95 step/s
+2026-05-12 09:21:48,895 | INFO    | ttic_embeddings.train | step  17100 | loss 2.3378 | lr 5.30e-05 | gnorm 1.43 | 1.95 step/s
+2026-05-12 09:22:14,645 | INFO    | ttic_embeddings.train | step  17150 | loss 2.3357 | lr 5.27e-05 | gnorm 1.46 | 1.95 step/s
+2026-05-12 09:22:39,421 | INFO    | ttic_embeddings.train | step  17200 | loss 2.3429 | lr 5.25e-05 | gnorm 1.50 | 1.95 step/s
+2026-05-12 09:23:05,721 | INFO    | ttic_embeddings.train | step  17250 | loss 2.3388 | lr 5.23e-05 | gnorm 1.38 | 1.95 step/s
+2026-05-12 09:23:31,394 | INFO    | ttic_embeddings.train | step  17300 | loss 2.3391 | lr 5.20e-05 | gnorm 1.43 | 1.95 step/s
+2026-05-12 09:23:57,378 | INFO    | ttic_embeddings.train | step  17350 | loss 2.3314 | lr 5.18e-05 | gnorm 1.53 | 1.95 step/s
+2026-05-12 09:24:24,703 | INFO    | ttic_embeddings.train | step  17400 | loss 2.3510 | lr 5.16e-05 | gnorm 1.52 | 1.95 step/s
+2026-05-12 09:24:49,824 | INFO    | ttic_embeddings.train | step  17450 | loss 2.3325 | lr 5.14e-05 | gnorm 1.48 | 1.95 step/s
+2026-05-12 09:25:15,481 | INFO    | ttic_embeddings.train | step  17500 | loss 2.3357 | lr 5.11e-05 | gnorm 1.70 | 1.95 step/s
+2026-05-12 09:25:40,996 | INFO    | ttic_embeddings.train | step  17550 | loss 2.3278 | lr 5.09e-05 | gnorm 1.45 | 1.95 step/s
+2026-05-12 09:26:06,134 | INFO    | ttic_embeddings.train | step  17600 | loss 2.3345 | lr 5.07e-05 | gnorm 1.53 | 1.95 step/s
+2026-05-12 09:26:30,175 | INFO    | ttic_embeddings.train | step  17650 | loss 2.3396 | lr 5.05e-05 | gnorm 1.57 | 1.95 step/s
+2026-05-12 09:26:54,196 | INFO    | ttic_embeddings.train | step  17700 | loss 2.3492 | lr 5.02e-05 | gnorm 1.57 | 1.95 step/s
+2026-05-12 09:27:20,847 | INFO    | ttic_embeddings.train | step  17750 | loss 2.3380 | lr 5.00e-05 | gnorm 1.56 | 1.95 step/s
+2026-05-12 09:27:46,188 | INFO    | ttic_embeddings.train | step  17800 | loss 2.3250 | lr 4.98e-05 | gnorm 1.53 | 1.95 step/s
+2026-05-12 09:28:11,229 | INFO    | ttic_embeddings.train | step  17850 | loss 2.3151 | lr 4.95e-05 | gnorm 1.50 | 1.95 step/s
+2026-05-12 09:28:36,276 | INFO    | ttic_embeddings.train | step  17900 | loss 2.3317 | lr 4.93e-05 | gnorm 1.47 | 1.95 step/s
+2026-05-12 09:29:01,642 | INFO    | ttic_embeddings.train | step  17950 | loss 2.3393 | lr 4.91e-05 | gnorm 1.46 | 1.95 step/s
+2026-05-12 09:29:26,767 | INFO    | ttic_embeddings.train | step  18000 | loss 2.3223 | lr 4.89e-05 | gnorm 1.65 | 1.95 step/s
+2026-05-12 09:29:35,285 | INFO    | ttic_embeddings.train | step  18000 | val/ppl 10.875
+2026-05-12 09:30:00,145 | INFO    | ttic_embeddings.train | step  18050 | loss 2.3329 | lr 4.86e-05 | gnorm 1.58 | 1.95 step/s
+2026-05-12 09:30:24,607 | INFO    | ttic_embeddings.train | step  18100 | loss 2.3265 | lr 4.84e-05 | gnorm 1.47 | 1.95 step/s
+2026-05-12 09:30:48,908 | INFO    | ttic_embeddings.train | step  18150 | loss 2.3245 | lr 4.82e-05 | gnorm 1.56 | 1.95 step/s
+2026-05-12 09:31:12,922 | INFO    | ttic_embeddings.train | step  18200 | loss 2.3259 | lr 4.80e-05 | gnorm 1.42 | 1.95 step/s
+2026-05-12 09:31:37,257 | INFO    | ttic_embeddings.train | step  18250 | loss 2.3295 | lr 4.77e-05 | gnorm 1.42 | 1.95 step/s
+2026-05-12 09:32:01,431 | INFO    | ttic_embeddings.train | step  18300 | loss 2.3214 | lr 4.75e-05 | gnorm 1.51 | 1.95 step/s
+2026-05-12 09:32:26,002 | INFO    | ttic_embeddings.train | step  18350 | loss 2.3347 | lr 4.73e-05 | gnorm 1.46 | 1.95 step/s
+2026-05-12 09:32:51,319 | INFO    | ttic_embeddings.train | step  18400 | loss 2.3252 | lr 4.70e-05 | gnorm 1.76 | 1.95 step/s
+2026-05-12 09:33:18,503 | INFO    | ttic_embeddings.train | step  18450 | loss 2.3332 | lr 4.68e-05 | gnorm 1.52 | 1.95 step/s
+2026-05-12 09:33:45,094 | INFO    | ttic_embeddings.train | step  18500 | loss 2.3327 | lr 4.66e-05 | gnorm 1.63 | 1.95 step/s
+2026-05-12 09:34:10,447 | INFO    | ttic_embeddings.train | step  18550 | loss 2.3378 | lr 4.64e-05 | gnorm 1.70 | 1.95 step/s
+2026-05-12 09:34:35,724 | INFO    | ttic_embeddings.train | step  18600 | loss 2.3159 | lr 4.61e-05 | gnorm 1.69 | 1.95 step/s
+2026-05-12 09:35:00,695 | INFO    | ttic_embeddings.train | step  18650 | loss 2.3272 | lr 4.59e-05 | gnorm 1.59 | 1.95 step/s
+2026-05-12 09:35:25,636 | INFO    | ttic_embeddings.train | step  18700 | loss 2.3269 | lr 4.57e-05 | gnorm 1.68 | 1.95 step/s
+2026-05-12 09:35:50,572 | INFO    | ttic_embeddings.train | step  18750 | loss 2.3353 | lr 4.55e-05 | gnorm 1.45 | 1.95 step/s
+2026-05-12 09:36:15,489 | INFO    | ttic_embeddings.train | step  18800 | loss 2.3446 | lr 4.52e-05 | gnorm 1.60 | 1.95 step/s
+2026-05-12 09:36:40,005 | INFO    | ttic_embeddings.train | step  18850 | loss 2.3277 | lr 4.50e-05 | gnorm 1.56 | 1.95 step/s
+2026-05-12 09:37:05,399 | INFO    | ttic_embeddings.train | step  18900 | loss 2.3185 | lr 4.48e-05 | gnorm 1.55 | 1.95 step/s
+2026-05-12 09:37:30,189 | INFO    | ttic_embeddings.train | step  18950 | loss 2.3268 | lr 4.45e-05 | gnorm 1.64 | 1.95 step/s
+2026-05-12 09:37:54,970 | INFO    | ttic_embeddings.train | step  19000 | loss 2.3242 | lr 4.43e-05 | gnorm 1.64 | 1.95 step/s
+2026-05-12 09:38:04,464 | INFO    | ttic_embeddings.train | step  19000 | val/ppl 10.814
+2026-05-12 09:38:04,712 | INFO    | ttic_embeddings.train |   best val/ppl so far (10.814) -> saved checkpoints/mae_seed1/adaptor_best.pt
+2026-05-12 09:38:28,749 | INFO    | ttic_embeddings.train | step  19050 | loss 2.3323 | lr 4.41e-05 | gnorm 1.74 | 1.95 step/s
+2026-05-12 09:38:52,802 | INFO    | ttic_embeddings.train | step  19100 | loss 2.3352 | lr 4.39e-05 | gnorm 1.45 | 1.95 step/s
+2026-05-12 09:39:17,915 | INFO    | ttic_embeddings.train | step  19150 | loss 2.3310 | lr 4.36e-05 | gnorm 1.60 | 1.95 step/s
+2026-05-12 09:39:43,043 | INFO    | ttic_embeddings.train | step  19200 | loss 2.3301 | lr 4.34e-05 | gnorm 1.57 | 1.95 step/s
+2026-05-12 09:40:08,374 | INFO    | ttic_embeddings.train | step  19250 | loss 2.3300 | lr 4.32e-05 | gnorm 1.49 | 1.95 step/s
+2026-05-12 09:40:33,087 | INFO    | ttic_embeddings.train | step  19300 | loss 2.3319 | lr 4.30e-05 | gnorm 1.54 | 1.95 step/s
+2026-05-12 09:40:57,824 | INFO    | ttic_embeddings.train | step  19350 | loss 2.3378 | lr 4.27e-05 | gnorm 1.60 | 1.95 step/s
+2026-05-12 09:41:22,325 | INFO    | ttic_embeddings.train | step  19400 | loss 2.3278 | lr 4.25e-05 | gnorm 1.64 | 1.95 step/s
+2026-05-12 09:41:47,454 | INFO    | ttic_embeddings.train | step  19450 | loss 2.3349 | lr 4.23e-05 | gnorm 1.59 | 1.95 step/s
+2026-05-12 09:42:12,265 | INFO    | ttic_embeddings.train | step  19500 | loss 2.3197 | lr 4.21e-05 | gnorm 1.58 | 1.95 step/s
+2026-05-12 09:42:36,053 | INFO    | ttic_embeddings.train | step  19550 | loss 2.3275 | lr 4.18e-05 | gnorm 1.43 | 1.95 step/s
+2026-05-12 09:43:01,284 | INFO    | ttic_embeddings.train | step  19600 | loss 2.3293 | lr 4.16e-05 | gnorm 1.51 | 1.95 step/s
+2026-05-12 09:43:25,790 | INFO    | ttic_embeddings.train | step  19650 | loss 2.3107 | lr 4.14e-05 | gnorm 1.49 | 1.95 step/s
+2026-05-12 09:43:50,436 | INFO    | ttic_embeddings.train | step  19700 | loss 2.3353 | lr 4.12e-05 | gnorm 1.62 | 1.95 step/s
+2026-05-12 09:44:14,671 | INFO    | ttic_embeddings.train | step  19750 | loss 2.3293 | lr 4.09e-05 | gnorm 1.60 | 1.95 step/s
+2026-05-12 09:44:39,579 | INFO    | ttic_embeddings.train | step  19800 | loss 2.3383 | lr 4.07e-05 | gnorm 1.63 | 1.95 step/s
+2026-05-12 09:45:05,535 | INFO    | ttic_embeddings.train | step  19850 | loss 2.3297 | lr 4.05e-05 | gnorm 1.50 | 1.95 step/s
+2026-05-12 09:45:29,579 | INFO    | ttic_embeddings.train | step  19900 | loss 2.3175 | lr 4.03e-05 | gnorm 1.77 | 1.95 step/s
+2026-05-12 09:45:57,165 | INFO    | ttic_embeddings.train | step  19950 | loss 2.3120 | lr 4.01e-05 | gnorm 1.52 | 1.95 step/s
+2026-05-12 09:46:21,058 | INFO    | ttic_embeddings.train | step  20000 | loss 2.3246 | lr 3.98e-05 | gnorm 1.64 | 1.95 step/s
+2026-05-12 09:46:29,514 | INFO    | ttic_embeddings.train | step  20000 | val/ppl 10.834
+2026-05-12 09:46:52,009 | INFO    | ttic_embeddings.train | step  20050 | loss 2.3120 | lr 3.96e-05 | gnorm 1.67 | 1.95 step/s
+2026-05-12 09:47:14,052 | INFO    | ttic_embeddings.train | step  20100 | loss 2.3222 | lr 3.94e-05 | gnorm 1.73 | 1.95 step/s
+2026-05-12 09:47:36,640 | INFO    | ttic_embeddings.train | step  20150 | loss 2.3121 | lr 3.92e-05 | gnorm 1.55 | 1.95 step/s
+2026-05-12 09:47:58,911 | INFO    | ttic_embeddings.train | step  20200 | loss 2.3158 | lr 3.89e-05 | gnorm 1.59 | 1.96 step/s
+2026-05-12 09:48:20,458 | INFO    | ttic_embeddings.train | step  20250 | loss 2.3194 | lr 3.87e-05 | gnorm 1.48 | 1.96 step/s
+2026-05-12 09:48:41,621 | INFO    | ttic_embeddings.train | step  20300 | loss 2.3275 | lr 3.85e-05 | gnorm 1.52 | 1.96 step/s
+2026-05-12 09:49:02,852 | INFO    | ttic_embeddings.train | step  20350 | loss 2.3261 | lr 3.83e-05 | gnorm 1.40 | 1.96 step/s
+2026-05-12 09:49:24,300 | INFO    | ttic_embeddings.train | step  20400 | loss 2.3243 | lr 3.81e-05 | gnorm 1.49 | 1.96 step/s
+2026-05-12 09:49:45,923 | INFO    | ttic_embeddings.train | step  20450 | loss 2.3157 | lr 3.78e-05 | gnorm 1.55 | 1.96 step/s
+2026-05-12 09:50:07,261 | INFO    | ttic_embeddings.train | step  20500 | loss 2.3105 | lr 3.76e-05 | gnorm 1.69 | 1.96 step/s
+2026-05-12 09:50:31,361 | INFO    | ttic_embeddings.train | step  20550 | loss 2.3082 | lr 3.74e-05 | gnorm 1.56 | 1.96 step/s
+2026-05-12 09:50:56,875 | INFO    | ttic_embeddings.train | step  20600 | loss 2.3210 | lr 3.72e-05 | gnorm 1.54 | 1.96 step/s
+2026-05-12 09:51:21,641 | INFO    | ttic_embeddings.train | step  20650 | loss 2.3168 | lr 3.69e-05 | gnorm 1.42 | 1.96 step/s
+2026-05-12 09:51:46,863 | INFO    | ttic_embeddings.train | step  20700 | loss 2.3113 | lr 3.67e-05 | gnorm 1.65 | 1.96 step/s
+2026-05-12 09:52:11,974 | INFO    | ttic_embeddings.train | step  20750 | loss 2.3307 | lr 3.65e-05 | gnorm 1.62 | 1.96 step/s
+2026-05-12 09:52:36,463 | INFO    | ttic_embeddings.train | step  20800 | loss 2.3247 | lr 3.63e-05 | gnorm 1.70 | 1.96 step/s
+2026-05-12 09:53:01,157 | INFO    | ttic_embeddings.train | step  20850 | loss 2.3267 | lr 3.61e-05 | gnorm 1.52 | 1.96 step/s
+2026-05-12 09:53:25,431 | INFO    | ttic_embeddings.train | step  20900 | loss 2.3088 | lr 3.59e-05 | gnorm 1.60 | 1.96 step/s
+2026-05-12 09:53:50,378 | INFO    | ttic_embeddings.train | step  20950 | loss 2.3286 | lr 3.56e-05 | gnorm 1.60 | 1.96 step/s
+2026-05-12 09:54:15,981 | INFO    | ttic_embeddings.train | step  21000 | loss 2.3320 | lr 3.54e-05 | gnorm 1.58 | 1.96 step/s
+2026-05-12 09:54:23,298 | INFO    | ttic_embeddings.train | step  21000 | val/ppl 10.798
+2026-05-12 09:54:23,542 | INFO    | ttic_embeddings.train |   best val/ppl so far (10.798) -> saved checkpoints/mae_seed1/adaptor_best.pt
+2026-05-12 09:54:48,045 | INFO    | ttic_embeddings.train | step  21050 | loss 2.3275 | lr 3.52e-05 | gnorm 1.55 | 1.96 step/s
+2026-05-12 09:55:11,820 | INFO    | ttic_embeddings.train | step  21100 | loss 2.3224 | lr 3.50e-05 | gnorm 1.67 | 1.96 step/s
+2026-05-12 09:55:36,035 | INFO    | ttic_embeddings.train | step  21150 | loss 2.3122 | lr 3.48e-05 | gnorm 1.41 | 1.96 step/s
+2026-05-12 09:56:01,224 | INFO    | ttic_embeddings.train | step  21200 | loss 2.3301 | lr 3.45e-05 | gnorm 1.60 | 1.96 step/s
+2026-05-12 09:56:25,419 | INFO    | ttic_embeddings.train | step  21250 | loss 2.3207 | lr 3.43e-05 | gnorm 1.59 | 1.96 step/s
+2026-05-12 09:56:51,307 | INFO    | ttic_embeddings.train | step  21300 | loss 2.3385 | lr 3.41e-05 | gnorm 1.51 | 1.96 step/s
+2026-05-12 09:57:16,873 | INFO    | ttic_embeddings.train | step  21350 | loss 2.3192 | lr 3.39e-05 | gnorm 1.70 | 1.96 step/s
+2026-05-12 09:57:43,010 | INFO    | ttic_embeddings.train | step  21400 | loss 2.3170 | lr 3.37e-05 | gnorm 1.53 | 1.96 step/s
+2026-05-12 09:58:09,159 | INFO    | ttic_embeddings.train | step  21450 | loss 2.3229 | lr 3.35e-05 | gnorm 1.56 | 1.96 step/s
+2026-05-12 09:58:33,688 | INFO    | ttic_embeddings.train | step  21500 | loss 2.3254 | lr 3.33e-05 | gnorm 1.64 | 1.96 step/s
+2026-05-12 09:58:55,853 | INFO    | ttic_embeddings.train | step  21550 | loss 2.3189 | lr 3.30e-05 | gnorm 1.66 | 1.96 step/s
+2026-05-12 09:59:18,045 | INFO    | ttic_embeddings.train | step  21600 | loss 2.3270 | lr 3.28e-05 | gnorm 1.56 | 1.96 step/s
+2026-05-12 09:59:41,792 | INFO    | ttic_embeddings.train | step  21650 | loss 2.3096 | lr 3.26e-05 | gnorm 1.63 | 1.96 step/s
+2026-05-12 10:00:06,818 | INFO    | ttic_embeddings.train | step  21700 | loss 2.3151 | lr 3.24e-05 | gnorm 1.60 | 1.96 step/s
+2026-05-12 10:00:31,118 | INFO    | ttic_embeddings.train | step  21750 | loss 2.3289 | lr 3.22e-05 | gnorm 1.57 | 1.96 step/s
+2026-05-12 10:00:55,654 | INFO    | ttic_embeddings.train | step  21800 | loss 2.3225 | lr 3.20e-05 | gnorm 1.65 | 1.96 step/s
+2026-05-12 10:01:20,257 | INFO    | ttic_embeddings.train | step  21850 | loss 2.3361 | lr 3.18e-05 | gnorm 1.67 | 1.96 step/s
+2026-05-12 10:01:44,376 | INFO    | ttic_embeddings.train | step  21900 | loss 2.3217 | lr 3.16e-05 | gnorm 1.53 | 1.96 step/s
+2026-05-12 10:02:09,820 | INFO    | ttic_embeddings.train | step  21950 | loss 2.3273 | lr 3.13e-05 | gnorm 1.42 | 1.96 step/s
+2026-05-12 10:02:34,591 | INFO    | ttic_embeddings.train | step  22000 | loss 2.3269 | lr 3.11e-05 | gnorm 1.54 | 1.96 step/s
+2026-05-12 10:02:42,918 | INFO    | ttic_embeddings.train | step  22000 | val/ppl 10.784
+2026-05-12 10:02:43,207 | INFO    | ttic_embeddings.train |   best val/ppl so far (10.784) -> saved checkpoints/mae_seed1/adaptor_best.pt
+2026-05-12 10:03:08,349 | INFO    | ttic_embeddings.train | step  22050 | loss 2.3351 | lr 3.09e-05 | gnorm 1.57 | 1.96 step/s
+2026-05-12 10:03:33,033 | INFO    | ttic_embeddings.train | step  22100 | loss 2.3260 | lr 3.07e-05 | gnorm 1.76 | 1.96 step/s
+2026-05-12 10:03:59,308 | INFO    | ttic_embeddings.train | step  22150 | loss 2.3342 | lr 3.05e-05 | gnorm 1.59 | 1.96 step/s
+2026-05-12 10:04:24,028 | INFO    | ttic_embeddings.train | step  22200 | loss 2.3116 | lr 3.03e-05 | gnorm 1.63 | 1.96 step/s
+2026-05-12 10:04:48,502 | INFO    | ttic_embeddings.train | step  22250 | loss 2.3232 | lr 3.01e-05 | gnorm 1.77 | 1.96 step/s
+2026-05-12 10:05:13,690 | INFO    | ttic_embeddings.train | step  22300 | loss 2.3231 | lr 2.99e-05 | gnorm 1.52 | 1.96 step/s
+2026-05-12 10:05:38,450 | INFO    | ttic_embeddings.train | step  22350 | loss 2.3176 | lr 2.97e-05 | gnorm 1.51 | 1.96 step/s
+2026-05-12 10:06:02,998 | INFO    | ttic_embeddings.train | step  22400 | loss 2.3174 | lr 2.95e-05 | gnorm 1.61 | 1.96 step/s
+2026-05-12 10:06:27,771 | INFO    | ttic_embeddings.train | step  22450 | loss 2.3133 | lr 2.92e-05 | gnorm 1.67 | 1.96 step/s
+2026-05-12 10:06:52,659 | INFO    | ttic_embeddings.train | step  22500 | loss 2.3168 | lr 2.90e-05 | gnorm 1.56 | 1.96 step/s
+2026-05-12 10:07:17,509 | INFO    | ttic_embeddings.train | step  22550 | loss 2.3093 | lr 2.88e-05 | gnorm 1.60 | 1.96 step/s
+2026-05-12 10:07:42,002 | INFO    | ttic_embeddings.train | step  22600 | loss 2.3191 | lr 2.86e-05 | gnorm 1.64 | 1.96 step/s
+2026-05-12 10:08:06,945 | INFO    | ttic_embeddings.train | step  22650 | loss 2.3164 | lr 2.84e-05 | gnorm 1.59 | 1.96 step/s
+2026-05-12 10:08:31,089 | INFO    | ttic_embeddings.train | step  22700 | loss 2.3139 | lr 2.82e-05 | gnorm 1.70 | 1.96 step/s
+2026-05-12 10:08:55,952 | INFO    | ttic_embeddings.train | step  22750 | loss 2.3103 | lr 2.80e-05 | gnorm 1.65 | 1.96 step/s
+2026-05-12 10:09:20,996 | INFO    | ttic_embeddings.train | step  22800 | loss 2.3126 | lr 2.78e-05 | gnorm 1.58 | 1.96 step/s
+2026-05-12 10:09:45,826 | INFO    | ttic_embeddings.train | step  22850 | loss 2.3183 | lr 2.76e-05 | gnorm 1.62 | 1.96 step/s
+2026-05-12 10:10:10,471 | INFO    | ttic_embeddings.train | step  22900 | loss 2.3242 | lr 2.74e-05 | gnorm 1.67 | 1.96 step/s
+2026-05-12 10:10:34,947 | INFO    | ttic_embeddings.train | step  22950 | loss 2.3268 | lr 2.72e-05 | gnorm 1.52 | 1.96 step/s
+2026-05-12 10:10:59,696 | INFO    | ttic_embeddings.train | step  23000 | loss 2.3182 | lr 2.70e-05 | gnorm 1.65 | 1.96 step/s
+2026-05-12 10:11:08,013 | INFO    | ttic_embeddings.train | step  23000 | val/ppl 10.777
+2026-05-12 10:11:08,276 | INFO    | ttic_embeddings.train |   best val/ppl so far (10.777) -> saved checkpoints/mae_seed1/adaptor_best.pt
+2026-05-12 10:11:32,509 | INFO    | ttic_embeddings.train | step  23050 | loss 2.3085 | lr 2.68e-05 | gnorm 1.54 | 1.96 step/s
+2026-05-12 10:11:57,887 | INFO    | ttic_embeddings.train | step  23100 | loss 2.3059 | lr 2.66e-05 | gnorm 1.57 | 1.96 step/s
+2026-05-12 10:12:22,194 | INFO    | ttic_embeddings.train | step  23150 | loss 2.3087 | lr 2.64e-05 | gnorm 1.52 | 1.96 step/s
+2026-05-12 10:12:46,220 | INFO    | ttic_embeddings.train | step  23200 | loss 2.3168 | lr 2.62e-05 | gnorm 1.62 | 1.96 step/s
+2026-05-12 10:13:10,602 | INFO    | ttic_embeddings.train | step  23250 | loss 2.3201 | lr 2.60e-05 | gnorm 1.75 | 1.96 step/s
+2026-05-12 10:13:34,313 | INFO    | ttic_embeddings.train | step  23300 | loss 2.3204 | lr 2.58e-05 | gnorm 1.53 | 1.96 step/s
+2026-05-12 10:13:59,194 | INFO    | ttic_embeddings.train | step  23350 | loss 2.3220 | lr 2.56e-05 | gnorm 1.50 | 1.96 step/s
+2026-05-12 10:14:23,705 | INFO    | ttic_embeddings.train | step  23400 | loss 2.3369 | lr 2.54e-05 | gnorm 1.50 | 1.96 step/s
+2026-05-12 10:14:48,796 | INFO    | ttic_embeddings.train | step  23450 | loss 2.3028 | lr 2.52e-05 | gnorm 1.71 | 1.96 step/s
+2026-05-12 10:15:13,555 | INFO    | ttic_embeddings.train | step  23500 | loss 2.3110 | lr 2.50e-05 | gnorm 1.58 | 1.96 step/s
+2026-05-12 10:15:34,892 | INFO    | ttic_embeddings.train | step  23550 | loss 2.3236 | lr 2.48e-05 | gnorm 1.63 | 1.96 step/s
+2026-05-12 10:15:56,922 | INFO    | ttic_embeddings.train | step  23600 | loss 2.3064 | lr 2.46e-05 | gnorm 1.63 | 1.97 step/s
+2026-05-12 10:16:18,821 | INFO    | ttic_embeddings.train | step  23650 | loss 2.3078 | lr 2.44e-05 | gnorm 1.59 | 1.97 step/s
+2026-05-12 10:16:41,685 | INFO    | ttic_embeddings.train | step  23700 | loss 2.3155 | lr 2.42e-05 | gnorm 1.68 | 1.97 step/s
+2026-05-12 10:17:06,590 | INFO    | ttic_embeddings.train | step  23750 | loss 2.3155 | lr 2.40e-05 | gnorm 1.63 | 1.97 step/s
+2026-05-12 10:17:31,302 | INFO    | ttic_embeddings.train | step  23800 | loss 2.3218 | lr 2.38e-05 | gnorm 1.64 | 1.97 step/s
+2026-05-12 10:17:56,318 | INFO    | ttic_embeddings.train | step  23850 | loss 2.3112 | lr 2.36e-05 | gnorm 1.65 | 1.97 step/s
+2026-05-12 10:18:21,297 | INFO    | ttic_embeddings.train | step  23900 | loss 2.3149 | lr 2.34e-05 | gnorm 1.52 | 1.97 step/s
+2026-05-12 10:18:45,937 | INFO    | ttic_embeddings.train | step  23950 | loss 2.3224 | lr 2.32e-05 | gnorm 1.60 | 1.97 step/s
+2026-05-12 10:19:10,975 | INFO    | ttic_embeddings.train | step  24000 | loss 2.3128 | lr 2.31e-05 | gnorm 1.59 | 1.97 step/s
+2026-05-12 10:19:18,836 | INFO    | ttic_embeddings.train | step  24000 | val/ppl 10.756
+2026-05-12 10:19:19,014 | INFO    | ttic_embeddings.train |   best val/ppl so far (10.756) -> saved checkpoints/mae_seed1/adaptor_best.pt
+2026-05-12 10:19:44,792 | INFO    | ttic_embeddings.train | step  24050 | loss 2.3211 | lr 2.29e-05 | gnorm 1.56 | 1.97 step/s
+2026-05-12 10:20:11,269 | INFO    | ttic_embeddings.train | step  24100 | loss 2.3287 | lr 2.27e-05 | gnorm 1.58 | 1.97 step/s
+2026-05-12 10:20:36,103 | INFO    | ttic_embeddings.train | step  24150 | loss 2.3093 | lr 2.25e-05 | gnorm 1.60 | 1.97 step/s
+2026-05-12 10:21:03,135 | INFO    | ttic_embeddings.train | step  24200 | loss 2.3204 | lr 2.23e-05 | gnorm 1.57 | 1.96 step/s
+2026-05-12 10:21:27,517 | INFO    | ttic_embeddings.train | step  24250 | loss 2.3082 | lr 2.21e-05 | gnorm 1.54 | 1.97 step/s
+2026-05-12 10:21:52,247 | INFO    | ttic_embeddings.train | step  24300 | loss 2.3160 | lr 2.19e-05 | gnorm 1.52 | 1.97 step/s
+2026-05-12 10:22:17,620 | INFO    | ttic_embeddings.train | step  24350 | loss 2.3149 | lr 2.17e-05 | gnorm 1.58 | 1.97 step/s
+2026-05-12 10:22:42,425 | INFO    | ttic_embeddings.train | step  24400 | loss 2.3035 | lr 2.15e-05 | gnorm 1.52 | 1.97 step/s
+2026-05-12 10:23:07,770 | INFO    | ttic_embeddings.train | step  24450 | loss 2.3152 | lr 2.14e-05 | gnorm 1.68 | 1.97 step/s
+2026-05-12 10:23:31,645 | INFO    | ttic_embeddings.train | step  24500 | loss 2.3067 | lr 2.12e-05 | gnorm 1.63 | 1.97 step/s
+2026-05-12 10:23:56,687 | INFO    | ttic_embeddings.train | step  24550 | loss 2.3182 | lr 2.10e-05 | gnorm 1.80 | 1.97 step/s
+2026-05-12 10:24:21,816 | INFO    | ttic_embeddings.train | step  24600 | loss 2.3187 | lr 2.08e-05 | gnorm 1.62 | 1.97 step/s
+2026-05-12 10:24:47,034 | INFO    | ttic_embeddings.train | step  24650 | loss 2.3160 | lr 2.06e-05 | gnorm 1.76 | 1.97 step/s
+2026-05-12 10:25:12,080 | INFO    | ttic_embeddings.train | step  24700 | loss 2.3116 | lr 2.04e-05 | gnorm 1.65 | 1.97 step/s
+2026-05-12 10:25:37,434 | INFO    | ttic_embeddings.train | step  24750 | loss 2.3090 | lr 2.02e-05 | gnorm 1.68 | 1.97 step/s
+2026-05-12 10:26:02,580 | INFO    | ttic_embeddings.train | step  24800 | loss 2.3188 | lr 2.01e-05 | gnorm 1.53 | 1.97 step/s
+2026-05-12 10:26:26,868 | INFO    | ttic_embeddings.train | step  24850 | loss 2.3000 | lr 1.99e-05 | gnorm 1.75 | 1.97 step/s
+2026-05-12 10:26:51,729 | INFO    | ttic_embeddings.train | step  24900 | loss 2.2971 | lr 1.97e-05 | gnorm 1.63 | 1.97 step/s
+2026-05-12 10:27:16,265 | INFO    | ttic_embeddings.train | step  24950 | loss 2.3104 | lr 1.95e-05 | gnorm 1.61 | 1.97 step/s
+2026-05-12 10:27:41,048 | INFO    | ttic_embeddings.train | step  25000 | loss 2.3150 | lr 1.93e-05 | gnorm 1.62 | 1.97 step/s
+2026-05-12 10:27:49,553 | INFO    | ttic_embeddings.train | step  25000 | val/ppl 10.749
+2026-05-12 10:27:49,792 | INFO    | ttic_embeddings.train |   best val/ppl so far (10.749) -> saved checkpoints/mae_seed1/adaptor_best.pt
+2026-05-12 10:28:14,730 | INFO    | ttic_embeddings.train | step  25050 | loss 2.3015 | lr 1.92e-05 | gnorm 1.66 | 1.97 step/s
+2026-05-12 10:28:39,778 | INFO    | ttic_embeddings.train | step  25100 | loss 2.3090 | lr 1.90e-05 | gnorm 1.80 | 1.97 step/s
+2026-05-12 10:29:04,537 | INFO    | ttic_embeddings.train | step  25150 | loss 2.3078 | lr 1.88e-05 | gnorm 1.67 | 1.97 step/s
+2026-05-12 10:29:29,780 | INFO    | ttic_embeddings.train | step  25200 | loss 2.3295 | lr 1.86e-05 | gnorm 1.78 | 1.97 step/s
+2026-05-12 10:29:55,146 | INFO    | ttic_embeddings.train | step  25250 | loss 2.3150 | lr 1.84e-05 | gnorm 1.64 | 1.97 step/s
+2026-05-12 10:30:20,953 | INFO    | ttic_embeddings.train | step  25300 | loss 2.3064 | lr 1.83e-05 | gnorm 1.72 | 1.97 step/s
+2026-05-12 10:30:45,660 | INFO    | ttic_embeddings.train | step  25350 | loss 2.3125 | lr 1.81e-05 | gnorm 1.77 | 1.97 step/s
+2026-05-12 10:31:10,498 | INFO    | ttic_embeddings.train | step  25400 | loss 2.3068 | lr 1.79e-05 | gnorm 1.56 | 1.97 step/s
+2026-05-12 10:31:34,449 | INFO    | ttic_embeddings.train | step  25450 | loss 2.3110 | lr 1.77e-05 | gnorm 1.58 | 1.97 step/s
+2026-05-12 10:31:59,383 | INFO    | ttic_embeddings.train | step  25500 | loss 2.3158 | lr 1.76e-05 | gnorm 1.64 | 1.97 step/s
+2026-05-12 10:32:24,228 | INFO    | ttic_embeddings.train | step  25550 | loss 2.3097 | lr 1.74e-05 | gnorm 1.70 | 1.97 step/s
+2026-05-12 10:32:49,485 | INFO    | ttic_embeddings.train | step  25600 | loss 2.3053 | lr 1.72e-05 | gnorm 1.65 | 1.97 step/s
+2026-05-12 10:33:12,825 | INFO    | ttic_embeddings.train | step  25650 | loss 2.3132 | lr 1.71e-05 | gnorm 1.51 | 1.97 step/s
+2026-05-12 10:33:34,182 | INFO    | ttic_embeddings.train | step  25700 | loss 2.2992 | lr 1.69e-05 | gnorm 1.60 | 1.97 step/s
+2026-05-12 10:33:56,435 | INFO    | ttic_embeddings.train | step  25750 | loss 2.3069 | lr 1.67e-05 | gnorm 1.72 | 1.97 step/s
+2026-05-12 10:34:17,969 | INFO    | ttic_embeddings.train | step  25800 | loss 2.3139 | lr 1.65e-05 | gnorm 1.67 | 1.97 step/s
+2026-05-12 10:34:41,586 | INFO    | ttic_embeddings.train | step  25850 | loss 2.3216 | lr 1.64e-05 | gnorm 1.62 | 1.97 step/s
+2026-05-12 10:35:06,856 | INFO    | ttic_embeddings.train | step  25900 | loss 2.3204 | lr 1.62e-05 | gnorm 1.49 | 1.97 step/s
+2026-05-12 10:35:31,336 | INFO    | ttic_embeddings.train | step  25950 | loss 2.3033 | lr 1.60e-05 | gnorm 1.58 | 1.97 step/s
+2026-05-12 10:35:57,252 | INFO    | ttic_embeddings.train | step  26000 | loss 2.3067 | lr 1.59e-05 | gnorm 1.63 | 1.97 step/s
+2026-05-12 10:36:05,798 | INFO    | ttic_embeddings.train | step  26000 | val/ppl 10.719
+2026-05-12 10:36:06,059 | INFO    | ttic_embeddings.train |   best val/ppl so far (10.719) -> saved checkpoints/mae_seed1/adaptor_best.pt
+2026-05-12 10:36:30,922 | INFO    | ttic_embeddings.train | step  26050 | loss 2.3159 | lr 1.57e-05 | gnorm 1.61 | 1.97 step/s
+2026-05-12 10:36:55,884 | INFO    | ttic_embeddings.train | step  26100 | loss 2.3195 | lr 1.55e-05 | gnorm 1.64 | 1.97 step/s
+2026-05-12 10:37:20,399 | INFO    | ttic_embeddings.train | step  26150 | loss 2.3126 | lr 1.54e-05 | gnorm 1.67 | 1.97 step/s
+2026-05-12 10:37:45,402 | INFO    | ttic_embeddings.train | step  26200 | loss 2.2986 | lr 1.52e-05 | gnorm 1.66 | 1.97 step/s
+2026-05-12 10:38:10,430 | INFO    | ttic_embeddings.train | step  26250 | loss 2.3050 | lr 1.50e-05 | gnorm 1.66 | 1.97 step/s
+2026-05-12 10:38:34,190 | INFO    | ttic_embeddings.train | step  26300 | loss 2.3186 | lr 1.49e-05 | gnorm 1.82 | 1.97 step/s
+2026-05-12 10:38:56,055 | INFO    | ttic_embeddings.train | step  26350 | loss 2.3180 | lr 1.47e-05 | gnorm 1.70 | 1.97 step/s
+2026-05-12 10:39:17,770 | INFO    | ttic_embeddings.train | step  26400 | loss 2.3300 | lr 1.46e-05 | gnorm 1.62 | 1.97 step/s
+2026-05-12 10:39:39,047 | INFO    | ttic_embeddings.train | step  26450 | loss 2.3095 | lr 1.44e-05 | gnorm 1.67 | 1.97 step/s
+2026-05-12 10:40:02,941 | INFO    | ttic_embeddings.train | step  26500 | loss 2.3104 | lr 1.42e-05 | gnorm 1.67 | 1.97 step/s
+2026-05-12 10:40:26,745 | INFO    | ttic_embeddings.train | step  26550 | loss 2.3171 | lr 1.41e-05 | gnorm 1.64 | 1.97 step/s
+2026-05-12 10:40:51,478 | INFO    | ttic_embeddings.train | step  26600 | loss 2.3071 | lr 1.39e-05 | gnorm 1.57 | 1.97 step/s
+2026-05-12 10:41:16,108 | INFO    | ttic_embeddings.train | step  26650 | loss 2.3004 | lr 1.38e-05 | gnorm 1.63 | 1.97 step/s
+2026-05-12 10:41:40,201 | INFO    | ttic_embeddings.train | step  26700 | loss 2.2984 | lr 1.36e-05 | gnorm 1.68 | 1.97 step/s
+2026-05-12 10:42:05,486 | INFO    | ttic_embeddings.train | step  26750 | loss 2.3086 | lr 1.35e-05 | gnorm 1.89 | 1.97 step/s
+2026-05-12 10:42:30,057 | INFO    | ttic_embeddings.train | step  26800 | loss 2.3011 | lr 1.33e-05 | gnorm 1.58 | 1.97 step/s
+2026-05-12 10:42:55,077 | INFO    | ttic_embeddings.train | step  26850 | loss 2.2991 | lr 1.31e-05 | gnorm 1.61 | 1.97 step/s
+2026-05-12 10:43:18,748 | INFO    | ttic_embeddings.train | step  26900 | loss 2.3083 | lr 1.30e-05 | gnorm 1.65 | 1.97 step/s
+2026-05-12 10:43:43,109 | INFO    | ttic_embeddings.train | step  26950 | loss 2.3069 | lr 1.28e-05 | gnorm 1.78 | 1.97 step/s
+2026-05-12 10:44:08,361 | INFO    | ttic_embeddings.train | step  27000 | loss 2.3127 | lr 1.27e-05 | gnorm 1.67 | 1.97 step/s
+2026-05-12 10:44:16,724 | INFO    | ttic_embeddings.train | step  27000 | val/ppl 10.738
+2026-05-12 10:44:41,436 | INFO    | ttic_embeddings.train | step  27050 | loss 2.3111 | lr 1.25e-05 | gnorm 1.68 | 1.97 step/s
+2026-05-12 10:45:06,233 | INFO    | ttic_embeddings.train | step  27100 | loss 2.2973 | lr 1.24e-05 | gnorm 1.58 | 1.97 step/s
+2026-05-12 10:45:30,873 | INFO    | ttic_embeddings.train | step  27150 | loss 2.2993 | lr 1.22e-05 | gnorm 1.60 | 1.97 step/s
+2026-05-12 10:45:56,201 | INFO    | ttic_embeddings.train | step  27200 | loss 2.3099 | lr 1.21e-05 | gnorm 1.61 | 1.97 step/s
+2026-05-12 10:46:20,267 | INFO    | ttic_embeddings.train | step  27250 | loss 2.3159 | lr 1.19e-05 | gnorm 1.72 | 1.97 step/s
+2026-05-12 10:46:44,935 | INFO    | ttic_embeddings.train | step  27300 | loss 2.3248 | lr 1.18e-05 | gnorm 1.75 | 1.97 step/s
+2026-05-12 10:47:10,424 | INFO    | ttic_embeddings.train | step  27350 | loss 2.3081 | lr 1.16e-05 | gnorm 1.53 | 1.97 step/s
+2026-05-12 10:47:37,418 | INFO    | ttic_embeddings.train | step  27400 | loss 2.3146 | lr 1.15e-05 | gnorm 1.60 | 1.97 step/s
+2026-05-12 10:48:03,926 | INFO    | ttic_embeddings.train | step  27450 | loss 2.2994 | lr 1.14e-05 | gnorm 1.76 | 1.97 step/s
+2026-05-12 10:48:29,359 | INFO    | ttic_embeddings.train | step  27500 | loss 2.3092 | lr 1.12e-05 | gnorm 1.60 | 1.97 step/s
+2026-05-12 10:48:54,353 | INFO    | ttic_embeddings.train | step  27550 | loss 2.3183 | lr 1.11e-05 | gnorm 1.69 | 1.97 step/s
+2026-05-12 10:49:19,015 | INFO    | ttic_embeddings.train | step  27600 | loss 2.3032 | lr 1.09e-05 | gnorm 1.72 | 1.97 step/s
+2026-05-12 10:49:43,623 | INFO    | ttic_embeddings.train | step  27650 | loss 2.3310 | lr 1.08e-05 | gnorm 1.67 | 1.97 step/s
+2026-05-12 10:50:08,895 | INFO    | ttic_embeddings.train | step  27700 | loss 2.3006 | lr 1.06e-05 | gnorm 1.64 | 1.97 step/s
+2026-05-12 10:50:33,334 | INFO    | ttic_embeddings.train | step  27750 | loss 2.3042 | lr 1.05e-05 | gnorm 1.79 | 1.97 step/s
+2026-05-12 10:50:58,246 | INFO    | ttic_embeddings.train | step  27800 | loss 2.3062 | lr 1.04e-05 | gnorm 1.74 | 1.97 step/s
+2026-05-12 10:51:20,276 | INFO    | ttic_embeddings.train | step  27850 | loss 2.3021 | lr 1.02e-05 | gnorm 1.71 | 1.97 step/s
+2026-05-12 10:51:41,879 | INFO    | ttic_embeddings.train | step  27900 | loss 2.3104 | lr 1.01e-05 | gnorm 1.72 | 1.97 step/s
+2026-05-12 10:52:03,801 | INFO    | ttic_embeddings.train | step  27950 | loss 2.3034 | lr 9.95e-06 | gnorm 1.69 | 1.97 step/s
+2026-05-12 10:52:25,986 | INFO    | ttic_embeddings.train | step  28000 | loss 2.3158 | lr 9.82e-06 | gnorm 1.71 | 1.97 step/s
+2026-05-12 10:52:34,542 | INFO    | ttic_embeddings.train | step  28000 | val/ppl 10.723
+2026-05-12 10:52:59,689 | INFO    | ttic_embeddings.train | step  28050 | loss 2.3028 | lr 9.68e-06 | gnorm 1.66 | 1.97 step/s
+2026-05-12 10:53:24,954 | INFO    | ttic_embeddings.train | step  28100 | loss 2.3048 | lr 9.55e-06 | gnorm 1.67 | 1.97 step/s
+2026-05-12 10:53:49,937 | INFO    | ttic_embeddings.train | step  28150 | loss 2.3006 | lr 9.42e-06 | gnorm 1.78 | 1.97 step/s
+2026-05-12 10:54:15,402 | INFO    | ttic_embeddings.train | step  28200 | loss 2.3160 | lr 9.28e-06 | gnorm 1.71 | 1.97 step/s
+2026-05-12 10:54:40,206 | INFO    | ttic_embeddings.train | step  28250 | loss 2.3141 | lr 9.15e-06 | gnorm 1.68 | 1.97 step/s
+2026-05-12 10:55:05,350 | INFO    | ttic_embeddings.train | step  28300 | loss 2.3005 | lr 9.02e-06 | gnorm 1.69 | 1.97 step/s
+2026-05-12 10:55:30,089 | INFO    | ttic_embeddings.train | step  28350 | loss 2.3090 | lr 8.89e-06 | gnorm 1.62 | 1.97 step/s
+2026-05-12 10:55:55,381 | INFO    | ttic_embeddings.train | step  28400 | loss 2.3187 | lr 8.76e-06 | gnorm 1.72 | 1.97 step/s
+2026-05-12 10:56:19,725 | INFO    | ttic_embeddings.train | step  28450 | loss 2.2971 | lr 8.63e-06 | gnorm 1.58 | 1.97 step/s
+2026-05-12 10:56:43,879 | INFO    | ttic_embeddings.train | step  28500 | loss 2.3195 | lr 8.51e-06 | gnorm 1.69 | 1.97 step/s
+2026-05-12 10:57:08,369 | INFO    | ttic_embeddings.train | step  28550 | loss 2.3039 | lr 8.38e-06 | gnorm 1.69 | 1.97 step/s
+2026-05-12 10:57:35,413 | INFO    | ttic_embeddings.train | step  28600 | loss 2.3114 | lr 8.25e-06 | gnorm 1.61 | 1.97 step/s
+2026-05-12 10:58:00,849 | INFO    | ttic_embeddings.train | step  28650 | loss 2.3023 | lr 8.13e-06 | gnorm 1.71 | 1.97 step/s
+2026-05-12 10:58:26,824 | INFO    | ttic_embeddings.train | step  28700 | loss 2.2988 | lr 8.00e-06 | gnorm 1.70 | 1.97 step/s
+2026-05-12 10:58:53,592 | INFO    | ttic_embeddings.train | step  28750 | loss 2.3123 | lr 7.88e-06 | gnorm 1.64 | 1.97 step/s
+2026-05-12 10:59:19,683 | INFO    | ttic_embeddings.train | step  28800 | loss 2.3066 | lr 7.76e-06 | gnorm 1.70 | 1.97 step/s
+2026-05-12 10:59:44,930 | INFO    | ttic_embeddings.train | step  28850 | loss 2.3155 | lr 7.64e-06 | gnorm 1.61 | 1.97 step/s
+2026-05-12 11:00:10,641 | INFO    | ttic_embeddings.train | step  28900 | loss 2.3059 | lr 7.52e-06 | gnorm 1.61 | 1.97 step/s
+2026-05-12 11:00:36,146 | INFO    | ttic_embeddings.train | step  28950 | loss 2.2987 | lr 7.40e-06 | gnorm 1.74 | 1.97 step/s
+2026-05-12 11:01:01,334 | INFO    | ttic_embeddings.train | step  29000 | loss 2.3100 | lr 7.28e-06 | gnorm 1.62 | 1.97 step/s
+2026-05-12 11:01:09,792 | INFO    | ttic_embeddings.train | step  29000 | val/ppl 10.726
+2026-05-12 11:01:34,520 | INFO    | ttic_embeddings.train | step  29050 | loss 2.2976 | lr 7.16e-06 | gnorm 1.70 | 1.97 step/s
+2026-05-12 11:01:57,170 | INFO    | ttic_embeddings.train | step  29100 | loss 2.3039 | lr 7.04e-06 | gnorm 1.79 | 1.97 step/s
+2026-05-12 11:02:19,999 | INFO    | ttic_embeddings.train | step  29150 | loss 2.2972 | lr 6.93e-06 | gnorm 1.66 | 1.97 step/s
+2026-05-12 11:02:42,352 | INFO    | ttic_embeddings.train | step  29200 | loss 2.3026 | lr 6.81e-06 | gnorm 1.52 | 1.97 step/s
+2026-05-12 11:03:06,999 | INFO    | ttic_embeddings.train | step  29250 | loss 2.2968 | lr 6.70e-06 | gnorm 1.76 | 1.97 step/s
+2026-05-12 11:03:30,488 | INFO    | ttic_embeddings.train | step  29300 | loss 2.2951 | lr 6.59e-06 | gnorm 1.76 | 1.97 step/s
+2026-05-12 11:03:54,233 | INFO    | ttic_embeddings.train | step  29350 | loss 2.3129 | lr 6.47e-06 | gnorm 1.64 | 1.97 step/s
+2026-05-12 11:04:19,187 | INFO    | ttic_embeddings.train | step  29400 | loss 2.3114 | lr 6.36e-06 | gnorm 1.66 | 1.97 step/s
+2026-05-12 11:04:44,105 | INFO    | ttic_embeddings.train | step  29450 | loss 2.2968 | lr 6.25e-06 | gnorm 1.66 | 1.97 step/s
+2026-05-12 11:05:08,766 | INFO    | ttic_embeddings.train | step  29500 | loss 2.3078 | lr 6.14e-06 | gnorm 1.86 | 1.97 step/s
+2026-05-12 11:05:32,645 | INFO    | ttic_embeddings.train | step  29550 | loss 2.2995 | lr 6.03e-06 | gnorm 1.66 | 1.97 step/s
+2026-05-12 11:05:57,180 | INFO    | ttic_embeddings.train | step  29600 | loss 2.3121 | lr 5.92e-06 | gnorm 1.62 | 1.97 step/s
+2026-05-12 11:06:20,522 | INFO    | ttic_embeddings.train | step  29650 | loss 2.3119 | lr 5.82e-06 | gnorm 1.81 | 1.97 step/s
+2026-05-12 11:06:43,341 | INFO    | ttic_embeddings.train | step  29700 | loss 2.2970 | lr 5.71e-06 | gnorm 1.66 | 1.97 step/s
+2026-05-12 11:07:06,941 | INFO    | ttic_embeddings.train | step  29750 | loss 2.3032 | lr 5.61e-06 | gnorm 1.71 | 1.97 step/s
+2026-05-12 11:07:31,843 | INFO    | ttic_embeddings.train | step  29800 | loss 2.3135 | lr 5.50e-06 | gnorm 1.74 | 1.97 step/s
+2026-05-12 11:07:56,755 | INFO    | ttic_embeddings.train | step  29850 | loss 2.3137 | lr 5.40e-06 | gnorm 1.77 | 1.97 step/s
+2026-05-12 11:08:20,407 | INFO    | ttic_embeddings.train | step  29900 | loss 2.3029 | lr 5.30e-06 | gnorm 1.76 | 1.97 step/s
+2026-05-12 11:08:44,157 | INFO    | ttic_embeddings.train | step  29950 | loss 2.3059 | lr 5.19e-06 | gnorm 1.62 | 1.97 step/s
+2026-05-12 11:09:07,711 | INFO    | ttic_embeddings.train | step  30000 | loss 2.3097 | lr 5.09e-06 | gnorm 1.71 | 1.97 step/s
+2026-05-12 11:09:14,325 | INFO    | ttic_embeddings.train | step  30000 | val/ppl 10.712
+2026-05-12 11:09:14,526 | INFO    | ttic_embeddings.train |   best val/ppl so far (10.712) -> saved checkpoints/mae_seed1/adaptor_best.pt
+2026-05-12 11:09:36,691 | INFO    | ttic_embeddings.train | step  30050 | loss 2.3065 | lr 4.99e-06 | gnorm 1.76 | 1.97 step/s
+2026-05-12 11:09:58,752 | INFO    | ttic_embeddings.train | step  30100 | loss 2.2985 | lr 4.90e-06 | gnorm 1.57 | 1.97 step/s
+2026-05-12 11:10:20,667 | INFO    | ttic_embeddings.train | step  30150 | loss 2.3028 | lr 4.80e-06 | gnorm 1.63 | 1.97 step/s
+2026-05-12 11:10:43,930 | INFO    | ttic_embeddings.train | step  30200 | loss 2.3124 | lr 4.70e-06 | gnorm 1.82 | 1.97 step/s
+2026-05-12 11:11:07,584 | INFO    | ttic_embeddings.train | step  30250 | loss 2.3021 | lr 4.60e-06 | gnorm 1.64 | 1.97 step/s
+2026-05-12 11:11:31,966 | INFO    | ttic_embeddings.train | step  30300 | loss 2.3048 | lr 4.51e-06 | gnorm 1.66 | 1.97 step/s
+2026-05-12 11:11:56,569 | INFO    | ttic_embeddings.train | step  30350 | loss 2.3058 | lr 4.42e-06 | gnorm 1.64 | 1.97 step/s
+2026-05-12 11:12:20,902 | INFO    | ttic_embeddings.train | step  30400 | loss 2.3091 | lr 4.32e-06 | gnorm 1.67 | 1.97 step/s
+2026-05-12 11:12:44,800 | INFO    | ttic_embeddings.train | step  30450 | loss 2.3013 | lr 4.23e-06 | gnorm 1.72 | 1.97 step/s
+2026-05-12 11:13:08,543 | INFO    | ttic_embeddings.train | step  30500 | loss 2.3132 | lr 4.14e-06 | gnorm 1.75 | 1.98 step/s
+2026-05-12 11:13:32,101 | INFO    | ttic_embeddings.train | step  30550 | loss 2.3107 | lr 4.05e-06 | gnorm 1.79 | 1.98 step/s
+2026-05-12 11:13:56,746 | INFO    | ttic_embeddings.train | step  30600 | loss 2.2995 | lr 3.96e-06 | gnorm 1.75 | 1.98 step/s
+2026-05-12 11:14:21,539 | INFO    | ttic_embeddings.train | step  30650 | loss 2.3140 | lr 3.87e-06 | gnorm 1.82 | 1.98 step/s
+2026-05-12 11:14:46,082 | INFO    | ttic_embeddings.train | step  30700 | loss 2.3005 | lr 3.78e-06 | gnorm 1.73 | 1.98 step/s
+2026-05-12 11:15:10,605 | INFO    | ttic_embeddings.train | step  30750 | loss 2.3085 | lr 3.70e-06 | gnorm 1.57 | 1.98 step/s
+2026-05-12 11:15:35,053 | INFO    | ttic_embeddings.train | step  30800 | loss 2.2964 | lr 3.61e-06 | gnorm 1.69 | 1.98 step/s
+2026-05-12 11:15:59,835 | INFO    | ttic_embeddings.train | step  30850 | loss 2.3029 | lr 3.53e-06 | gnorm 1.73 | 1.98 step/s
+2026-05-12 11:16:24,594 | INFO    | ttic_embeddings.train | step  30900 | loss 2.3126 | lr 3.44e-06 | gnorm 1.70 | 1.98 step/s
+2026-05-12 11:16:49,486 | INFO    | ttic_embeddings.train | step  30950 | loss 2.3040 | lr 3.36e-06 | gnorm 1.74 | 1.98 step/s
+2026-05-12 11:17:14,575 | INFO    | ttic_embeddings.train | step  31000 | loss 2.3003 | lr 3.28e-06 | gnorm 1.61 | 1.98 step/s
+2026-05-12 11:17:22,665 | INFO    | ttic_embeddings.train | step  31000 | val/ppl 10.711
+2026-05-12 11:17:22,866 | INFO    | ttic_embeddings.train |   best val/ppl so far (10.711) -> saved checkpoints/mae_seed1/adaptor_best.pt
+2026-05-12 11:17:47,345 | INFO    | ttic_embeddings.train | step  31050 | loss 2.2995 | lr 3.20e-06 | gnorm 1.72 | 1.98 step/s
+2026-05-12 11:18:11,943 | INFO    | ttic_embeddings.train | step  31100 | loss 2.3037 | lr 3.12e-06 | gnorm 1.67 | 1.98 step/s
+2026-05-12 11:18:36,042 | INFO    | ttic_embeddings.train | step  31150 | loss 2.3048 | lr 3.04e-06 | gnorm 1.64 | 1.98 step/s
+2026-05-12 11:19:00,518 | INFO    | ttic_embeddings.train | step  31200 | loss 2.3103 | lr 2.96e-06 | gnorm 1.75 | 1.98 step/s
+2026-05-12 11:19:24,890 | INFO    | ttic_embeddings.train | step  31250 | loss 2.3051 | lr 2.89e-06 | gnorm 1.66 | 1.98 step/s
+2026-05-12 11:19:48,275 | INFO    | ttic_embeddings.train | step  31300 | loss 2.2983 | lr 2.81e-06 | gnorm 1.65 | 1.98 step/s
+2026-05-12 11:20:09,933 | INFO    | ttic_embeddings.train | step  31350 | loss 2.3016 | lr 2.74e-06 | gnorm 1.68 | 1.98 step/s
+2026-05-12 11:20:31,064 | INFO    | ttic_embeddings.train | step  31400 | loss 2.3155 | lr 2.66e-06 | gnorm 1.84 | 1.98 step/s
+2026-05-12 11:20:52,490 | INFO    | ttic_embeddings.train | step  31450 | loss 2.3057 | lr 2.59e-06 | gnorm 1.65 | 1.98 step/s
+2026-05-12 11:21:14,531 | INFO    | ttic_embeddings.train | step  31500 | loss 2.3139 | lr 2.52e-06 | gnorm 1.66 | 1.98 step/s
+2026-05-12 11:21:38,118 | INFO    | ttic_embeddings.train | step  31550 | loss 2.3034 | lr 2.45e-06 | gnorm 1.67 | 1.98 step/s
+2026-05-12 11:22:02,617 | INFO    | ttic_embeddings.train | step  31600 | loss 2.3042 | lr 2.38e-06 | gnorm 1.74 | 1.98 step/s
+2026-05-12 11:22:26,845 | INFO    | ttic_embeddings.train | step  31650 | loss 2.3017 | lr 2.31e-06 | gnorm 1.67 | 1.98 step/s
+2026-05-12 11:22:51,047 | INFO    | ttic_embeddings.train | step  31700 | loss 2.3132 | lr 2.24e-06 | gnorm 1.69 | 1.98 step/s
+2026-05-12 11:23:16,068 | INFO    | ttic_embeddings.train | step  31750 | loss 2.3067 | lr 2.17e-06 | gnorm 1.69 | 1.98 step/s
+2026-05-12 11:23:41,128 | INFO    | ttic_embeddings.train | step  31800 | loss 2.2984 | lr 2.11e-06 | gnorm 1.66 | 1.98 step/s
+2026-05-12 11:24:05,996 | INFO    | ttic_embeddings.train | step  31850 | loss 2.2981 | lr 2.04e-06 | gnorm 1.74 | 1.98 step/s
+2026-05-12 11:24:30,492 | INFO    | ttic_embeddings.train | step  31900 | loss 2.2960 | lr 1.98e-06 | gnorm 1.74 | 1.98 step/s
+2026-05-12 11:24:55,276 | INFO    | ttic_embeddings.train | step  31950 | loss 2.3006 | lr 1.92e-06 | gnorm 1.69 | 1.98 step/s
+2026-05-12 11:25:19,661 | INFO    | ttic_embeddings.train | step  32000 | loss 2.3012 | lr 1.85e-06 | gnorm 1.61 | 1.98 step/s
+2026-05-12 11:25:27,151 | INFO    | ttic_embeddings.train | step  32000 | val/ppl 10.710
+2026-05-12 11:25:27,376 | INFO    | ttic_embeddings.train |   best val/ppl so far (10.710) -> saved checkpoints/mae_seed1/adaptor_best.pt
+2026-05-12 11:25:52,343 | INFO    | ttic_embeddings.train | step  32050 | loss 2.3049 | lr 1.79e-06 | gnorm 1.85 | 1.98 step/s
+2026-05-12 11:26:16,660 | INFO    | ttic_embeddings.train | step  32100 | loss 2.2978 | lr 1.73e-06 | gnorm 1.73 | 1.98 step/s
+2026-05-12 11:26:41,064 | INFO    | ttic_embeddings.train | step  32150 | loss 2.2957 | lr 1.67e-06 | gnorm 1.61 | 1.98 step/s
+2026-05-12 11:27:06,301 | INFO    | ttic_embeddings.train | step  32200 | loss 2.2985 | lr 1.62e-06 | gnorm 1.68 | 1.98 step/s
+2026-05-12 11:27:28,044 | INFO    | ttic_embeddings.train | step  32250 | loss 2.3011 | lr 1.56e-06 | gnorm 1.88 | 1.98 step/s
+2026-05-12 11:27:50,173 | INFO    | ttic_embeddings.train | step  32300 | loss 2.2986 | lr 1.50e-06 | gnorm 1.72 | 1.98 step/s
+2026-05-12 11:28:12,276 | INFO    | ttic_embeddings.train | step  32350 | loss 2.3037 | lr 1.45e-06 | gnorm 1.61 | 1.98 step/s
+2026-05-12 11:28:33,798 | INFO    | ttic_embeddings.train | step  32400 | loss 2.3052 | lr 1.39e-06 | gnorm 1.77 | 1.98 step/s
+2026-05-12 11:28:58,601 | INFO    | ttic_embeddings.train | step  32450 | loss 2.3070 | lr 1.34e-06 | gnorm 1.72 | 1.98 step/s
+2026-05-12 11:29:23,760 | INFO    | ttic_embeddings.train | step  32500 | loss 2.3031 | lr 1.29e-06 | gnorm 1.73 | 1.98 step/s
+2026-05-12 11:29:48,915 | INFO    | ttic_embeddings.train | step  32550 | loss 2.3067 | lr 1.24e-06 | gnorm 1.76 | 1.98 step/s
+2026-05-12 11:30:13,591 | INFO    | ttic_embeddings.train | step  32600 | loss 2.2998 | lr 1.19e-06 | gnorm 1.71 | 1.98 step/s
+2026-05-12 11:30:38,095 | INFO    | ttic_embeddings.train | step  32650 | loss 2.3035 | lr 1.14e-06 | gnorm 1.65 | 1.98 step/s
+2026-05-12 11:31:02,994 | INFO    | ttic_embeddings.train | step  32700 | loss 2.2969 | lr 1.09e-06 | gnorm 1.74 | 1.98 step/s
+2026-05-12 11:31:27,191 | INFO    | ttic_embeddings.train | step  32750 | loss 2.2987 | lr 1.05e-06 | gnorm 1.62 | 1.98 step/s
+2026-05-12 11:31:52,038 | INFO    | ttic_embeddings.train | step  32800 | loss 2.3096 | lr 1.00e-06 | gnorm 1.81 | 1.98 step/s
+2026-05-12 11:32:17,051 | INFO    | ttic_embeddings.train | step  32850 | loss 2.2986 | lr 9.55e-07 | gnorm 1.56 | 1.98 step/s
+2026-05-12 11:32:41,740 | INFO    | ttic_embeddings.train | step  32900 | loss 2.3091 | lr 9.11e-07 | gnorm 1.64 | 1.98 step/s
+2026-05-12 11:33:07,611 | INFO    | ttic_embeddings.train | step  32950 | loss 2.2969 | lr 8.69e-07 | gnorm 1.72 | 1.98 step/s
+2026-05-12 11:33:31,596 | INFO    | ttic_embeddings.train | step  33000 | loss 2.3013 | lr 8.27e-07 | gnorm 1.64 | 1.98 step/s
+2026-05-12 11:33:40,323 | INFO    | ttic_embeddings.train | step  33000 | val/ppl 10.711
+2026-05-12 11:34:04,797 | INFO    | ttic_embeddings.train | step  33050 | loss 2.3180 | lr 7.86e-07 | gnorm 1.73 | 1.98 step/s
+2026-05-12 11:34:29,207 | INFO    | ttic_embeddings.train | step  33100 | loss 2.3067 | lr 7.46e-07 | gnorm 1.69 | 1.98 step/s
+2026-05-12 11:34:53,057 | INFO    | ttic_embeddings.train | step  33150 | loss 2.3066 | lr 7.08e-07 | gnorm 1.76 | 1.98 step/s
+2026-05-12 11:35:17,582 | INFO    | ttic_embeddings.train | step  33200 | loss 2.3074 | lr 6.70e-07 | gnorm 1.54 | 1.98 step/s
+2026-05-12 11:35:42,035 | INFO    | ttic_embeddings.train | step  33250 | loss 2.3111 | lr 6.34e-07 | gnorm 1.56 | 1.98 step/s
+2026-05-12 11:36:06,154 | INFO    | ttic_embeddings.train | step  33300 | loss 2.2990 | lr 5.98e-07 | gnorm 1.64 | 1.98 step/s
+2026-05-12 11:36:30,939 | INFO    | ttic_embeddings.train | step  33350 | loss 2.3092 | lr 5.63e-07 | gnorm 1.73 | 1.98 step/s
+2026-05-12 11:36:55,696 | INFO    | ttic_embeddings.train | step  33400 | loss 2.2991 | lr 5.30e-07 | gnorm 1.74 | 1.98 step/s
+2026-05-12 11:37:20,537 | INFO    | ttic_embeddings.train | step  33450 | loss 2.2986 | lr 4.97e-07 | gnorm 1.71 | 1.98 step/s
+2026-05-12 11:37:45,895 | INFO    | ttic_embeddings.train | step  33500 | loss 2.2985 | lr 4.66e-07 | gnorm 1.75 | 1.98 step/s
+2026-05-12 11:38:08,965 | INFO    | ttic_embeddings.train | step  33550 | loss 2.3052 | lr 4.35e-07 | gnorm 1.70 | 1.98 step/s
+2026-05-12 11:38:33,500 | INFO    | ttic_embeddings.train | step  33600 | loss 2.3082 | lr 4.06e-07 | gnorm 1.67 | 1.98 step/s
+2026-05-12 11:38:57,518 | INFO    | ttic_embeddings.train | step  33650 | loss 2.3075 | lr 3.77e-07 | gnorm 1.71 | 1.98 step/s
+2026-05-12 11:39:20,917 | INFO    | ttic_embeddings.train | step  33700 | loss 2.2996 | lr 3.50e-07 | gnorm 1.77 | 1.98 step/s
+2026-05-12 11:39:44,033 | INFO    | ttic_embeddings.train | step  33750 | loss 2.3140 | lr 3.24e-07 | gnorm 1.74 | 1.98 step/s
+2026-05-12 11:40:08,598 | INFO    | ttic_embeddings.train | step  33800 | loss 2.2993 | lr 2.98e-07 | gnorm 1.81 | 1.98 step/s
+2026-05-12 11:40:32,510 | INFO    | ttic_embeddings.train | step  33850 | loss 2.3111 | lr 2.74e-07 | gnorm 1.75 | 1.98 step/s
+2026-05-12 11:40:56,842 | INFO    | ttic_embeddings.train | step  33900 | loss 2.3103 | lr 2.51e-07 | gnorm 1.73 | 1.98 step/s
+2026-05-12 11:41:20,448 | INFO    | ttic_embeddings.train | step  33950 | loss 2.3079 | lr 2.28e-07 | gnorm 1.70 | 1.98 step/s
+2026-05-12 11:41:43,921 | INFO    | ttic_embeddings.train | step  34000 | loss 2.3040 | lr 2.07e-07 | gnorm 1.72 | 1.98 step/s
+2026-05-12 11:41:51,698 | INFO    | ttic_embeddings.train | step  34000 | val/ppl 10.708
+2026-05-12 11:41:51,893 | INFO    | ttic_embeddings.train |   best val/ppl so far (10.708) -> saved checkpoints/mae_seed1/adaptor_best.pt
+2026-05-12 11:42:15,954 | INFO    | ttic_embeddings.train | step  34050 | loss 2.3077 | lr 1.87e-07 | gnorm 1.72 | 1.98 step/s
+2026-05-12 11:42:39,132 | INFO    | ttic_embeddings.train | step  34100 | loss 2.2887 | lr 1.68e-07 | gnorm 1.68 | 1.98 step/s
+2026-05-12 11:43:03,095 | INFO    | ttic_embeddings.train | step  34150 | loss 2.3067 | lr 1.50e-07 | gnorm 1.64 | 1.98 step/s
+2026-05-12 11:43:26,505 | INFO    | ttic_embeddings.train | step  34200 | loss 2.3032 | lr 1.33e-07 | gnorm 1.63 | 1.98 step/s
+2026-05-12 11:43:50,451 | INFO    | ttic_embeddings.train | step  34250 | loss 2.2872 | lr 1.17e-07 | gnorm 1.65 | 1.98 step/s
+2026-05-12 11:44:13,902 | INFO    | ttic_embeddings.train | step  34300 | loss 2.3127 | lr 1.02e-07 | gnorm 1.79 | 1.98 step/s
+2026-05-12 11:44:37,081 | INFO    | ttic_embeddings.train | step  34350 | loss 2.2921 | lr 8.76e-08 | gnorm 1.92 | 1.98 step/s
+2026-05-12 11:45:00,624 | INFO    | ttic_embeddings.train | step  34400 | loss 2.3045 | lr 7.46e-08 | gnorm 1.65 | 1.98 step/s
+2026-05-12 11:45:23,221 | INFO    | ttic_embeddings.train | step  34450 | loss 2.3102 | lr 6.27e-08 | gnorm 1.62 | 1.98 step/s
+2026-05-12 11:45:44,340 | INFO    | ttic_embeddings.train | step  34500 | loss 2.2853 | lr 5.18e-08 | gnorm 1.62 | 1.98 step/s
+2026-05-12 11:46:05,383 | INFO    | ttic_embeddings.train | step  34550 | loss 2.3167 | lr 4.20e-08 | gnorm 1.65 | 1.98 step/s
+2026-05-12 11:46:26,245 | INFO    | ttic_embeddings.train | step  34600 | loss 2.2967 | lr 3.32e-08 | gnorm 1.67 | 1.98 step/s
+2026-05-12 11:46:47,748 | INFO    | ttic_embeddings.train | step  34650 | loss 2.3091 | lr 2.54e-08 | gnorm 1.76 | 1.98 step/s
+2026-05-12 11:47:10,852 | INFO    | ttic_embeddings.train | step  34700 | loss 2.2859 | lr 1.87e-08 | gnorm 1.81 | 1.98 step/s
+2026-05-12 11:47:34,358 | INFO    | ttic_embeddings.train | step  34750 | loss 2.2970 | lr 1.30e-08 | gnorm 1.60 | 1.98 step/s
+2026-05-12 11:47:58,627 | INFO    | ttic_embeddings.train | step  34800 | loss 2.3058 | lr 8.29e-09 | gnorm 1.66 | 1.98 step/s
+2026-05-12 11:48:22,298 | INFO    | ttic_embeddings.train | step  34850 | loss 2.3023 | lr 4.66e-09 | gnorm 1.62 | 1.99 step/s
+2026-05-12 11:48:45,680 | INFO    | ttic_embeddings.train | step  34900 | loss 2.3050 | lr 2.07e-09 | gnorm 1.60 | 1.99 step/s
+2026-05-12 11:49:09,347 | INFO    | ttic_embeddings.train | step  34950 | loss 2.3149 | lr 5.18e-10 | gnorm 1.65 | 1.99 step/s
+2026-05-12 11:49:32,333 | INFO    | ttic_embeddings.train | step  35000 | loss 2.3021 | lr 0.00e+00 | gnorm 1.63 | 1.99 step/s
+2026-05-12 11:49:39,541 | INFO    | ttic_embeddings.train | step  35000 | val/ppl 10.707
+2026-05-12 11:49:39,725 | INFO    | ttic_embeddings.train |   best val/ppl so far (10.707) -> saved checkpoints/mae_seed1/adaptor_best.pt
+2026-05-12 11:49:39,964 | INFO    | train_clip | Training summary: {'best_val_ppl': 10.707301930659762, 'last_val_ppl': 10.707301930659762, 'total_steps': 35000, 'stopped_reason': 'max_steps'}
+2026-05-12 11:49:39,965 | INFO    | train_clip | 
+Generating sample captions from the trained adaptor...
+2026-05-12 11:49:39,984 | INFO    | train_clip | Loaded best checkpoint (val_ppl=10.707)
+2026-05-12 11:49:40,324 | INFO    | train_clip | Sampling 5 val images for qualitative inspection:
+2026-05-12 11:49:43,980 | INFO    | train_clip |   image_id 139
+2026-05-12 11:49:43,981 | INFO    | train_clip |     beam     : 'A living room with a couch and a TV.'
+2026-05-12 11:49:43,981 | INFO    | train_clip |     nucleus  : 'A living room with several TVs and chairs.'
+2026-05-12 11:49:43,981 | INFO    | train_clip |     reference: 'A woman stands in the dining area at the table.'
+2026-05-12 11:49:44,867 | INFO    | train_clip |   image_id 285
+2026-05-12 11:49:44,868 | INFO    | train_clip |     beam     : 'A brown bear is sitting on the ground.'
+2026-05-12 11:49:44,868 | INFO    | train_clip |     nucleus  : 'A small bear stands in a grass field.'
+2026-05-12 11:49:44,868 | INFO    | train_clip |     reference: 'A big burly grizzly bear is show with grass in the background.'
+2026-05-12 11:49:45,746 | INFO    | train_clip |   image_id 632
+2026-05-12 11:49:45,746 | INFO    | train_clip |     beam     : 'A bedroom with a bed and a window.'
+2026-05-12 11:49:45,746 | INFO    | train_clip |     nucleus  : 'A bedroom with a bed, a chair, and a couch.'
+2026-05-12 11:49:45,746 | INFO    | train_clip |     reference: 'Bedroom scene with a bookcase, blue comforter and window.'
+2026-05-12 11:49:46,542 | INFO    | train_clip |   image_id 724
+2026-05-12 11:49:46,542 | INFO    | train_clip |     beam     : 'A stop sign with a stop sign on it.'
+2026-05-12 11:49:46,542 | INFO    | train_clip |     nucleus  : 'A stop sign outside a house on a road'
+2026-05-12 11:49:46,542 | INFO    | train_clip |     reference: "A stop sign is mounted upside-down on it's post."
+2026-05-12 11:49:47,482 | INFO    | train_clip |   image_id 776
+2026-05-12 11:49:47,483 | INFO    | train_clip |     beam     : 'A couple of teddy bears sitting next to each other.'
+2026-05-12 11:49:47,483 | INFO    | train_clip |     nucleus  : 'A bunch of brown teddy bears are together on a couch.'
+2026-05-12 11:49:47,483 | INFO    | train_clip |     reference: 'Three teddy bears, each a different color, snuggling together.'
+2026-05-12 11:49:47,483 | INFO    | train_clip | Done.

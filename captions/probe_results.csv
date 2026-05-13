@@ -1,0 +1,13 @@
+encoder,task,n_classes,n_train,n_test,metric,score
+clip,coco_objects,80,4000,1000,mAP,0.7296328697253556
+clip,coco_objects,80,4000,1000,mean_F1,0.6435906539339342
+clip,coco_objects,80,4000,1000,mAP,0.7296328697253556
+clip,coco_objects,80,4000,1000,mean_F1,0.6435906539339342
+siglip,coco_objects,80,4000,1000,mAP,0.7605164424731353
+siglip,coco_objects,80,4000,1000,mean_F1,0.6966597716960445
+dinov2,coco_objects,80,4000,1000,mAP,0.728923138593164
+dinov2,coco_objects,80,4000,1000,mean_F1,0.6751578056872183
+mae,coco_objects,80,4000,1000,mAP,0.5265974329848117
+mae,coco_objects,80,4000,1000,mean_F1,0.3594484172881249
+siglip,coco_objects,80,4000,1000,mAP,0.7605164424731353
+siglip,coco_objects,80,4000,1000,mean_F1,0.6966597716960445

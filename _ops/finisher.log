@@ -1,0 +1,37 @@
+
+=== finisher started Sun May 10 06:48:24 UTC 2026 ===
+Initial pipeline PID: 2656
+=== initial pipeline ended Sun May 10 07:13:41 UTC 2026 ===
+=== retry 1 started Sun May 10 07:13:41 UTC 2026 ===
+/home/ubuntu/finisher.sh: line 51: 10165 Killed                  bash "$REPO/scripts/run_full_pipeline.sh" >> "$REPO/pipeline.out" 2>&1
+=== retry 1 exited rc=137 at Sun May 10 07:13:53 UTC 2026 ===
+=== retry 2 started Sun May 10 07:13:53 UTC 2026 ===
+
+=== finisher started Sun May 10 07:20:10 UTC 2026 ===
+Initial pipeline PID: 16579
+
+=== finisher started Sun May 10 07:20:13 UTC 2026 ===
+Initial pipeline PID: 16579
+
+=== finisher started Sun May 10 07:21:27 UTC 2026 ===
+Waiting for any active run_full_pipeline.sh...
+=== no pipeline running Sun May 10 16:28:13 UTC 2026 ===
+=== retry 1 started Sun May 10 16:28:13 UTC 2026 ===
+Tue May 12 00:30:03 UTC 2026 another finisher already running (lock held); exiting
+
+=== finisher_v2 started Tue May 12 00:42:09 UTC 2026 ===
+Waiting for any active run_full_pipeline.sh...
+
+=== finisher_v2 started Tue May 12 05:16:26 UTC 2026 ===
+Waiting for any active run_full_pipeline.sh...
+Tue May 12 05:27:32 UTC 2026 another finisher_v2 already running (lock held); exiting
+
+=== finisher_v2 started Tue May 12 06:13:49 UTC 2026 ===
+Waiting for any active run_full_pipeline.sh...
+=== no pipeline running Tue May 12 20:01:39 UTC 2026 ===
+=== Pipeline complete; launching CLIP reruns Tue May 12 20:01:39 UTC 2026 ===
+=== CLIP reruns exited rc=0 at Wed May 13 02:41:39 UTC 2026 ===
+=== CLIP reruns complete; proceeding to commit/push Wed May 13 02:41:39 UTC 2026 ===
+=== success path: preparing commit Wed May 13 02:41:39 UTC 2026 ===
+Switched to a new branch 'pipeline-results-20260513'
+Copying operational artifacts into _ops/...

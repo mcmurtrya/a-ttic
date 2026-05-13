@@ -14,16 +14,12 @@ import torch
 def set_seed(seed: int) -> None:
     """Seed every RNG we touch.
 
-    Sets Python, NumPy, and PyTorch (CPU + CUDA) seeds, CuDNN
-    deterministic flags, and PyTorch's global deterministic-algorithms
-    switch. CUBLAS_WORKSPACE_CONFIG must be set BEFORE the first CUDA
-    init for cublas determinism, so we set it here unconditionally.
-
-    `warn_only=True` on use_deterministic_algorithms because some ops
-    (e.g. CUDA scatter_add) lack deterministic implementations; we want
-    a warning so the user can decide, not a crash. The encoder-comparison
-    effect-size analysis is the main reason this matters — silent
-    nondeterminism would inflate seed variance.
+    Seeds Python / NumPy / PyTorch (CPU + CUDA) and turns on TF32 +
+    cuDNN benchmark for throughput. We do NOT pin cuDNN-deterministic
+    or torch.use_deterministic_algorithms: for a 2.1M-param adaptor on
+    a frozen encoder, dominant seed variance is from adaptor init and
+    sampler order (both seeded here), not cuDNN kernel selection.
+    Dropping determinism buys 1.3-2x and enables FlashAttention.
 
     Pin this in every script immediately after config parsing.
     """
@@ -31,11 +27,10 @@ def set_seed(seed: int) -> None:
     np.random.seed(seed)
     torch.manual_seed(seed)
     torch.cuda.manual_seed_all(seed)
-    torch.backends.cudnn.deterministic = True
-    torch.backends.cudnn.benchmark = False
+    torch.backends.cudnn.benchmark = True
+    torch.backends.cuda.matmul.allow_tf32 = True
+    torch.backends.cudnn.allow_tf32 = True
     os.environ["PYTHONHASHSEED"] = str(seed)
-    os.environ.setdefault("CUBLAS_WORKSPACE_CONFIG", ":4096:8")
-    torch.use_deterministic_algorithms(True, warn_only=True)
 
 
 def seed_worker(worker_id: int) -> None:

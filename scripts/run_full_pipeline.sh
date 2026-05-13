@@ -120,23 +120,84 @@ echo ""
 echo "=== Phase 0: smoke test ==="
 uv run python scripts/00_smoke_test.py 2>&1 | tee "$LOG_DIR/smoke.log"
 
-# -------- Phase 1-3: train all 12 (encoder, seed) combinations --------
+# -------- Phase 1-3: cache per encoder, then train all 3 seeds --------
+#
+# Restructured: outer loop is encoder, inner loop is seed pairs. The
+# one-time feature cache amortizes over all 3 seeds of the same
+# encoder so each training step skips the dominant encoder forward.
+#
+# Disk: each cache is ~50-60 GiB (47 GiB for MAE), so we cache one
+# encoder at a time and delete it before moving on. Set KEEP_CACHE=1
+# to retain caches if you have ~250 GiB free.
+
+cache_features() {
+    local enc="$1" gpu="$2"
+    echo ""
+    echo "[$(date +%H:%M:%S)] CACHE  GPU$gpu=$enc"
+    uv run python scripts/01_cache_features.py \
+        --encoder "$enc" --gpu "$gpu" \
+        2>&1 | tee "$LOG_DIR/cache_${enc}.log"
+}
+
+run_train_seed_pair() {
+    local enc="$1" seed0="$2" seed1="$3"
+    local tag0="${enc}_seed${seed0}" tag1="${enc}_seed${seed1}"
+    echo ""
+    echo "[$(date +%H:%M:%S)] TRAIN  GPU0=$tag0   GPU1=$tag1"
+
+    uv run python scripts/02_train_clip.py \
+        --encoder "$enc" --seed "$seed0" --gpu 0 \
+        > "$LOG_DIR/train_${tag0}.log" 2>&1 &
+    local pid0=$!
+
+    uv run python scripts/02_train_clip.py \
+        --encoder "$enc" --seed "$seed1" --gpu 1 \
+        > "$LOG_DIR/train_${tag1}.log" 2>&1 &
+    local pid1=$!
+
+    wait "$pid0" "$pid1"
+    echo "[$(date +%H:%M:%S)] DONE   $tag0 + $tag1"
+}
+
+run_train_seed_solo() {
+    local enc="$1" seed="$2" gpu="$3"
+    local tag="${enc}_seed${seed}"
+    echo ""
+    echo "[$(date +%H:%M:%S)] TRAIN  GPU$gpu=$tag (solo)"
+    uv run python scripts/02_train_clip.py \
+        --encoder "$enc" --seed "$seed" --gpu "$gpu" \
+        2>&1 | tee "$LOG_DIR/train_${tag}.log"
+    echo "[$(date +%H:%M:%S)] DONE   $tag"
+}
 
 if [[ -z "${SKIP_TRAIN:-}" ]]; then
     echo ""
-    echo "=== Phases 1-3: train 12 adaptors (4 encoders × 3 seeds) on 2 GPUs ==="
-    # Convert space-separated strings to arrays
+    echo "=== Phases 1-3: cache then train, encoder by encoder ==="
     read -r -a ENC_ARR <<< "$ENCODERS"
     read -r -a SEED_ARR <<< "$SEEDS"
 
-    # Pair encoders: (enc[0], enc[1]) and (enc[2], enc[3]) per seed.
-    # For 4 encoders this is 2 pairs per seed × 3 seeds = 6 pairs total.
-    for seed in "${SEED_ARR[@]}"; do
-        for ((i = 0; i < ${#ENC_ARR[@]}; i += 2)); do
-            run_train_pair \
-                "${ENC_ARR[$i]}" "$seed" \
-                "${ENC_ARR[$((i + 1))]}" "$seed"
+    for enc in "${ENC_ARR[@]}"; do
+        echo ""
+        echo "===== Encoder: $enc ====="
+        cache_features "$enc" 0
+
+        # Train seeds in pairs on the 2 GPUs. With 3 seeds: pair the
+        # first two, run the third solo on GPU 0.
+        n_seeds=${#SEED_ARR[@]}
+        i=0
+        while (( i + 1 < n_seeds )); do
+            run_train_seed_pair "$enc" "${SEED_ARR[$i]}" "${SEED_ARR[$((i + 1))]}"
+            i=$((i + 2))
         done
+        if (( i < n_seeds )); then
+            run_train_seed_solo "$enc" "${SEED_ARR[$i]}" 0
+        fi
+
+        if [[ -z "${KEEP_CACHE:-}" ]]; then
+            echo "[$(date +%H:%M:%S)] Removing $enc feature cache..."
+            CACHE_ROOT_RESOLVED="${FEATURE_CACHE_ROOT:-./features}"
+            rm -rf "$CACHE_ROOT_RESOLVED/$enc"
+        fi
     done
 else
     echo "Skipping training phase (SKIP_TRAIN set)."

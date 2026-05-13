@@ -1,0 +1,9 @@
+encoder,decoder,metric,score,n_images
+clip,beam,cider,1.0185473121620696,5000
+clip,nucleus,cider,0.5498355819562046,5000
+siglip,beam,cider,1.1131225340258126,5000
+siglip,nucleus,cider,0.6212931463906836,5000
+dinov2,beam,cider,1.1049210186746425,5000
+dinov2,nucleus,cider,0.637052669015011,5000
+mae,beam,cider,0.884868596434007,5000
+mae,nucleus,cider,0.4785472252900293,5000

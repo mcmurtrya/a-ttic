@@ -38,7 +38,9 @@ import torch
 import torch.nn as nn
 from torch.utils.data import DataLoader
 
-logger = logging.getLogger(__name__)
+from .utils import get_logger
+
+logger = get_logger(__name__)
 
 
 # ---------------------------------------------------------------------
@@ -94,15 +96,22 @@ class CaptioningModel(nn.Module):
 
     def forward(
         self,
-        pixel_values: torch.Tensor,
         input_ids: torch.LongTensor,
         attention_mask: torch.LongTensor,
+        pixel_values: torch.Tensor | None = None,
+        patch_features: torch.Tensor | None = None,
     ) -> tuple[torch.Tensor, torch.Tensor]:
-        # Encoder forward is @torch.no_grad() in VisualEncoder, so
-        # patch_features is detached from the autograd graph. The
-        # adaptor's params have requires_grad=True, so its output is
+        # Either pass raw images (encoder runs live) or precomputed
+        # patches (cached path). Encoder forward is @torch.no_grad() in
+        # VisualEncoder, so patch_features is detached from autograd.
+        # The adaptor's params have requires_grad=True, so its output is
         # gradient-tracked.
-        patch_features = self.encoder(pixel_values)
+        if patch_features is None:
+            if pixel_values is None:
+                raise ValueError(
+                    "CaptioningModel.forward requires pixel_values or patch_features"
+                )
+            patch_features = self.encoder(pixel_values)
         prefix_embeds = self.adaptor(patch_features)            # (B, k, D_dec)
 
         text_embeds = self.decoder.transformer.wte(input_ids)    # (B, L, D_dec)
@@ -187,6 +196,23 @@ def maybe_autocast(use_amp: bool, device_type: str = "cuda"):
         yield
 
 
+def _model_inputs_from_batch(batch: dict, device: torch.device) -> dict:
+    """Move tensors to device and dispatch on cached vs. live encoder path."""
+    out: dict = {
+        "input_ids": batch["input_ids"].to(device, non_blocking=True),
+        "attention_mask": batch["attention_mask"].to(device, non_blocking=True),
+    }
+    if "patch_features" in batch:
+        out["patch_features"] = batch["patch_features"].to(
+            device, non_blocking=True
+        )
+    else:
+        out["pixel_values"] = batch["pixel_values"].to(
+            device, non_blocking=True
+        )
+    return out
+
+
 @torch.no_grad()
 def validate(
     model: CaptioningModel,
@@ -210,12 +236,10 @@ def validate(
     for i, batch in enumerate(val_loader):
         if max_batches is not None and i >= max_batches:
             break
-        pixel_values = batch["pixel_values"].to(device, non_blocking=True)
-        input_ids = batch["input_ids"].to(device, non_blocking=True)
-        attention_mask = batch["attention_mask"].to(device, non_blocking=True)
+        kwargs = _model_inputs_from_batch(batch, device)
         with maybe_autocast(use_amp, device.type):
-            loss, _ = model(pixel_values, input_ids, attention_mask)
-        n_tokens = int(attention_mask.sum().item())
+            loss, _ = model(**kwargs)
+        n_tokens = int(kwargs["attention_mask"].sum().item())
         if n_tokens == 0:
             continue
         total_loss += loss.item() * n_tokens
@@ -469,13 +493,11 @@ def train(
 
     while step < max_steps:
         for batch in train_loader:
-            pixel_values = batch["pixel_values"].to(device, non_blocking=True)
-            input_ids = batch["input_ids"].to(device, non_blocking=True)
-            attention_mask = batch["attention_mask"].to(device, non_blocking=True)
+            kwargs = _model_inputs_from_batch(batch, device)
 
             optimizer.zero_grad(set_to_none=True)
             with maybe_autocast(use_amp, device.type):
-                loss, _ = model(pixel_values, input_ids, attention_mask)
+                loss, _ = model(**kwargs)
             loss.backward()
             grad_norm = torch.nn.utils.clip_grad_norm_(
                 model.adaptor.parameters(), max_norm=grad_clip

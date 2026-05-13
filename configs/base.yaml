@@ -28,14 +28,14 @@ train:
   betas: [0.9, 0.999]
   batch_size: 256
   warmup_steps: 500
-  max_steps: 50000
-  val_every_steps: 500
-  val_max_batches: null      # null = full val set; int = first N batches only
+  max_steps: 35000
+  val_every_steps: 1000
+  val_max_batches: 20        # null = full val set; int = first N batches only
   patience_evals: 5
   grad_clip: 1.0
   precision: bf16
   num_seeds: 3
-  num_workers: 4             # DataLoader workers
+  num_workers: 8             # DataLoader workers (system has 8 vCPUs)
   holdout_size: 5000         # train2017 images held out for early-stopping val PPL
   holdout_seed: 0            # fixed across encoders/seeds — same holdout for fair comparison
 

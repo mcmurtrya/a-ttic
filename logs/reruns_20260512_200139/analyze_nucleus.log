@@ -1,0 +1,100 @@
+2026-05-13 02:41:01,955 | INFO    | analyze | Loaded 320000 score rows from /home/ubuntu/ttic_embeddings/captions/scores_seed1.csv
+2026-05-13 02:41:01,969 | INFO    | analyze | Decoders present: ['beam', 'nucleus']
+2026-05-13 02:41:01,983 | INFO    | analyze | Encoders present: ['clip', 'dinov2', 'mae', 'siglip']
+2026-05-13 02:41:01,996 | INFO    | analyze | Metrics present:  ['adj_per_noun', 'caption_length', 'head_noun_min_depth', 'projective_density', 'scene_object_ratio', 'topological_density', 'vg_attr_precision', 'vg_attr_recall']
+2026-05-13 02:41:02,040 | INFO    | analyze | Filtered to decoder=nucleus: 160000 rows
+2026-05-13 02:41:02,047 | INFO    | analyze | Analyzing 8 metrics: ['adj_per_noun', 'caption_length', 'head_noun_min_depth', 'projective_density', 'scene_object_ratio', 'topological_density', 'vg_attr_precision', 'vg_attr_recall']
+2026-05-13 02:41:02,110 | INFO    | analyze | 
+Running primary family (supervision-category contrast, 8 tests)...
+2026-05-13 02:41:02,221 | INFO    | analyze | Primary results:
+ statistic      p_value    n        r              metric             contrast        p_adj  rejected_at_alpha  claimed_meaningful
+ 3591897.5 7.126836e-03 3888 0.043155        adj_per_noun lang_sup_vs_self_sup 2.850734e-02               True               False
+ 5387390.0 2.230364e-01 4690 0.017792      caption_length lang_sup_vs_self_sup 3.568583e-01              False               False
+ 3502445.5 3.371215e-02 3819 0.034362 head_noun_min_depth lang_sup_vs_self_sup 8.989907e-02              False               False
+  820513.5 1.702031e-08 1961 0.127359  projective_density lang_sup_vs_self_sup 1.361624e-07               True                True
+  775330.0 6.373063e-01 1772 0.011200  scene_object_ratio lang_sup_vs_self_sup 7.283501e-01              False               False
+ 6041302.0 9.274627e-01 4919 0.001298 topological_density lang_sup_vs_self_sup 9.274627e-01              False               False
+    1890.5 3.303745e-01   92 0.101480   vg_attr_precision lang_sup_vs_self_sup 4.404994e-01              False               False
+  168692.0 1.941308e-01  843 0.044721      vg_attr_recall lang_sup_vs_self_sup 3.568583e-01              False               False
+2026-05-13 02:41:02,221 | INFO    | analyze | Wrote -> /home/ubuntu/ttic_embeddings/captions/analysis_seed1_nucleus_primary.csv
+2026-05-13 02:41:02,221 | INFO    | analyze | 
+Running mixed-effects robustness check on primary contrasts (8 metrics)...
+/home/ubuntu/ttic_embeddings/.venv/lib/python3.12/site-packages/statsmodels/regression/mixed_linear_model.py:1634: UserWarning: Random effects covariance is singular
+  warnings.warn(msg)
+/home/ubuntu/ttic_embeddings/.venv/lib/python3.12/site-packages/statsmodels/regression/mixed_linear_model.py:2237: ConvergenceWarning: The MLE may be on the boundary of the parameter space.
+  warnings.warn(msg, ConvergenceWarning)
+/home/ubuntu/ttic_embeddings/.venv/lib/python3.12/site-packages/statsmodels/regression/mixed_linear_model.py:2261: ConvergenceWarning: The Hessian matrix at the estimated parameter values is not positive definite.
+  warnings.warn(msg, ConvergenceWarning)
+/home/ubuntu/ttic_embeddings/.venv/lib/python3.12/site-packages/statsmodels/regression/mixed_linear_model.py:1634: UserWarning: Random effects covariance is singular
+  warnings.warn(msg)
+/home/ubuntu/ttic_embeddings/.venv/lib/python3.12/site-packages/statsmodels/regression/mixed_linear_model.py:2237: ConvergenceWarning: The MLE may be on the boundary of the parameter space.
+  warnings.warn(msg, ConvergenceWarning)
+/home/ubuntu/ttic_embeddings/.venv/lib/python3.12/site-packages/statsmodels/regression/mixed_linear_model.py:1634: UserWarning: Random effects covariance is singular
+  warnings.warn(msg)
+/home/ubuntu/ttic_embeddings/.venv/lib/python3.12/site-packages/statsmodels/regression/mixed_linear_model.py:2054: UserWarning: The random effects covariance matrix is singular.
+  warnings.warn(_warn_cov_sing)
+/home/ubuntu/ttic_embeddings/.venv/lib/python3.12/site-packages/statsmodels/regression/mixed_linear_model.py:2237: ConvergenceWarning: The MLE may be on the boundary of the parameter space.
+  warnings.warn(msg, ConvergenceWarning)
+/home/ubuntu/ttic_embeddings/.venv/lib/python3.12/site-packages/statsmodels/regression/mixed_linear_model.py:2245: UserWarning: The random effects covariance matrix is singular.
+  warnings.warn(_warn_cov_sing)
+/home/ubuntu/ttic_embeddings/.venv/lib/python3.12/site-packages/statsmodels/regression/mixed_linear_model.py:2261: ConvergenceWarning: The Hessian matrix at the estimated parameter values is not positive definite.
+  warnings.warn(msg, ConvergenceWarning)
+/home/ubuntu/ttic_embeddings/.venv/lib/python3.12/site-packages/statsmodels/regression/mixed_linear_model.py:1634: UserWarning: Random effects covariance is singular
+  warnings.warn(msg)
+/home/ubuntu/ttic_embeddings/.venv/lib/python3.12/site-packages/statsmodels/regression/mixed_linear_model.py:2237: ConvergenceWarning: The MLE may be on the boundary of the parameter space.
+  warnings.warn(msg, ConvergenceWarning)
+/home/ubuntu/ttic_embeddings/.venv/lib/python3.12/site-packages/statsmodels/regression/mixed_linear_model.py:1634: UserWarning: Random effects covariance is singular
+  warnings.warn(msg)
+/home/ubuntu/ttic_embeddings/.venv/lib/python3.12/site-packages/statsmodels/regression/mixed_linear_model.py:2237: ConvergenceWarning: The MLE may be on the boundary of the parameter space.
+  warnings.warn(msg, ConvergenceWarning)
+/home/ubuntu/ttic_embeddings/.venv/lib/python3.12/site-packages/statsmodels/regression/mixed_linear_model.py:1634: UserWarning: Random effects covariance is singular
+  warnings.warn(msg)
+/home/ubuntu/ttic_embeddings/.venv/lib/python3.12/site-packages/statsmodels/regression/mixed_linear_model.py:2054: UserWarning: The random effects covariance matrix is singular.
+  warnings.warn(_warn_cov_sing)
+/home/ubuntu/ttic_embeddings/.venv/lib/python3.12/site-packages/statsmodels/regression/mixed_linear_model.py:2237: ConvergenceWarning: The MLE may be on the boundary of the parameter space.
+  warnings.warn(msg, ConvergenceWarning)
+/home/ubuntu/ttic_embeddings/.venv/lib/python3.12/site-packages/statsmodels/regression/mixed_linear_model.py:2245: UserWarning: The random effects covariance matrix is singular.
+  warnings.warn(_warn_cov_sing)
+/home/ubuntu/ttic_embeddings/.venv/lib/python3.12/site-packages/statsmodels/regression/mixed_linear_model.py:2261: ConvergenceWarning: The Hessian matrix at the estimated parameter values is not positive definite.
+  warnings.warn(msg, ConvergenceWarning)
+/home/ubuntu/ttic_embeddings/.venv/lib/python3.12/site-packages/statsmodels/regression/mixed_linear_model.py:1634: UserWarning: Random effects covariance is singular
+  warnings.warn(msg)
+/home/ubuntu/ttic_embeddings/.venv/lib/python3.12/site-packages/statsmodels/regression/mixed_linear_model.py:2054: UserWarning: The random effects covariance matrix is singular.
+  warnings.warn(_warn_cov_sing)
+/home/ubuntu/ttic_embeddings/.venv/lib/python3.12/site-packages/statsmodels/regression/mixed_linear_model.py:2237: ConvergenceWarning: The MLE may be on the boundary of the parameter space.
+  warnings.warn(msg, ConvergenceWarning)
+/home/ubuntu/ttic_embeddings/.venv/lib/python3.12/site-packages/statsmodels/regression/mixed_linear_model.py:2245: UserWarning: The random effects covariance matrix is singular.
+  warnings.warn(_warn_cov_sing)
+/home/ubuntu/ttic_embeddings/.venv/lib/python3.12/site-packages/statsmodels/regression/mixed_linear_model.py:2261: ConvergenceWarning: The Hessian matrix at the estimated parameter values is not positive definite.
+  warnings.warn(msg, ConvergenceWarning)
+/home/ubuntu/ttic_embeddings/.venv/lib/python3.12/site-packages/statsmodels/regression/mixed_linear_model.py:1634: UserWarning: Random effects covariance is singular
+  warnings.warn(msg)
+/home/ubuntu/ttic_embeddings/.venv/lib/python3.12/site-packages/statsmodels/regression/mixed_linear_model.py:2054: UserWarning: The random effects covariance matrix is singular.
+  warnings.warn(_warn_cov_sing)
+/home/ubuntu/ttic_embeddings/.venv/lib/python3.12/site-packages/statsmodels/regression/mixed_linear_model.py:2237: ConvergenceWarning: The MLE may be on the boundary of the parameter space.
+  warnings.warn(msg, ConvergenceWarning)
+/home/ubuntu/ttic_embeddings/.venv/lib/python3.12/site-packages/statsmodels/regression/mixed_linear_model.py:2245: UserWarning: The random effects covariance matrix is singular.
+  warnings.warn(_warn_cov_sing)
+/home/ubuntu/ttic_embeddings/.venv/lib/python3.12/site-packages/statsmodels/regression/mixed_linear_model.py:2261: ConvergenceWarning: The Hessian matrix at the estimated parameter values is not positive definite.
+  warnings.warn(msg, ConvergenceWarning)
+2026-05-13 02:41:04,037 | INFO    | analyze | Mixed-effects results:
+     coef            se             z  p_value              metric
+-0.008741      0.003674 -2.378824e+00 0.017368        adj_per_noun
+ 0.081500      0.079202  1.029017e+00 0.303471      caption_length
+ 0.141433           NaN           NaN      NaN head_noun_min_depth
+-0.002082      0.000700 -2.974065e+00 0.002939  projective_density
+ 0.002744      0.010656  2.575373e-01 0.796764  scene_object_ratio
+-0.004778   4402.954434 -1.085230e-06 0.999999 topological_density
+-0.067530 209380.551793 -3.225216e-07 1.000000   vg_attr_precision
+ 0.000133           NaN           NaN      NaN      vg_attr_recall
+2026-05-13 02:41:04,037 | INFO    | analyze | Wrote -> /home/ubuntu/ttic_embeddings/captions/analysis_seed1_nucleus_mixed_effects.csv
+2026-05-13 02:41:04,038 | INFO    | analyze | 
+Running secondary family (pairwise contrasts, 48 tests)...
+2026-05-13 02:41:04,582 | INFO    | analyze | Wrote -> /home/ubuntu/ttic_embeddings/captions/analysis_seed1_nucleus_secondary.csv
+2026-05-13 02:41:04,602 | INFO    | analyze | MTLD per-cell:
+encoder decoder  seed metric     score     ci_lo     ci_hi  n_captions
+   clip nucleus     1   mtld 31.877553 31.523797 32.825227        5000
+ siglip nucleus     1   mtld 32.321389 31.323427 32.634905        5000
+ dinov2 nucleus     1   mtld 33.239568 32.484981 33.831197        5000
+    mae nucleus     1   mtld 32.161652 31.775916 33.062733        5000
+2026-05-13 02:41:04,602 | INFO    | analyze | Wrote -> /home/ubuntu/ttic_embeddings/captions/analysis_seed1_nucleus_summary.txt

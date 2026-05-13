@@ -1,0 +1,3 @@
+encoder,task,n_classes,n_train,n_test,metric,score
+mae,coco_objects,80,4000,1000,mAP,0.5265974329848117
+mae,coco_objects,80,4000,1000,mean_F1,0.35944841728812493

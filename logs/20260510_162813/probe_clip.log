@@ -1,0 +1,46 @@
+2026-05-12 19:25:03,470 | INFO    | probes | Loading COCO object labels from /home/ubuntu/data/coco/annotations/instances_val2017.json ...
+2026-05-12 19:25:04,230 | INFO    | probes | Loaded labels for 5000 images, 80 categories
+2026-05-12 19:25:05,548 | INFO    | probes | Device: cuda:0
+2026-05-12 19:25:05,574 | INFO    | probes | ============================================================
+2026-05-12 19:25:05,574 | INFO    | probes | Encoder: clip
+2026-05-12 19:25:05,575 | INFO    | probes | ============================================================
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Loading weights:   0%|          | 0/391 [00:00<?, ?it/s]Loading weights: 100%|██████████| 391/391 [00:00<00:00, 5122.47it/s]
+[transformers] [1mCLIPVisionModel LOAD REPORT[0m from: openai/clip-vit-large-patch14
+Key                                                          | Status     |  | 
+-------------------------------------------------------------+------------+--+-
+text_model.encoder.layers.{0...11}.mlp.fc2.bias              | UNEXPECTED |  | 
+text_model.encoder.layers.{0...11}.mlp.fc1.bias              | UNEXPECTED |  | 
+text_model.encoder.layers.{0...11}.self_attn.k_proj.weight   | UNEXPECTED |  | 
+text_model.encoder.layers.{0...11}.mlp.fc1.weight            | UNEXPECTED |  | 
+text_model.encoder.layers.{0...11}.self_attn.k_proj.bias     | UNEXPECTED |  | 
+text_model.encoder.layers.{0...11}.self_attn.v_proj.weight   | UNEXPECTED |  | 
+text_model.encoder.layers.{0...11}.layer_norm1.weight        | UNEXPECTED |  | 
+text_model.encoder.layers.{0...11}.layer_norm1.bias          | UNEXPECTED |  | 
+text_model.encoder.layers.{0...11}.layer_norm2.weight        | UNEXPECTED |  | 
+text_model.encoder.layers.{0...11}.self_attn.q_proj.bias     | UNEXPECTED |  | 
+text_model.encoder.layers.{0...11}.self_attn.out_proj.bias   | UNEXPECTED |  | 
+text_model.encoder.layers.{0...11}.self_attn.q_proj.weight   | UNEXPECTED |  | 
+text_model.encoder.layers.{0...11}.layer_norm2.bias          | UNEXPECTED |  | 
+text_model.encoder.layers.{0...11}.mlp.fc2.weight            | UNEXPECTED |  | 
+text_model.encoder.layers.{0...11}.self_attn.out_proj.weight | UNEXPECTED |  | 
+text_model.encoder.layers.{0...11}.self_attn.v_proj.bias     | UNEXPECTED |  | 
+text_model.final_layer_norm.weight                           | UNEXPECTED |  | 
+visual_projection.weight                                     | UNEXPECTED |  | 
+text_projection.weight                                       | UNEXPECTED |  | 
+text_model.final_layer_norm.bias                             | UNEXPECTED |  | 
+logit_scale                                                  | UNEXPECTED |  | 
+text_model.embeddings.token_embedding.weight                 | UNEXPECTED |  | 
+text_model.embeddings.position_embedding.weight              | UNEXPECTED |  | 
+
+Notes:
+- UNEXPECTED:	can be ignored when loading from different task/architecture; not ok if you expect identical arch.
+2026-05-12 19:25:06,545 | INFO    | probes | Loading cached features from features/probe_features_clip.npz
+2026-05-12 19:25:06,841 | INFO    | probes | Features (5000, 1024), Labels (5000, 80)
+2026-05-12 19:25:06,855 | INFO    | probes | Probe: train=4000, test=1000, classes=80
+2026-05-12 19:25:49,861 | INFO    | probes | clip: mAP=0.730  mean_F1=0.644  (80/80 classes evaluated)
+2026-05-12 19:25:49,868 | INFO    | probes | Wrote 2 probe rows to captions/probe_clip.csv
+2026-05-12 19:25:49,936 | INFO    | probes | Probe summary:
+metric        mAP   mean_F1
+encoder                    
+clip     0.729633  0.643591

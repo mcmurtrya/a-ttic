@@ -1,0 +1,53 @@
+2026-05-12 20:01:48,216 | INFO    | cache_features | Device: cuda:0
+2026-05-12 20:01:49,251 | INFO    | cache_features | Encoder: clip (openai/clip-vit-large-patch14)
+2026-05-12 20:01:49,251 | INFO    | cache_features | Images:  118287  |  patches: 256  |  dim: 1024  |  fp16 size: 57.8 GiB
+2026-05-12 20:01:49,251 | INFO    | cache_features | Output:  features/clip/train2017_features.fp16.bin
+Loading weights:   0%|          | 0/391 [00:00<?, ?it/s]Loading weights: 100%|██████████| 391/391 [00:00<00:00, 5875.76it/s]
+[transformers] [1mCLIPVisionModel LOAD REPORT[0m from: openai/clip-vit-large-patch14
+Key                                                          | Status     |  | 
+-------------------------------------------------------------+------------+--+-
+text_model.encoder.layers.{0...11}.self_attn.out_proj.bias   | UNEXPECTED |  | 
+text_model.encoder.layers.{0...11}.self_attn.v_proj.weight   | UNEXPECTED |  | 
+text_model.encoder.layers.{0...11}.self_attn.q_proj.weight   | UNEXPECTED |  | 
+text_model.encoder.layers.{0...11}.layer_norm2.bias          | UNEXPECTED |  | 
+text_model.encoder.layers.{0...11}.mlp.fc1.weight            | UNEXPECTED |  | 
+text_model.encoder.layers.{0...11}.self_attn.out_proj.weight | UNEXPECTED |  | 
+text_model.encoder.layers.{0...11}.layer_norm1.weight        | UNEXPECTED |  | 
+text_model.encoder.layers.{0...11}.self_attn.v_proj.bias     | UNEXPECTED |  | 
+text_model.encoder.layers.{0...11}.mlp.fc2.bias              | UNEXPECTED |  | 
+text_model.encoder.layers.{0...11}.mlp.fc1.bias              | UNEXPECTED |  | 
+text_model.encoder.layers.{0...11}.self_attn.k_proj.weight   | UNEXPECTED |  | 
+text_model.encoder.layers.{0...11}.self_attn.k_proj.bias     | UNEXPECTED |  | 
+text_model.encoder.layers.{0...11}.self_attn.q_proj.bias     | UNEXPECTED |  | 
+text_model.encoder.layers.{0...11}.mlp.fc2.weight            | UNEXPECTED |  | 
+text_model.encoder.layers.{0...11}.layer_norm2.weight        | UNEXPECTED |  | 
+text_model.encoder.layers.{0...11}.layer_norm1.bias          | UNEXPECTED |  | 
+text_model.embeddings.token_embedding.weight                 | UNEXPECTED |  | 
+visual_projection.weight                                     | UNEXPECTED |  | 
+text_model.embeddings.position_embedding.weight              | UNEXPECTED |  | 
+logit_scale                                                  | UNEXPECTED |  | 
+text_model.final_layer_norm.bias                             | UNEXPECTED |  | 
+text_model.final_layer_norm.weight                           | UNEXPECTED |  | 
+text_projection.weight                                       | UNEXPECTED |  | 
+
+Notes:
+- UNEXPECTED:	can be ignored when loading from different task/architecture; not ok if you expect identical arch.
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+2026-05-12 20:01:51,170 | INFO    | cache_features | Allocating memmap (57.8 GiB)...
+2026-05-12 20:02:21,281 | INFO    | cache_features |   7296 / 118287 images  |  242.3 img/s  |  ETA 7.6 min
+2026-05-12 20:02:51,337 | INFO    | cache_features |   15552 / 118287 images  |  258.5 img/s  |  ETA 6.6 min
+2026-05-12 20:03:21,430 | INFO    | cache_features |   22592 / 118287 images  |  250.3 img/s  |  ETA 6.4 min
+2026-05-12 20:03:51,460 | INFO    | cache_features |   30336 / 118287 images  |  252.2 img/s  |  ETA 5.8 min
+2026-05-12 20:04:21,998 | INFO    | cache_features |   37440 / 118287 images  |  248.2 img/s  |  ETA 5.4 min
+2026-05-12 20:04:52,226 | INFO    | cache_features |   45696 / 118287 images  |  252.4 img/s  |  ETA 4.8 min
+2026-05-12 20:05:22,415 | INFO    | cache_features |   52736 / 118287 images  |  249.6 img/s  |  ETA 4.4 min
+2026-05-12 20:05:52,629 | INFO    | cache_features |   60928 / 118287 images  |  252.3 img/s  |  ETA 3.8 min
+2026-05-12 20:06:22,674 | INFO    | cache_features |   67968 / 118287 images  |  250.3 img/s  |  ETA 3.4 min
+2026-05-12 20:06:52,889 | INFO    | cache_features |   75968 / 118287 images  |  251.8 img/s  |  ETA 2.8 min
+2026-05-12 20:07:23,085 | INFO    | cache_features |   82944 / 118287 images  |  249.9 img/s  |  ETA 2.4 min
+2026-05-12 20:07:53,098 | INFO    | cache_features |   90752 / 118287 images  |  250.7 img/s  |  ETA 1.8 min
+2026-05-12 20:08:23,199 | INFO    | cache_features |   97344 / 118287 images  |  248.3 img/s  |  ETA 1.4 min
+2026-05-12 20:08:53,259 | INFO    | cache_features |   105408 / 118287 images  |  249.7 img/s  |  ETA 0.9 min
+2026-05-12 20:09:23,891 | INFO    | cache_features |   112256 / 118287 images  |  248.0 img/s  |  ETA 0.4 min
+2026-05-12 20:09:59,932 | INFO    | cache_features | Done. 118287 images in 8.1 min (242.0 img/s).
+2026-05-12 20:09:59,932 | INFO    | cache_features | Wrote features/clip/train2017_features.fp16.bin (57.8 GiB) and train2017_features.meta.json

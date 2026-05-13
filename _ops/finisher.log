@@ -1,0 +1,136 @@
+
+=== finisher started Sun May 10 06:48:24 UTC 2026 ===
+Initial pipeline PID: 2656
+=== initial pipeline ended Sun May 10 07:13:41 UTC 2026 ===
+=== retry 1 started Sun May 10 07:13:41 UTC 2026 ===
+/home/ubuntu/finisher.sh: line 51: 10165 Killed                  bash "$REPO/scripts/run_full_pipeline.sh" >> "$REPO/pipeline.out" 2>&1
+=== retry 1 exited rc=137 at Sun May 10 07:13:53 UTC 2026 ===
+=== retry 2 started Sun May 10 07:13:53 UTC 2026 ===
+
+=== finisher started Sun May 10 07:20:10 UTC 2026 ===
+Initial pipeline PID: 16579
+
+=== finisher started Sun May 10 07:20:13 UTC 2026 ===
+Initial pipeline PID: 16579
+
+=== finisher started Sun May 10 07:21:27 UTC 2026 ===
+Waiting for any active run_full_pipeline.sh...
+=== no pipeline running Sun May 10 16:28:13 UTC 2026 ===
+=== retry 1 started Sun May 10 16:28:13 UTC 2026 ===
+Tue May 12 00:30:03 UTC 2026 another finisher already running (lock held); exiting
+
+=== finisher_v2 started Tue May 12 00:42:09 UTC 2026 ===
+Waiting for any active run_full_pipeline.sh...
+
+=== finisher_v2 started Tue May 12 05:16:26 UTC 2026 ===
+Waiting for any active run_full_pipeline.sh...
+Tue May 12 05:27:32 UTC 2026 another finisher_v2 already running (lock held); exiting
+
+=== finisher_v2 started Tue May 12 06:13:49 UTC 2026 ===
+Waiting for any active run_full_pipeline.sh...
+=== no pipeline running Tue May 12 20:01:39 UTC 2026 ===
+=== Pipeline complete; launching CLIP reruns Tue May 12 20:01:39 UTC 2026 ===
+=== CLIP reruns exited rc=0 at Wed May 13 02:41:39 UTC 2026 ===
+=== CLIP reruns complete; proceeding to commit/push Wed May 13 02:41:39 UTC 2026 ===
+=== success path: preparing commit Wed May 13 02:41:39 UTC 2026 ===
+Switched to a new branch 'pipeline-results-20260513'
+Copying operational artifacts into _ops/...
+Latest main pipeline log dir (for commit message): logs/20260510_162813/
+Adding logs/ recursively...
+Staging source modifications...
+Checkpoint decision: checkpoints included (total 689420 KB, max single 24619 KB)
+[pipeline-results-20260513 bdcd86c] Pipeline results 2026-05-13
+ 90 files changed, 418867 insertions(+), 66 deletions(-)
+ create mode 100644 .env.pipeline
+ create mode 100644 RUN_PIPELINE.md
+ create mode 100644 _ops/agent_notes.md
+ create mode 100644 _ops/finisher.log
+ create mode 100644 captions/analysis_seed1_beam_mixed_effects.csv
+ create mode 100644 captions/analysis_seed1_beam_primary.csv
+ create mode 100644 captions/analysis_seed1_beam_secondary.csv
+ create mode 100644 captions/analysis_seed1_nucleus_mixed_effects.csv
+ create mode 100644 captions/analysis_seed1_nucleus_primary.csv
+ create mode 100644 captions/analysis_seed1_nucleus_secondary.csv
+ create mode 100644 captions/captions_clip_seed1.jsonl
+ create mode 100644 captions/captions_dinov2_seed1.jsonl
+ create mode 100644 captions/captions_mae_seed1.jsonl
+ create mode 100644 captions/captions_seed1.jsonl
+ create mode 100644 captions/captions_siglip_seed1.jsonl
+ create mode 100644 captions/probe_clip.csv
+ create mode 100644 captions/probe_clip_siglip.csv
+ create mode 100644 captions/probe_dinov2.csv
+ create mode 100644 captions/probe_mae.csv
+ create mode 100644 captions/probe_results.csv
+ create mode 100644 captions/probe_siglip.csv
+ create mode 100644 captions/quality_results.csv
+ create mode 100644 captions/quality_summary.txt
+ create mode 100644 captions/scores_seed1.csv
+ create mode 100644 captions/scores_seed1_diversity.csv
+ create mode 100644 checkpoints/clip_seed1/adaptor_best.pt
+ create mode 100644 checkpoints/clip_seed1_orig/adaptor_best.pt
+ create mode 100644 checkpoints/clip_seed2/adaptor_best.pt
+ create mode 100644 checkpoints/clip_seed2_orig/adaptor_best.pt
+ create mode 100644 checkpoints/clip_seed3/adaptor_best.pt
+ create mode 100644 checkpoints/dinov2_seed1/adaptor_best.pt
+ create mode 100644 checkpoints/dinov2_seed2/adaptor_best.pt
+ create mode 100644 checkpoints/dinov2_seed3/adaptor_best.pt
+ create mode 100644 checkpoints/mae_seed1/adaptor_best.pt
+ create mode 100644 checkpoints/mae_seed2/adaptor_best.pt
+ create mode 100644 checkpoints/mae_seed3/adaptor_best.pt
+ create mode 100644 checkpoints/siglip_seed1/adaptor_best.pt
+ create mode 100644 checkpoints/siglip_seed2/adaptor_best.pt
+ create mode 100644 checkpoints/siglip_seed3/adaptor_best.pt
+ create mode 100644 logs/20260510_071828/smoke.log
+ create mode 100644 logs/20260510_071828/train_clip_seed1.log
+ create mode 100644 logs/20260510_071828/train_siglip_seed1.log
+ create mode 100644 logs/20260510_162813/analyze_beam.log
+ create mode 100644 logs/20260510_162813/analyze_nucleus.log
+ create mode 100644 logs/20260510_162813/cache_clip.log
+ create mode 100644 logs/20260510_162813/cache_dinov2.log
+ create mode 100644 logs/20260510_162813/cache_mae.log
+ create mode 100644 logs/20260510_162813/cache_siglip.log
+ create mode 100644 logs/20260510_162813/gen_clip_seed1.log
+ create mode 100644 logs/20260510_162813/gen_dinov2_seed1.log
+ create mode 100644 logs/20260510_162813/gen_mae_seed1.log
+ create mode 100644 logs/20260510_162813/gen_siglip_seed1.log
+ create mode 100644 logs/20260510_162813/probe_clip.log
+ create mode 100644 logs/20260510_162813/probe_dinov2.log
+ create mode 100644 logs/20260510_162813/probe_mae.log
+ create mode 100644 logs/20260510_162813/probe_siglip.log
+ create mode 100644 logs/20260510_162813/quality_seed1.log
+ create mode 100644 logs/20260510_162813/score_seed1.log
+ create mode 100644 logs/20260510_162813/smoke.log
+ create mode 100644 logs/20260510_162813/train_clip_seed1.log
+ create mode 100644 logs/20260510_162813/train_clip_seed2.log
+ create mode 100644 logs/20260510_162813/train_clip_seed3.log
+ create mode 100644 logs/20260510_162813/train_dinov2_seed1.log
+ create mode 100644 logs/20260510_162813/train_dinov2_seed2.log
+ create mode 100644 logs/20260510_162813/train_dinov2_seed3.log
+ create mode 100644 logs/20260510_162813/train_mae_seed1.log
+ create mode 100644 logs/20260510_162813/train_mae_seed2.log
+ create mode 100644 logs/20260510_162813/train_mae_seed3.log
+ create mode 100644 logs/20260510_162813/train_siglip_seed1.log
+ create mode 100644 logs/20260510_162813/train_siglip_seed2.log
+ create mode 100644 logs/20260510_162813/train_siglip_seed3.log
+ create mode 100644 logs/reruns_20260512_200139/analyze_beam.log
+ create mode 100644 logs/reruns_20260512_200139/analyze_nucleus.log
+ create mode 100644 logs/reruns_20260512_200139/cache_clip.log
+ create mode 100644 logs/reruns_20260512_200139/gen_clip_seed1.log
+ create mode 100644 logs/reruns_20260512_200139/orchestrator.log
+ create mode 100644 logs/reruns_20260512_200139/quality_seed1.log
+ create mode 100644 logs/reruns_20260512_200139/score_seed1.log
+ create mode 100644 logs/reruns_20260512_200139/train_clip_seed1.log
+ create mode 100644 logs/reruns_20260512_200139/train_clip_seed2.log
+ create mode 100644 pipeline.out
+ create mode 100644 scripts/01_cache_features.py
+remote: 
+remote: Create a pull request for 'pipeline-results-20260513' on GitHub by visiting:        
+remote:      https://github.com/mcmurtrya/a-ttic/pull/new/pipeline-results-20260513        
+remote: 
+To github.com:mcmurtrya/a-ttic.git
+ * [new branch]      pipeline-results-20260513 -> pipeline-results-20260513
+Branch 'pipeline-results-20260513' set up to track remote branch 'pipeline-results-20260513' from 'origin'.
+=== success — shutting down in 60s Wed May 13 02:43:34 UTC 2026 ===
+System has not been booted with systemd as init system (PID 1). Can't operate.
+Failed to connect to bus: Host is down
+Failed to talk to init daemon.

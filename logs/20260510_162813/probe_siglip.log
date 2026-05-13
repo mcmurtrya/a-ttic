@@ -1,0 +1,47 @@
+2026-05-12 19:25:03,752 | INFO    | probes | Loading COCO object labels from /home/ubuntu/data/coco/annotations/instances_val2017.json ...
+2026-05-12 19:25:04,411 | INFO    | probes | Loaded labels for 5000 images, 80 categories
+2026-05-12 19:25:05,874 | INFO    | probes | Device: cuda:1
+2026-05-12 19:25:05,887 | INFO    | probes | ============================================================
+2026-05-12 19:25:05,887 | INFO    | probes | Encoder: siglip
+2026-05-12 19:25:05,887 | INFO    | probes | ============================================================
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Loading weights:   0%|          | 0/400 [00:00<?, ?it/s]Loading weights: 100%|██████████| 400/400 [00:00<00:00, 4323.66it/s]
+[transformers] [1mSiglipVisionModel LOAD REPORT[0m from: google/siglip-large-patch16-256
+Key                                                          | Status     |  | 
+-------------------------------------------------------------+------------+--+-
+text_model.encoder.layers.{0...23}.self_attn.k_proj.bias     | UNEXPECTED |  | 
+text_model.encoder.layers.{0...23}.self_attn.q_proj.bias     | UNEXPECTED |  | 
+text_model.encoder.layers.{0...23}.self_attn.v_proj.bias     | UNEXPECTED |  | 
+text_model.encoder.layers.{0...23}.layer_norm2.bias          | UNEXPECTED |  | 
+text_model.encoder.layers.{0...23}.mlp.fc2.weight            | UNEXPECTED |  | 
+text_model.encoder.layers.{0...23}.self_attn.q_proj.weight   | UNEXPECTED |  | 
+logit_scale                                                  | UNEXPECTED |  | 
+text_model.encoder.layers.{0...23}.self_attn.out_proj.weight | UNEXPECTED |  | 
+text_model.encoder.layers.{0...23}.self_attn.out_proj.bias   | UNEXPECTED |  | 
+text_model.encoder.layers.{0...23}.mlp.fc1.bias              | UNEXPECTED |  | 
+text_model.final_layer_norm.bias                             | UNEXPECTED |  | 
+text_model.encoder.layers.{0...23}.layer_norm2.weight        | UNEXPECTED |  | 
+text_model.encoder.layers.{0...23}.mlp.fc1.weight            | UNEXPECTED |  | 
+text_model.encoder.layers.{0...23}.self_attn.k_proj.weight   | UNEXPECTED |  | 
+text_model.encoder.layers.{0...23}.self_attn.v_proj.weight   | UNEXPECTED |  | 
+text_model.encoder.layers.{0...23}.layer_norm1.bias          | UNEXPECTED |  | 
+text_model.encoder.layers.{0...23}.layer_norm1.weight        | UNEXPECTED |  | 
+text_model.encoder.layers.{0...23}.mlp.fc2.bias              | UNEXPECTED |  | 
+text_model.final_layer_norm.weight                           | UNEXPECTED |  | 
+text_model.head.weight                                       | UNEXPECTED |  | 
+text_model.embeddings.position_embedding.weight              | UNEXPECTED |  | 
+logit_bias                                                   | UNEXPECTED |  | 
+text_model.head.bias                                         | UNEXPECTED |  | 
+text_model.embeddings.token_embedding.weight                 | UNEXPECTED |  | 
+
+Notes:
+- UNEXPECTED:	can be ignored when loading from different task/architecture; not ok if you expect identical arch.
+2026-05-12 19:25:06,894 | INFO    | probes | Loading cached features from features/probe_features_siglip.npz
+2026-05-12 19:25:07,341 | INFO    | probes | Features (5000, 1024), Labels (5000, 80)
+2026-05-12 19:25:07,363 | INFO    | probes | Probe: train=4000, test=1000, classes=80
+2026-05-12 19:25:50,291 | INFO    | probes | siglip: mAP=0.761  mean_F1=0.697  (80/80 classes evaluated)
+2026-05-12 19:25:50,297 | INFO    | probes | Wrote 2 probe rows to captions/probe_siglip.csv
+2026-05-12 19:25:50,307 | INFO    | probes | Probe summary:
+metric        mAP  mean_F1
+encoder                   
+siglip   0.760516  0.69666

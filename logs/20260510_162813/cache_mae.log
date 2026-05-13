@@ -1,0 +1,53 @@
+2026-05-12 06:47:23,912 | INFO    | cache_features | Device: cuda:0
+2026-05-12 06:47:25,462 | INFO    | cache_features | Encoder: mae (facebook/vit-mae-large)
+2026-05-12 06:47:25,462 | INFO    | cache_features | Images:  118287  |  patches: 196  |  dim: 1024  |  fp16 size: 44.2 GiB
+2026-05-12 06:47:25,462 | INFO    | cache_features | Output:  features/mae/train2017_features.fp16.bin
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Loading weights:   0%|          | 0/390 [00:00<?, ?it/s]Loading weights: 100%|██████████| 390/390 [00:00<00:00, 21573.65it/s]
+[transformers] [1mViTMAEModel LOAD REPORT[0m from: facebook/vit-mae-large
+Key                                                                              | Status     |  | 
+---------------------------------------------------------------------------------+------------+--+-
+decoder.decoder_layers.{0, 1, 2, 3, 4, 5, 6, 7}.attention.output.dense.bias      | UNEXPECTED |  | 
+decoder.decoder_layers.{0, 1, 2, 3, 4, 5, 6, 7}.attention.attention.key.bias     | UNEXPECTED |  | 
+decoder.decoder_layers.{0, 1, 2, 3, 4, 5, 6, 7}.attention.output.dense.weight    | UNEXPECTED |  | 
+decoder.decoder_layers.{0, 1, 2, 3, 4, 5, 6, 7}.output.dense.weight              | UNEXPECTED |  | 
+decoder.decoder_layers.{0, 1, 2, 3, 4, 5, 6, 7}.layernorm_after.weight           | UNEXPECTED |  | 
+decoder.decoder_layers.{0, 1, 2, 3, 4, 5, 6, 7}.attention.attention.query.weight | UNEXPECTED |  | 
+decoder.decoder_norm.bias                                                        | UNEXPECTED |  | 
+decoder.decoder_layers.{0, 1, 2, 3, 4, 5, 6, 7}.attention.attention.value.bias   | UNEXPECTED |  | 
+decoder.decoder_layers.{0, 1, 2, 3, 4, 5, 6, 7}.output.dense.bias                | UNEXPECTED |  | 
+decoder.decoder_layers.{0, 1, 2, 3, 4, 5, 6, 7}.attention.attention.value.weight | UNEXPECTED |  | 
+decoder.decoder_layers.{0, 1, 2, 3, 4, 5, 6, 7}.layernorm_before.bias            | UNEXPECTED |  | 
+decoder.decoder_layers.{0, 1, 2, 3, 4, 5, 6, 7}.intermediate.dense.bias          | UNEXPECTED |  | 
+decoder.decoder_layers.{0, 1, 2, 3, 4, 5, 6, 7}.attention.attention.key.weight   | UNEXPECTED |  | 
+decoder.decoder_layers.{0, 1, 2, 3, 4, 5, 6, 7}.layernorm_before.weight          | UNEXPECTED |  | 
+decoder.mask_token                                                               | UNEXPECTED |  | 
+decoder.decoder_embed.bias                                                       | UNEXPECTED |  | 
+decoder.decoder_layers.{0, 1, 2, 3, 4, 5, 6, 7}.attention.attention.query.bias   | UNEXPECTED |  | 
+decoder.decoder_layers.{0, 1, 2, 3, 4, 5, 6, 7}.intermediate.dense.weight        | UNEXPECTED |  | 
+decoder.decoder_layers.{0, 1, 2, 3, 4, 5, 6, 7}.layernorm_after.bias             | UNEXPECTED |  | 
+decoder.decoder_pos_embed                                                        | UNEXPECTED |  | 
+decoder.decoder_pred.weight                                                      | UNEXPECTED |  | 
+decoder.decoder_norm.weight                                                      | UNEXPECTED |  | 
+decoder.decoder_embed.weight                                                     | UNEXPECTED |  | 
+decoder.decoder_pred.bias                                                        | UNEXPECTED |  | 
+
+Notes:
+- UNEXPECTED:	can be ignored when loading from different task/architecture; not ok if you expect identical arch.
+2026-05-12 06:47:36,981 | INFO    | cache_features | Allocating memmap (44.2 GiB)...
+2026-05-12 06:48:07,011 | INFO    | cache_features |   8320 / 118287 images  |  277.1 img/s  |  ETA 6.6 min
+2026-05-12 06:48:37,149 | INFO    | cache_features |   19392 / 118287 images  |  322.3 img/s  |  ETA 5.1 min
+2026-05-12 06:49:07,280 | INFO    | cache_features |   25984 / 118287 images  |  287.8 img/s  |  ETA 5.3 min
+2026-05-12 06:49:37,808 | INFO    | cache_features |   35328 / 118287 images  |  292.4 img/s  |  ETA 4.7 min
+2026-05-12 06:50:07,870 | INFO    | cache_features |   42112 / 118287 images  |  279.1 img/s  |  ETA 4.5 min
+2026-05-12 06:50:37,985 | INFO    | cache_features |   49728 / 118287 images  |  274.7 img/s  |  ETA 4.2 min
+2026-05-12 06:51:08,129 | INFO    | cache_features |   59904 / 118287 images  |  283.7 img/s  |  ETA 3.4 min
+2026-05-12 06:51:39,299 | INFO    | cache_features |   65856 / 118287 images  |  271.8 img/s  |  ETA 3.2 min
+2026-05-12 06:52:09,333 | INFO    | cache_features |   76992 / 118287 images  |  282.7 img/s  |  ETA 2.4 min
+2026-05-12 06:52:39,435 | INFO    | cache_features |   82944 / 118287 images  |  274.2 img/s  |  ETA 2.1 min
+2026-05-12 06:53:09,538 | INFO    | cache_features |   92160 / 118287 images  |  277.1 img/s  |  ETA 1.6 min
+2026-05-12 06:53:39,688 | INFO    | cache_features |   99072 / 118287 images  |  273.1 img/s  |  ETA 1.2 min
+2026-05-12 06:54:09,723 | INFO    | cache_features |   109504 / 118287 images  |  278.8 img/s  |  ETA 0.5 min
+2026-05-12 06:54:39,815 | INFO    | cache_features |   116672 / 118287 images  |  275.9 img/s  |  ETA 0.1 min
+2026-05-12 06:54:50,416 | INFO    | cache_features | Done. 118287 images in 7.2 min (272.9 img/s).
+2026-05-12 06:54:50,417 | INFO    | cache_features | Wrote features/mae/train2017_features.fp16.bin (44.2 GiB) and train2017_features.meta.json

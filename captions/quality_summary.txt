@@ -1,0 +1,30 @@
+# Caption-quality precondition — captions_seed1.jsonl
+
+## Per-condition scores
+
+metric              cider
+encoder decoder          
+clip    beam     1.018547
+        nucleus  0.549836
+dinov2  beam     1.104921
+        nucleus  0.637053
+mae     beam     0.884869
+        nucleus  0.478547
+siglip  beam     1.113123
+        nucleus  0.621293
+
+## Precondition check (CIDEr, beam decoder)
+
+threshold: 10.00% of max CIDEr
+
+  passed: False
+  max: 1.1131225340258126
+  min: 0.884868596434007
+  spread_fraction: 0.2050573325169182
+  threshold: 0.1
+  decoder: beam
+  encoders: ['clip', 'dinov2', 'mae', 'siglip']
+
+PRECONDITION FAILED — encoders differ on CIDEr by more than the
+threshold. Style claims should be scoped to 'comparable-quality'
+encoders only, or the worst encoder excluded from the headline.

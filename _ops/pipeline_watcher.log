@@ -1,0 +1,488 @@
+Sun May 10 17:01:55 UTC 2026 === watcher started (pid 995755) ===
+Sun May 10 17:01:55 UTC 2026 OK: phase=train:clip_seed2.log pids=pipe[950372] fin[22354] gpu=[0, 99, 33197;1, 0, 32755] disk 113G/147G (77%)
+Sun May 10 17:21:56 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=4733s
+Sun May 10 17:31:57 UTC 2026 OK: phase=train:clip_seed1.log pids=pipe[950372] fin[22354] gpu=[0, 9, 33197;1, 99, 32755] disk 113G/147G (77%)
+Sun May 10 17:41:57 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=5934s
+Sun May 10 18:01:58 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=7135s
+Sun May 10 18:01:58 UTC 2026 OK: phase=train:clip_seed2.log pids=pipe[950372] fin[22354] gpu=[0, 31, 33197;1, 47, 32755] disk 113G/147G (77%)
+Sun May 10 18:21:59 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=8336s
+Sun May 10 18:32:00 UTC 2026 OK: phase=train:clip_seed2.log pids=pipe[950372] fin[22354] gpu=[0, 61, 33197;1, 0, 32755] disk 113G/147G (77%)
+Sun May 10 18:42:00 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=9537s
+Sun May 10 19:02:01 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=10738s
+Sun May 10 19:02:01 UTC 2026 OK: phase=train:clip_seed1.log pids=pipe[950372] fin[22354] gpu=[0, 0, 33197;1, 22, 32755] disk 113G/147G (77%)
+Sun May 10 19:22:02 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=11939s
+Sun May 10 19:32:03 UTC 2026 OK: phase=train:clip_seed1.log pids=pipe[950372] fin[22354] gpu=[0, 0, 33197;1, 9, 32755] disk 113G/147G (77%)
+Sun May 10 19:42:03 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=13140s
+Sun May 10 20:02:04 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=14341s
+Sun May 10 20:02:05 UTC 2026 OK: phase=train:clip_seed2.log pids=pipe[950372] fin[22354] gpu=[0, 0, 33197;1, 0, 32755] disk 113G/147G (77%)
+Sun May 10 20:22:05 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=15542s
+Sun May 10 20:32:06 UTC 2026 OK: phase=train:clip_seed1.log pids=pipe[950372] fin[22354] gpu=[0, 0, 33197;1, 92, 32755] disk 113G/147G (77%)
+Sun May 10 20:42:06 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=16743s
+Sun May 10 21:02:07 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=17944s
+Sun May 10 21:02:08 UTC 2026 OK: phase=train:clip_seed1.log pids=pipe[950372] fin[22354] gpu=[0, 99, 33197;1, 100, 32755] disk 113G/147G (77%)
+Sun May 10 21:22:08 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=19145s
+Sun May 10 21:32:09 UTC 2026 OK: phase=train:clip_seed2.log pids=pipe[950372] fin[22354] gpu=[0, 52, 33197;1, 62, 32755] disk 113G/147G (77%)
+Sun May 10 21:42:10 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=20347s
+Sun May 10 22:02:10 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=1327s
+Sun May 10 22:02:10 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=21547s
+Sun May 10 22:02:11 UTC 2026 OK: phase=train:clip_seed2.log pids=pipe[950372] fin[22354] gpu=[0, 0, 425;1, 14, 32755] disk 113G/147G (77%)
+Sun May 10 22:22:12 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=2528s
+Sun May 10 22:22:12 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=22748s
+Sun May 10 22:32:13 UTC 2026 OK: phase=train:clip_seed2.log pids=pipe[950372] fin[22354] gpu=[0, 0, 425;1, 0, 32755] disk 113G/147G (77%)
+Sun May 10 22:42:13 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=3730s
+Sun May 10 22:42:13 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=23950s
+Sun May 10 23:02:14 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=4931s
+Sun May 10 23:02:14 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=25151s
+Sun May 10 23:02:14 UTC 2026 OK: phase=train:clip_seed2.log pids=pipe[950372] fin[22354] gpu=[0, 0, 425;1, 37, 32755] disk 113G/147G (77%)
+Sun May 10 23:22:15 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=6132s
+Sun May 10 23:22:15 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=26352s
+Sun May 10 23:32:16 UTC 2026 OK: phase=train:clip_seed2.log pids=pipe[950372] fin[22354] gpu=[0, 0, 425;1, 99, 32755] disk 113G/147G (77%)
+Sun May 10 23:42:16 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=7333s
+Sun May 10 23:42:16 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=27553s
+Mon May 11 00:02:17 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=8534s
+Mon May 11 00:02:17 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=28754s
+Mon May 11 00:02:18 UTC 2026 OK: phase=train:clip_seed2.log pids=pipe[950372] fin[22354] gpu=[0, 0, 425;1, 87, 32755] disk 113G/147G (77%)
+Mon May 11 00:22:18 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=9735s
+Mon May 11 00:22:18 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=29955s
+Mon May 11 00:32:19 UTC 2026 OK: phase=train:clip_seed2.log pids=pipe[950372] fin[22354] gpu=[0, 0, 425;1, 46, 32755] disk 113G/147G (77%)
+Mon May 11 00:42:19 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=10936s
+Mon May 11 00:42:19 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=31156s
+Mon May 11 01:02:20 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=12137s
+Mon May 11 01:02:20 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=32357s
+Mon May 11 01:02:21 UTC 2026 OK: phase=train:clip_seed2.log pids=pipe[950372] fin[22354] gpu=[0, 0, 425;1, 9, 32755] disk 113G/147G (77%)
+Mon May 11 01:22:21 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=13338s
+Mon May 11 01:22:21 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=33558s
+Mon May 11 01:32:22 UTC 2026 OK: phase=train:clip_seed2.log pids=pipe[950372] fin[22354] gpu=[0, 0, 425;1, 98, 32755] disk 113G/147G (77%)
+Mon May 11 01:42:23 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=14539s
+Mon May 11 01:42:23 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=34759s
+Mon May 11 02:02:23 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=15740s
+Mon May 11 02:02:23 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=35960s
+Mon May 11 02:02:24 UTC 2026 OK: phase=train:clip_seed2.log pids=pipe[950372] fin[22354] gpu=[0, 0, 425;1, 30, 32755] disk 94G/147G (64%)
+Mon May 11 02:22:25 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=16941s
+Mon May 11 02:22:25 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=37161s
+Mon May 11 02:32:26 UTC 2026 OK: phase=train:clip_seed2.log pids=pipe[950372] fin[22354] gpu=[0, 0, 425;1, 42, 32755] disk 94G/147G (64%)
+Mon May 11 02:42:26 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=18143s
+Mon May 11 02:42:26 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=38363s
+Mon May 11 03:02:27 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=19343s
+Mon May 11 03:02:27 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=39563s
+Mon May 11 03:02:27 UTC 2026 OK: phase=train:clip_seed3.log pids=pipe[950372] fin[22354] gpu=[0, 28, 32755;1, 0, 4] disk 94G/147G (64%)
+Mon May 11 03:12:28 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed2/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=1371s
+Mon May 11 03:22:28 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=20545s
+Mon May 11 03:22:28 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=40765s
+Mon May 11 03:32:29 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed2/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=2572s
+Mon May 11 03:32:30 UTC 2026 OK: phase=train:clip_seed3.log pids=pipe[950372] fin[22354] gpu=[0, 78, 32755;1, 0, 4] disk 94G/147G (64%)
+Mon May 11 03:42:30 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=21747s
+Mon May 11 03:42:30 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=41967s
+Mon May 11 03:52:31 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed2/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=3774s
+Mon May 11 04:02:31 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=22948s
+Mon May 11 04:02:31 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=43168s
+Mon May 11 04:02:32 UTC 2026 OK: phase=train:clip_seed3.log pids=pipe[950372] fin[22354] gpu=[0, 34, 32755;1, 0, 4] disk 94G/147G (64%)
+Mon May 11 04:12:32 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed2/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=4975s
+Mon May 11 04:22:33 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=24149s
+Mon May 11 04:22:33 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=44369s
+Mon May 11 04:32:33 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed2/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=6176s
+Mon May 11 04:32:34 UTC 2026 OK: phase=train:clip_seed3.log pids=pipe[950372] fin[22354] gpu=[0, 99, 32755;1, 0, 4] disk 94G/147G (64%)
+Mon May 11 04:42:34 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=25351s
+Mon May 11 04:42:34 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=45571s
+Mon May 11 04:52:34 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed2/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=7377s
+Mon May 11 05:02:35 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=26552s
+Mon May 11 05:02:35 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=46772s
+Mon May 11 05:02:36 UTC 2026 OK: phase=train:clip_seed3.log pids=pipe[950372] fin[22354] gpu=[0, 100, 32755;1, 0, 4] disk 94G/147G (64%)
+Mon May 11 05:12:36 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed2/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=8579s
+Mon May 11 05:22:37 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=27754s
+Mon May 11 05:22:37 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=47974s
+Mon May 11 05:32:37 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed2/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=9780s
+Mon May 11 05:32:38 UTC 2026 OK: phase=train:clip_seed3.log pids=pipe[950372] fin[22354] gpu=[0, 0, 32755;1, 0, 4] disk 94G/147G (64%)
+Mon May 11 05:42:38 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=28955s
+Mon May 11 05:42:38 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=49175s
+Mon May 11 05:52:39 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed2/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=10982s
+Mon May 11 06:02:39 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=30156s
+Mon May 11 06:02:39 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=50376s
+Mon May 11 06:02:40 UTC 2026 OK: phase=train:clip_seed3.log pids=pipe[950372] fin[22354] gpu=[0, 28, 32755;1, 0, 4] disk 94G/147G (64%)
+Mon May 11 06:12:40 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed2/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=12183s
+Mon May 11 06:22:41 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=31358s
+Mon May 11 06:22:41 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=51578s
+Mon May 11 06:32:41 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed2/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=13384s
+Mon May 11 06:32:42 UTC 2026 OK: phase=train:clip_seed3.log pids=pipe[950372] fin[22354] gpu=[0, 47, 32755;1, 0, 4] disk 94G/147G (64%)
+Mon May 11 06:42:42 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=32559s
+Mon May 11 06:42:42 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=52779s
+Mon May 11 06:52:43 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed2/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=14586s
+Mon May 11 07:02:43 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=33760s
+Mon May 11 07:02:43 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=53980s
+Mon May 11 07:02:44 UTC 2026 OK: phase=train:clip_seed3.log pids=pipe[950372] fin[22354] gpu=[0, 100, 32755;1, 0, 4] disk 94G/147G (64%)
+Mon May 11 07:12:44 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed2/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=15787s
+Mon May 11 07:22:45 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=34962s
+Mon May 11 07:22:45 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=55182s
+Mon May 11 07:32:45 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed2/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=16988s
+Mon May 11 07:32:46 UTC 2026 OK: phase=train:clip_seed3.log pids=pipe[950372] fin[22354] gpu=[0, 59, 32755;1, 0, 4] disk 94G/147G (64%)
+Mon May 11 07:42:47 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=36163s
+Mon May 11 07:42:47 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=56383s
+Mon May 11 07:52:47 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed2/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=18190s
+Mon May 11 08:02:48 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=37364s
+Mon May 11 08:02:48 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=57584s
+Mon May 11 08:02:48 UTC 2026 OK: phase=train:clip_seed3.log pids=pipe[950372] fin[22354] gpu=[0, 52, 32755;1, 0, 4] disk 94G/147G (64%)
+Mon May 11 08:12:49 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed2/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=19391s
+Mon May 11 08:22:49 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=38566s
+Mon May 11 08:22:49 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=58786s
+Mon May 11 08:32:50 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed2/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=20593s
+Mon May 11 08:32:50 UTC 2026 OK: phase=train:clip_seed3.log pids=pipe[950372] fin[22354] gpu=[0, 32, 32755;1, 0, 4] disk 94G/147G (64%)
+Mon May 11 08:42:51 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=39768s
+Mon May 11 08:42:51 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=59988s
+Mon May 11 08:52:51 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed2/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=21794s
+Mon May 11 09:02:52 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=40968s
+Mon May 11 09:02:52 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=61188s
+Mon May 11 09:02:52 UTC 2026 OK: phase=train:clip_seed3.log pids=pipe[950372] fin[22354] gpu=[0, 6, 32755;1, 0, 4] disk 94G/147G (64%)
+Mon May 11 09:12:53 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed2/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=22995s
+Mon May 11 09:22:53 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=42170s
+Mon May 11 09:22:53 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=62390s
+Mon May 11 09:32:54 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed2/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=24197s
+Mon May 11 09:32:54 UTC 2026 OK: phase=train:clip_seed3.log pids=pipe[950372] fin[22354] gpu=[0, 0, 32755;1, 0, 4] disk 94G/147G (64%)
+Mon May 11 09:42:55 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=43372s
+Mon May 11 09:42:55 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=63592s
+Mon May 11 09:52:55 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed2/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=25398s
+Mon May 11 10:02:56 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=44573s
+Mon May 11 10:02:56 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=64793s
+Mon May 11 10:02:57 UTC 2026 OK: phase=train:clip_seed3.log pids=pipe[950372] fin[22354] gpu=[0, 87, 32755;1, 0, 4] disk 94G/147G (64%)
+Mon May 11 10:27:58 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed2/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=27501s
+Mon May 11 10:32:59 UTC 2026 OK: phase=train:siglip_seed2.log pids=pipe[950372] fin[22354] gpu=[0, 0, 33247;1, 95, 32805] disk 94G/147G (64%)
+Mon May 11 10:37:59 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=46676s
+Mon May 11 10:48:00 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed2/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=28703s
+Mon May 11 10:48:00 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed3/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=2230s
+Mon May 11 10:58:00 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=47877s
+Mon May 11 11:03:02 UTC 2026 OK: phase=train:siglip_seed2.log pids=pipe[950372] fin[22354] gpu=[0, 98, 33247;1, 88, 32805] disk 94G/147G (64%)
+Mon May 11 11:08:02 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed2/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=29905s
+Mon May 11 11:08:02 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed3/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=3432s
+Mon May 11 11:18:03 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=49079s
+Mon May 11 11:28:03 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed2/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=31106s
+Mon May 11 11:28:03 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed3/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=4633s
+Mon May 11 11:33:04 UTC 2026 OK: phase=train:siglip_seed2.log pids=pipe[950372] fin[22354] gpu=[0, 59, 33247;1, 0, 32805] disk 94G/147G (64%)
+Mon May 11 11:38:05 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=50281s
+Mon May 11 11:48:05 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed2/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=32308s
+Mon May 11 11:48:05 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed3/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=5835s
+Mon May 11 11:58:06 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=51483s
+Mon May 11 12:03:07 UTC 2026 OK: phase=train:siglip_seed1.log pids=pipe[950372] fin[22354] gpu=[0, 18, 33247;1, 0, 32805] disk 94G/147G (64%)
+Mon May 11 12:08:08 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed2/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=33510s
+Mon May 11 12:08:08 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed3/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=7037s
+Mon May 11 12:18:08 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=52685s
+Mon May 11 12:28:09 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed2/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=34712s
+Mon May 11 12:28:09 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed3/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=8239s
+Mon May 11 12:33:10 UTC 2026 OK: phase=train:siglip_seed2.log pids=pipe[950372] fin[22354] gpu=[0, 0, 425;1, 16, 32805] disk 94G/147G (64%)
+Mon May 11 12:38:10 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=53887s
+Mon May 11 12:48:11 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed2/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=35914s
+Mon May 11 12:48:11 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed3/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=9441s
+Mon May 11 12:53:11 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=1465s
+Mon May 11 12:58:11 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=55088s
+Mon May 11 13:03:12 UTC 2026 OK: phase=train:siglip_seed2.log pids=pipe[950372] fin[22354] gpu=[0, 0, 425;1, 0, 32805] disk 94G/147G (64%)
+Mon May 11 13:08:12 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed2/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=37115s
+Mon May 11 13:08:12 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed3/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=10642s
+Mon May 11 13:13:12 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=2666s
+Mon May 11 13:18:13 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=56289s
+Mon May 11 13:28:13 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed2/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=38316s
+Mon May 11 13:28:13 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed3/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=11843s
+Mon May 11 13:33:13 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=3867s
+Mon May 11 13:33:14 UTC 2026 OK: phase=train:siglip_seed2.log pids=pipe[950372] fin[22354] gpu=[0, 0, 3393;1, 78, 32805] disk 94G/147G (64%)
+Mon May 11 13:38:14 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=57491s
+Mon May 11 13:48:15 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed2/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=39518s
+Mon May 11 13:48:15 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed3/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=13045s
+Mon May 11 13:53:15 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=5069s
+Mon May 11 13:58:16 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=58692s
+Mon May 11 14:03:17 UTC 2026 OK: phase=train:siglip_seed2.log pids=pipe[950372] fin[22354] gpu=[0, 14, 3579;1, 76, 32805] disk 94G/147G (64%)
+Mon May 11 14:08:17 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed2/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=40720s
+Mon May 11 14:08:17 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed3/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=14247s
+Mon May 11 14:13:17 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=6271s
+Mon May 11 14:18:17 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=59894s
+Mon May 11 14:28:18 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed2/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=41921s
+Mon May 11 14:28:18 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed3/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=15448s
+Mon May 11 14:33:18 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=7472s
+Mon May 11 14:33:19 UTC 2026 OK: phase=train:siglip_seed2.log pids=pipe[950372] fin[22354] gpu=[0, 12, 3579;1, 87, 32805] disk 94G/147G (64%)
+Mon May 11 14:38:19 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=61096s
+Mon May 11 14:48:19 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed2/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=43122s
+Mon May 11 14:48:19 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed3/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=16649s
+Mon May 11 14:53:20 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=8673s
+Mon May 11 14:58:21 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=62297s
+Mon May 11 15:03:21 UTC 2026 ALERT: disk at 95% full on /home/ubuntu
+Mon May 11 15:03:22 UTC 2026 OK: phase=train:siglip_seed3.log pids=pipe[950372] fin[22354] gpu=[0, 31, 35959;1, 0, 4] disk 139G/147G (95%)
+Mon May 11 15:08:22 UTC 2026 ALERT: disk at 95% full on /home/ubuntu
+Mon May 11 15:08:22 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed2/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=44325s
+Mon May 11 15:08:22 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed3/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=17852s
+Mon May 11 15:08:22 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed2/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=1328s
+Mon May 11 15:13:23 UTC 2026 ALERT: disk at 95% full on /home/ubuntu
+Mon May 11 15:13:23 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=9876s
+Mon May 11 15:18:23 UTC 2026 ALERT: disk at 95% full on /home/ubuntu
+Mon May 11 15:18:23 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=63500s
+Mon May 11 15:23:23 UTC 2026 ALERT: disk at 95% full on /home/ubuntu
+Mon May 11 15:28:24 UTC 2026 ALERT: disk at 95% full on /home/ubuntu
+Mon May 11 15:28:24 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed2/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=45527s
+Mon May 11 15:28:24 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed3/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=19054s
+Mon May 11 15:28:24 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed2/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=2530s
+Mon May 11 15:33:24 UTC 2026 ALERT: disk at 95% full on /home/ubuntu
+Mon May 11 15:33:24 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=11078s
+Mon May 11 15:33:25 UTC 2026 OK: phase=train:siglip_seed3.log pids=pipe[950372] fin[22354] gpu=[0, 74, 33227;1, 35, 32727] disk 139G/147G (95%)
+Mon May 11 15:38:25 UTC 2026 ALERT: disk at 95% full on /home/ubuntu
+Mon May 11 15:38:25 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=64702s
+Mon May 11 15:43:25 UTC 2026 ALERT: disk at 95% full on /home/ubuntu
+Mon May 11 15:48:26 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed2/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=46728s
+Mon May 11 15:48:26 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed3/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=20255s
+Mon May 11 15:48:26 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed2/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=3731s
+Mon May 11 15:53:26 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=12280s
+Mon May 11 15:58:26 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=65903s
+Mon May 11 16:03:27 UTC 2026 OK: phase=train:siglip_seed3.log pids=pipe[950372] fin[22354] gpu=[0, 100, 33227;1, 13, 3203] disk 95G/147G (65%)
+Mon May 11 16:08:27 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed2/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=47930s
+Mon May 11 16:08:27 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed3/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=21457s
+Mon May 11 16:08:27 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed2/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=4933s
+Mon May 11 16:13:28 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=13481s
+Mon May 11 16:18:28 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=67105s
+Mon May 11 16:28:28 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed2/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=49131s
+Mon May 11 16:28:28 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed3/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=22658s
+Mon May 11 16:28:28 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed2/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=6134s
+Mon May 11 16:33:29 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=14683s
+Mon May 11 16:33:30 UTC 2026 OK: phase=train:siglip_seed3.log pids=pipe[950372] fin[22354] gpu=[0, 96, 33227;1, 13, 3203] disk 95G/147G (65%)
+Mon May 11 16:38:30 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=68307s
+Mon May 11 16:48:31 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed2/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=50333s
+Mon May 11 16:48:31 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed3/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=23860s
+Mon May 11 16:48:31 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed2/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=7336s
+Mon May 11 16:53:31 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=15885s
+Mon May 11 16:58:31 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=69508s
+Mon May 11 17:03:33 UTC 2026 OK: phase=train:siglip_seed3.log pids=pipe[950372] fin[22354] gpu=[0, 14, 33227;1, 12, 3203] disk 95G/147G (65%)
+Mon May 11 17:08:33 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed2/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=51536s
+Mon May 11 17:08:33 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed3/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=25063s
+Mon May 11 17:08:33 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed2/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=8539s
+Mon May 11 17:13:34 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=17087s
+Mon May 11 17:18:34 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=70711s
+Mon May 11 17:28:35 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed2/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=52738s
+Mon May 11 17:28:36 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed3/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=26265s
+Mon May 11 17:28:36 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed2/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=9741s
+Mon May 11 17:33:36 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=18290s
+Mon May 11 17:33:38 UTC 2026 OK: phase=train:siglip_seed3.log pids=pipe[950372] fin[22354] gpu=[0, 34, 33227;1, 3, 1707] disk 95G/147G (65%)
+Mon May 11 17:38:38 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=71915s
+Mon May 11 17:48:40 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed2/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=53942s
+Mon May 11 17:48:40 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed3/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=27469s
+Mon May 11 17:48:40 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed2/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=10945s
+Mon May 11 17:53:40 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=19494s
+Mon May 11 17:58:40 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=73117s
+Mon May 11 18:03:41 UTC 2026 OK: phase=train:siglip_seed3.log pids=pipe[950372] fin[22354] gpu=[0, 87, 32805;1, 0, 4] disk 95G/147G (65%)
+Mon May 11 18:08:42 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed2/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=55144s
+Mon May 11 18:08:42 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed3/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=28671s
+Mon May 11 18:08:42 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed2/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=12147s
+Mon May 11 18:13:42 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=20696s
+Mon May 11 18:18:42 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=74319s
+Mon May 11 18:28:43 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed2/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=56346s
+Mon May 11 18:28:43 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed3/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=29873s
+Mon May 11 18:28:43 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed2/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=13349s
+Mon May 11 18:33:43 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=21897s
+Mon May 11 18:33:44 UTC 2026 OK: phase=train:siglip_seed3.log pids=pipe[950372] fin[22354] gpu=[0, 20, 32805;1, 0, 4] disk 95G/147G (65%)
+Mon May 11 18:38:44 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=75521s
+Mon May 11 18:48:44 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed2/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=57547s
+Mon May 11 18:48:44 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed3/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=31074s
+Mon May 11 18:48:44 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed2/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=14550s
+Mon May 11 18:53:45 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=23098s
+Mon May 11 18:58:45 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=76722s
+Mon May 11 19:03:46 UTC 2026 OK: phase=train:siglip_seed3.log pids=pipe[950372] fin[22354] gpu=[0, 13, 32805;1, 0, 4] disk 95G/147G (65%)
+Mon May 11 19:08:46 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed2/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=58749s
+Mon May 11 19:08:46 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed3/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=32276s
+Mon May 11 19:08:46 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed2/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=15752s
+Mon May 11 19:13:46 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=24300s
+Mon May 11 19:18:47 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=77923s
+Mon May 11 19:28:47 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed2/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=59950s
+Mon May 11 19:28:47 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed3/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=33477s
+Mon May 11 19:28:47 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed2/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=16953s
+Mon May 11 19:33:47 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=25501s
+Mon May 11 19:33:48 UTC 2026 OK: phase=train:siglip_seed3.log pids=pipe[950372] fin[22354] gpu=[0, 89, 32805;1, 0, 4] disk 95G/147G (65%)
+Mon May 11 19:38:48 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=79125s
+Mon May 11 19:48:49 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed2/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=61151s
+Mon May 11 19:48:49 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed3/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=34678s
+Mon May 11 19:48:49 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed2/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=18154s
+Mon May 11 19:53:49 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=26703s
+Mon May 11 19:58:49 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=80326s
+Mon May 11 20:03:50 UTC 2026 OK: phase=train:siglip_seed3.log pids=pipe[950372] fin[22354] gpu=[0, 84, 32805;1, 0, 4] disk 95G/147G (65%)
+Mon May 11 20:08:50 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed2/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=62353s
+Mon May 11 20:08:50 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed3/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=35880s
+Mon May 11 20:08:50 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed2/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=19356s
+Mon May 11 20:13:50 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=27904s
+Mon May 11 20:18:51 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=81528s
+Mon May 11 20:28:51 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed2/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=63554s
+Mon May 11 20:28:51 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed3/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=37081s
+Mon May 11 20:28:51 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed2/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=20557s
+Mon May 11 20:33:51 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=29105s
+Mon May 11 20:33:52 UTC 2026 OK: phase=train:siglip_seed3.log pids=pipe[950372] fin[22354] gpu=[0, 97, 32805;1, 0, 4] disk 95G/147G (65%)
+Mon May 11 20:38:52 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=82729s
+Mon May 11 21:03:54 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed2/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=65657s
+Mon May 11 21:03:54 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed3/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=39184s
+Mon May 11 21:03:54 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed2/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=22660s
+Mon May 11 21:03:55 UTC 2026 OK: phase=train:dinov2_seed2.log pids=pipe[950372] fin[22354] gpu=[0, 0, 33181;1, 43, 32759] disk 95G/147G (65%)
+Mon May 11 21:08:55 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=31209s
+Mon May 11 21:13:55 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=84832s
+Mon May 11 21:18:56 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed3/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=2148s
+Mon May 11 21:23:57 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed2/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=66859s
+Mon May 11 21:23:57 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed3/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=40386s
+Mon May 11 21:23:57 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed2/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=23862s
+Mon May 11 21:28:57 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=32411s
+Mon May 11 21:33:58 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=86034s
+Mon May 11 21:33:58 UTC 2026 OK: phase=train:dinov2_seed1.log pids=pipe[950372] fin[22354] gpu=[0, 66, 33181;1, 0, 32759] disk 95G/147G (65%)
+Mon May 11 21:38:59 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed3/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=3351s
+Mon May 11 21:43:59 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed2/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=68062s
+Mon May 11 21:43:59 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed3/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=41589s
+Mon May 11 21:43:59 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed2/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=25065s
+Mon May 11 21:49:00 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=33613s
+Mon May 11 21:54:00 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=87237s
+Mon May 11 21:59:01 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed3/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=4553s
+Mon May 11 22:04:01 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed2/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=69264s
+Mon May 11 22:04:01 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed3/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=42791s
+Mon May 11 22:04:01 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed2/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=26267s
+Mon May 11 22:04:02 UTC 2026 OK: phase=train:dinov2_seed2.log pids=pipe[950372] fin[22354] gpu=[0, 0, 33181;1, 100, 32759] disk 95G/147G (65%)
+Mon May 11 22:09:02 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=34816s
+Mon May 11 22:14:02 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=88439s
+Mon May 11 22:19:03 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed3/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=5755s
+Mon May 11 22:24:03 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed2/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=70466s
+Mon May 11 22:24:03 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed3/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=43993s
+Mon May 11 22:24:03 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed2/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=27469s
+Mon May 11 22:29:03 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=36017s
+Mon May 11 22:34:04 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=89640s
+Mon May 11 22:34:05 UTC 2026 OK: phase=train:dinov2_seed1.log pids=pipe[950372] fin[22354] gpu=[0, 100, 33181;1, 80, 32759] disk 95G/147G (65%)
+Mon May 11 22:39:05 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed3/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=6958s
+Mon May 11 22:44:05 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed2/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=71668s
+Mon May 11 22:44:05 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed3/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=45195s
+Mon May 11 22:44:05 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed2/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=28671s
+Mon May 11 22:49:06 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=37219s
+Mon May 11 22:54:06 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=90843s
+Mon May 11 22:59:06 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed3/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=8159s
+Mon May 11 23:04:07 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed2/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=72870s
+Mon May 11 23:04:07 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed3/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=46397s
+Mon May 11 23:04:07 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed2/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=29873s
+Mon May 11 23:04:08 UTC 2026 OK: phase=train:dinov2_seed2.log pids=pipe[950372] fin[22354] gpu=[0, 54, 33181;1, 29, 32759] disk 95G/147G (65%)
+Mon May 11 23:09:08 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=38422s
+Mon May 11 23:14:08 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=92045s
+Mon May 11 23:19:09 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed3/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=9361s
+Mon May 11 23:24:09 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed2/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=74072s
+Mon May 11 23:24:09 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed3/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=47599s
+Mon May 11 23:24:09 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed2/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=31075s
+Mon May 11 23:29:09 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=39623s
+Mon May 11 23:34:10 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=93246s
+Mon May 11 23:34:10 UTC 2026 OK: phase=train:dinov2_seed1.log pids=pipe[950372] fin[22354] gpu=[0, 13, 33181;1, 92, 32759] disk 95G/147G (65%)
+Mon May 11 23:39:11 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed3/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=10563s
+Mon May 11 23:44:11 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed2/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=75274s
+Mon May 11 23:44:11 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed3/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=48801s
+Mon May 11 23:44:11 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed2/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=32277s
+Mon May 11 23:49:11 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=40825s
+Mon May 11 23:54:12 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=94448s
+Mon May 11 23:59:12 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed3/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=11765s
+Tue May 12 00:04:13 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed2/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=76475s
+Tue May 12 00:04:13 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed3/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=50002s
+Tue May 12 00:04:13 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed2/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=33478s
+Tue May 12 00:04:13 UTC 2026 OK: phase=train:dinov2_seed2.log pids=pipe[950372] fin[22354] gpu=[0, 0, 33181;1, 32, 32759] disk 95G/147G (65%)
+Tue May 12 00:09:14 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=42027s
+Tue May 12 00:14:14 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=95651s
+Tue May 12 00:19:15 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed3/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=12967s
+Tue May 12 00:24:15 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed2/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=77678s
+Tue May 12 00:24:15 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed3/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=51205s
+Tue May 12 00:24:15 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed2/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=34681s
+Tue May 12 00:29:15 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=43229s
+Tue May 12 00:34:16 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=96853s
+Tue May 12 00:34:16 UTC 2026 OK: phase=train:dinov2_seed1.log pids=pipe[950372] fin[none] gpu=[0, 55, 33181;1, 44, 32759] disk 95G/147G (65%)
+Tue May 12 00:39:17 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed3/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=14169s
+Tue May 12 00:44:17 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed2/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=78880s
+Tue May 12 00:44:17 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed3/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=52407s
+Tue May 12 00:44:17 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed2/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=35883s
+Tue May 12 00:49:18 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=44431s
+Tue May 12 00:54:18 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=98055s
+Tue May 12 00:59:18 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed3/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=15371s
+Tue May 12 01:04:19 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed2/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=80081s
+Tue May 12 01:04:19 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed3/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=53608s
+Tue May 12 01:04:19 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed2/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=37084s
+Tue May 12 01:04:20 UTC 2026 OK: phase=train:dinov2_seed1.log pids=pipe[950372] fin[none] gpu=[0, 65, 33181;1, 24, 32759] disk 95G/147G (65%)
+Tue May 12 01:09:20 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=45634s
+Tue May 12 01:14:21 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=99257s
+Tue May 12 01:19:21 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed3/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=16574s
+Tue May 12 01:24:21 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed2/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=81284s
+Tue May 12 01:24:22 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed3/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=54811s
+Tue May 12 01:24:22 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed2/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=38287s
+Tue May 12 01:29:22 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=46836s
+Tue May 12 01:34:22 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=100459s
+Tue May 12 01:34:23 UTC 2026 OK: phase=train:dinov2_seed1.log pids=pipe[950372] fin[none] gpu=[0, 97, 32759;1, 0, 4] disk 95G/147G (65%)
+Tue May 12 01:39:23 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed3/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=17776s
+Tue May 12 01:44:24 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed2/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=82486s
+Tue May 12 01:44:24 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed3/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=56013s
+Tue May 12 01:44:24 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/dinov2_seed2/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=1238s
+Tue May 12 01:44:24 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed2/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=39489s
+Tue May 12 01:49:24 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=48038s
+Tue May 12 01:54:24 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=101661s
+Tue May 12 01:59:25 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed3/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=18977s
+Tue May 12 02:04:25 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed2/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=83688s
+Tue May 12 02:04:25 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed3/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=57215s
+Tue May 12 02:04:25 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/dinov2_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=1346s
+Tue May 12 02:04:25 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/dinov2_seed2/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=2440s
+Tue May 12 02:04:25 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed2/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=40691s
+Tue May 12 02:04:26 UTC 2026 OK: phase=train:dinov2_seed3.log pids=pipe[950372] fin[none] gpu=[0, 93, 32759;1, 0, 4] disk 95G/147G (65%)
+Tue May 12 02:09:26 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=49240s
+Tue May 12 02:14:26 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=102863s
+Tue May 12 02:19:27 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed3/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=20179s
+Tue May 12 02:24:27 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed2/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=84890s
+Tue May 12 02:24:27 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed3/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=58417s
+Tue May 12 02:24:27 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/dinov2_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=2548s
+Tue May 12 02:24:27 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/dinov2_seed2/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=3642s
+Tue May 12 02:24:27 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed2/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=41893s
+Tue May 12 02:29:28 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=50441s
+Tue May 12 02:34:28 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=104065s
+Tue May 12 02:34:29 UTC 2026 OK: phase=train:dinov2_seed3.log pids=pipe[950372] fin[none] gpu=[0, 10, 32759;1, 0, 4] disk 95G/147G (65%)
+Tue May 12 02:39:29 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed3/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=21382s
+Tue May 12 02:44:29 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed2/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=86092s
+Tue May 12 02:44:29 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed3/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=59619s
+Tue May 12 02:44:29 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/dinov2_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=3750s
+Tue May 12 02:44:29 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/dinov2_seed2/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=4844s
+Tue May 12 02:44:29 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed2/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=43095s
+Tue May 12 02:49:30 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=51643s
+Tue May 12 02:54:30 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=105267s
+Tue May 12 02:59:31 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed3/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=22583s
+Tue May 12 03:04:31 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed2/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=87294s
+Tue May 12 03:04:31 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed3/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=60821s
+Tue May 12 03:04:31 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/dinov2_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=4952s
+Tue May 12 03:04:31 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/dinov2_seed2/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=6046s
+Tue May 12 03:04:31 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed2/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=44297s
+Tue May 12 03:04:32 UTC 2026 OK: phase=train:dinov2_seed3.log pids=pipe[950372] fin[none] gpu=[0, 20, 32759;1, 0, 4] disk 95G/147G (65%)
+Tue May 12 03:09:32 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=52846s
+Tue May 12 03:14:32 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=106469s
+Tue May 12 03:19:33 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed3/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=23786s
+Tue May 12 03:24:33 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed2/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=88496s
+Tue May 12 03:24:33 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed3/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=62023s
+Tue May 12 03:24:33 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/dinov2_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=6154s
+Tue May 12 03:24:33 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/dinov2_seed2/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=7248s
+Tue May 12 03:24:33 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed2/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=45499s
+Tue May 12 03:29:33 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=54047s
+Tue May 12 03:34:34 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=107671s
+Tue May 12 03:34:35 UTC 2026 OK: phase=train:dinov2_seed3.log pids=pipe[950372] fin[none] gpu=[0, 81, 32759;1, 0, 4] disk 95G/147G (65%)
+Tue May 12 03:39:35 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed3/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=24988s
+Tue May 12 03:44:36 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed2/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=89698s
+Tue May 12 03:44:36 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed3/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=63225s
+Tue May 12 03:44:36 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/dinov2_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=7356s
+Tue May 12 03:44:36 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/dinov2_seed2/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=8450s
+Tue May 12 03:44:36 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed2/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=46701s
+Tue May 12 03:49:36 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=55250s
+Tue May 12 03:54:36 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=108873s
+Tue May 12 03:59:37 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed3/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=26189s
+Tue May 12 04:04:37 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed2/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=90900s
+Tue May 12 04:04:37 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed3/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=64427s
+Tue May 12 04:04:37 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/dinov2_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=8558s
+Tue May 12 04:04:37 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/dinov2_seed2/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=9652s
+Tue May 12 04:04:37 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed2/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=47903s
+Tue May 12 04:04:38 UTC 2026 OK: phase=train:dinov2_seed3.log pids=pipe[950372] fin[none] gpu=[0, 100, 32759;1, 0, 4] disk 95G/147G (65%)
+Tue May 12 04:09:38 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=56452s
+Tue May 12 04:14:38 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=110075s
+Tue May 12 04:19:39 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed3/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=27391s
+Tue May 12 04:24:39 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed2/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=92102s
+Tue May 12 04:24:39 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed3/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=65629s
+Tue May 12 04:24:39 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/dinov2_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=9760s
+Tue May 12 04:24:39 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/dinov2_seed2/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=10854s
+Tue May 12 04:24:39 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed2/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=49105s
+Tue May 12 04:29:40 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=57653s
+Tue May 12 04:34:40 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=111277s
+Tue May 12 04:34:41 UTC 2026 OK: phase=train:dinov2_seed3.log pids=pipe[950372] fin[none] gpu=[0, 15, 32759;1, 0, 4] disk 95G/147G (65%)
+Tue May 12 04:39:41 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed3/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=28594s
+Tue May 12 04:44:41 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed2/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=93304s
+Tue May 12 04:44:41 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed3/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=66831s
+Tue May 12 04:44:41 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/dinov2_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=10962s
+Tue May 12 04:44:41 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/dinov2_seed2/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=12056s
+Tue May 12 04:44:41 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed2/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=50307s
+Tue May 12 04:49:42 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=58855s
+Tue May 12 04:54:42 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/clip_seed1/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=112479s
+Tue May 12 04:59:43 UTC 2026 ALERT: /home/ubuntu/ttic_embeddings/checkpoints/siglip_seed3/adaptor_latest.pt mtime stuck for 4 polls (~20 min); age=29795s
+Tue May 12 05:04:43 UTC 2026 EXIT: 36h safety cutoff reached

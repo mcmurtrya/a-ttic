@@ -1,0 +1,66 @@
+2026-05-13 02:41:08,142 | INFO    | caption_quality | Loading generated captions: /home/ubuntu/ttic_embeddings/captions/captions_seed1.jsonl
+2026-05-13 02:41:08,254 | INFO    | caption_quality | Loaded 8 (encoder, decoder) conditions
+2026-05-13 02:41:08,254 | INFO    | caption_quality |   ('clip', 'beam'): 5000 images
+2026-05-13 02:41:08,254 | INFO    | caption_quality |   ('clip', 'nucleus'): 5000 images
+2026-05-13 02:41:08,254 | INFO    | caption_quality |   ('siglip', 'beam'): 5000 images
+2026-05-13 02:41:08,254 | INFO    | caption_quality |   ('siglip', 'nucleus'): 5000 images
+2026-05-13 02:41:08,254 | INFO    | caption_quality |   ('dinov2', 'beam'): 5000 images
+2026-05-13 02:41:08,254 | INFO    | caption_quality |   ('dinov2', 'nucleus'): 5000 images
+2026-05-13 02:41:08,254 | INFO    | caption_quality |   ('mae', 'beam'): 5000 images
+2026-05-13 02:41:08,254 | INFO    | caption_quality |   ('mae', 'nucleus'): 5000 images
+2026-05-13 02:41:08,254 | INFO    | caption_quality | Loading reference captions from /home/ubuntu/data/coco ...
+2026-05-13 02:41:08,292 | INFO    | caption_quality | Loaded references for 5000 images
+2026-05-13 02:41:08,298 | INFO    | caption_quality | --- clip / beam ---
+2026-05-13 02:41:08,322 | WARNING | caption_quality | PTBTokenizer failed (FileNotFoundError); falling back to regex tokenizer. Cross-encoder comparisons remain valid; absolute scores will differ slightly from literature CIDEr numbers.
+2026-05-13 02:41:08,446 | WARNING | caption_quality | PTBTokenizer failed (FileNotFoundError); falling back to regex tokenizer. Cross-encoder comparisons remain valid; absolute scores will differ slightly from literature CIDEr numbers.
+2026-05-13 02:41:11,349 | WARNING | caption_quality | SPICE compute failed: FileNotFoundError: [Errno 2] No such file or directory: 'java'
+2026-05-13 02:41:11,351 | INFO    | caption_quality |   CIDEr=1.0185  SPICE=n/a  n_images=5000
+2026-05-13 02:41:11,351 | INFO    | caption_quality | --- clip / nucleus ---
+2026-05-13 02:41:11,367 | WARNING | caption_quality | PTBTokenizer failed (FileNotFoundError); falling back to regex tokenizer. Cross-encoder comparisons remain valid; absolute scores will differ slightly from literature CIDEr numbers.
+2026-05-13 02:41:11,449 | WARNING | caption_quality | PTBTokenizer failed (FileNotFoundError); falling back to regex tokenizer. Cross-encoder comparisons remain valid; absolute scores will differ slightly from literature CIDEr numbers.
+2026-05-13 02:41:14,501 | WARNING | caption_quality | SPICE compute failed: FileNotFoundError: [Errno 2] No such file or directory: 'java'
+2026-05-13 02:41:14,503 | INFO    | caption_quality |   CIDEr=0.5498  SPICE=n/a  n_images=5000
+2026-05-13 02:41:14,503 | INFO    | caption_quality | --- siglip / beam ---
+2026-05-13 02:41:14,517 | WARNING | caption_quality | PTBTokenizer failed (FileNotFoundError); falling back to regex tokenizer. Cross-encoder comparisons remain valid; absolute scores will differ slightly from literature CIDEr numbers.
+2026-05-13 02:41:14,592 | WARNING | caption_quality | PTBTokenizer failed (FileNotFoundError); falling back to regex tokenizer. Cross-encoder comparisons remain valid; absolute scores will differ slightly from literature CIDEr numbers.
+2026-05-13 02:41:17,542 | WARNING | caption_quality | SPICE compute failed: FileNotFoundError: [Errno 2] No such file or directory: 'java'
+2026-05-13 02:41:17,544 | INFO    | caption_quality |   CIDEr=1.1131  SPICE=n/a  n_images=5000
+2026-05-13 02:41:17,544 | INFO    | caption_quality | --- siglip / nucleus ---
+2026-05-13 02:41:17,558 | WARNING | caption_quality | PTBTokenizer failed (FileNotFoundError); falling back to regex tokenizer. Cross-encoder comparisons remain valid; absolute scores will differ slightly from literature CIDEr numbers.
+2026-05-13 02:41:17,631 | WARNING | caption_quality | PTBTokenizer failed (FileNotFoundError); falling back to regex tokenizer. Cross-encoder comparisons remain valid; absolute scores will differ slightly from literature CIDEr numbers.
+2026-05-13 02:41:20,806 | WARNING | caption_quality | SPICE compute failed: FileNotFoundError: [Errno 2] No such file or directory: 'java'
+2026-05-13 02:41:20,808 | INFO    | caption_quality |   CIDEr=0.6213  SPICE=n/a  n_images=5000
+2026-05-13 02:41:20,808 | INFO    | caption_quality | --- dinov2 / beam ---
+2026-05-13 02:41:20,822 | WARNING | caption_quality | PTBTokenizer failed (FileNotFoundError); falling back to regex tokenizer. Cross-encoder comparisons remain valid; absolute scores will differ slightly from literature CIDEr numbers.
+2026-05-13 02:41:20,897 | WARNING | caption_quality | PTBTokenizer failed (FileNotFoundError); falling back to regex tokenizer. Cross-encoder comparisons remain valid; absolute scores will differ slightly from literature CIDEr numbers.
+2026-05-13 02:41:23,845 | WARNING | caption_quality | SPICE compute failed: FileNotFoundError: [Errno 2] No such file or directory: 'java'
+2026-05-13 02:41:23,847 | INFO    | caption_quality |   CIDEr=1.1049  SPICE=n/a  n_images=5000
+2026-05-13 02:41:23,847 | INFO    | caption_quality | --- dinov2 / nucleus ---
+2026-05-13 02:41:23,861 | WARNING | caption_quality | PTBTokenizer failed (FileNotFoundError); falling back to regex tokenizer. Cross-encoder comparisons remain valid; absolute scores will differ slightly from literature CIDEr numbers.
+2026-05-13 02:41:23,935 | WARNING | caption_quality | PTBTokenizer failed (FileNotFoundError); falling back to regex tokenizer. Cross-encoder comparisons remain valid; absolute scores will differ slightly from literature CIDEr numbers.
+2026-05-13 02:41:26,934 | WARNING | caption_quality | SPICE compute failed: FileNotFoundError: [Errno 2] No such file or directory: 'java'
+2026-05-13 02:41:26,935 | INFO    | caption_quality |   CIDEr=0.6371  SPICE=n/a  n_images=5000
+2026-05-13 02:41:26,936 | INFO    | caption_quality | --- mae / beam ---
+2026-05-13 02:41:27,005 | WARNING | caption_quality | PTBTokenizer failed (FileNotFoundError); falling back to regex tokenizer. Cross-encoder comparisons remain valid; absolute scores will differ slightly from literature CIDEr numbers.
+2026-05-13 02:41:27,081 | WARNING | caption_quality | PTBTokenizer failed (FileNotFoundError); falling back to regex tokenizer. Cross-encoder comparisons remain valid; absolute scores will differ slightly from literature CIDEr numbers.
+2026-05-13 02:41:29,967 | WARNING | caption_quality | SPICE compute failed: FileNotFoundError: [Errno 2] No such file or directory: 'java'
+2026-05-13 02:41:29,969 | INFO    | caption_quality |   CIDEr=0.8849  SPICE=n/a  n_images=5000
+2026-05-13 02:41:29,969 | INFO    | caption_quality | --- mae / nucleus ---
+2026-05-13 02:41:29,984 | WARNING | caption_quality | PTBTokenizer failed (FileNotFoundError); falling back to regex tokenizer. Cross-encoder comparisons remain valid; absolute scores will differ slightly from literature CIDEr numbers.
+2026-05-13 02:41:30,116 | WARNING | caption_quality | PTBTokenizer failed (FileNotFoundError); falling back to regex tokenizer. Cross-encoder comparisons remain valid; absolute scores will differ slightly from literature CIDEr numbers.
+2026-05-13 02:41:33,136 | WARNING | caption_quality | SPICE compute failed: FileNotFoundError: [Errno 2] No such file or directory: 'java'
+2026-05-13 02:41:33,138 | INFO    | caption_quality |   CIDEr=0.4785  SPICE=n/a  n_images=5000
+2026-05-13 02:41:33,140 | INFO    | caption_quality | Wrote 8 quality rows to /home/ubuntu/ttic_embeddings/captions/quality_results.csv
+2026-05-13 02:41:33,149 | INFO    | caption_quality | Wrote summary to /home/ubuntu/ttic_embeddings/captions/quality_summary.txt
+2026-05-13 02:41:33,150 | INFO    | caption_quality | Per-condition scores:
+metric              cider
+encoder decoder          
+clip    beam     1.018547
+        nucleus  0.549836
+dinov2  beam     1.104921
+        nucleus  0.637053
+mae     beam     0.884869
+        nucleus  0.478547
+siglip  beam     1.113123
+        nucleus  0.621293
+2026-05-13 02:41:33,150 | INFO    | caption_quality | Precondition: {'passed': False, 'max': 1.1131225340258126, 'min': 0.884868596434007, 'spread_fraction': 0.2050573325169182, 'threshold': 0.1, 'decoder': 'beam', 'encoders': ['clip', 'dinov2', 'mae', 'siglip']}

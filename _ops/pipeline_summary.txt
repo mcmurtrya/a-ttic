@@ -1,0 +1,9 @@
+TTIC Embeddings pipeline — SUCCESS (with CLIP reruns)
+Started:  2026-05-10 06:35 UTC
+Finished: Wed May 13 02:43:34 UTC 2026
+Log dir:  logs/20260510_162813/
+Branch:   pipeline-results-20260513
+Commit:   bdcd86c173e8fd5edbed8dc5b8a9abb09a8d88de
+checkpoints included (total 689420 KB, max single 24619 KB)
+Retries to success: 0
+CLIP reruns: see /home/ubuntu/clip_reruns.complete

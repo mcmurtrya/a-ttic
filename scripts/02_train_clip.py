@@ -42,6 +42,7 @@ if str(SRC) not in sys.path:
 
 from ttic_embeddings.adaptor import build_adaptor                    # noqa: E402
 from ttic_embeddings.data.coco import (                              # noqa: E402
+    CocoCachedFeaturePairs,
     CocoCaptionPairs,
     CocoEvalImages,
     train_holdout_image_ids,
@@ -115,6 +116,11 @@ def main() -> int:
                         help="Start training from step 0 even if "
                              "adaptor_latest.pt exists (default: auto-resume "
                              "for spot-reclaim safety).")
+    parser.add_argument("--gpu", type=int, default=None,
+                        help="GPU index to use (e.g. 0 or 1). Calls "
+                             "torch.cuda.set_device(N). Use this instead of "
+                             "CUDA_VISIBLE_DEVICES when the environment's "
+                             "PyTorch+CUDA combo doesn't honor that variable.")
     args = parser.parse_args()
 
     repo_root = Path(__file__).resolve().parents[1]
@@ -125,7 +131,12 @@ def main() -> int:
     cfg = apply_cli_overrides(cfg, args)
 
     set_seed(cfg.seed)
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    if torch.cuda.is_available():
+        gpu_idx = args.gpu if args.gpu is not None else 0
+        torch.cuda.set_device(gpu_idx)
+        device = torch.device(f"cuda:{gpu_idx}")
+    else:
+        device = torch.device("cpu")
     log.info("Device: %s (CUDA available: %s)",
              device, torch.cuda.is_available())
     log.info("Encoder: %s (%s)", cfg.encoder.name, cfg.encoder.checkpoint)
@@ -157,24 +168,50 @@ def main() -> int:
         "Held %d train2017 images out for val PPL (holdout_seed=%d)",
         len(holdout_ids), cfg.train.holdout_seed,
     )
-    train_ds = CocoCaptionPairs(
-        coco_root=cfg.paths.coco_root,
-        split="train",
-        image_processor=encoder.processor,
-        tokenizer=tokenizer,
-        max_caption_tokens=32,
-        image_ids_filter=holdout_ids,
-        filter_mode="exclude",
+    cache_dir = Path(cfg.paths.cache_root) / cfg.encoder.name
+    use_cached_features = (
+        not args.smoke
+        and (cache_dir / "train2017_features.meta.json").exists()
     )
-    val_ds = CocoCaptionPairs(
-        coco_root=cfg.paths.coco_root,
-        split="train",
-        image_processor=encoder.processor,
-        tokenizer=tokenizer,
-        max_caption_tokens=32,
-        image_ids_filter=holdout_ids,
-        filter_mode="include",
-    )
+    if use_cached_features:
+        log.info("Using cached features from %s", cache_dir)
+        train_ds = CocoCachedFeaturePairs(
+            coco_root=cfg.paths.coco_root,
+            split="train",
+            cache_dir=cache_dir,
+            tokenizer=tokenizer,
+            max_caption_tokens=32,
+            image_ids_filter=holdout_ids,
+            filter_mode="exclude",
+        )
+        val_ds = CocoCachedFeaturePairs(
+            coco_root=cfg.paths.coco_root,
+            split="train",
+            cache_dir=cache_dir,
+            tokenizer=tokenizer,
+            max_caption_tokens=32,
+            image_ids_filter=holdout_ids,
+            filter_mode="include",
+        )
+    else:
+        train_ds = CocoCaptionPairs(
+            coco_root=cfg.paths.coco_root,
+            split="train",
+            image_processor=encoder.processor,
+            tokenizer=tokenizer,
+            max_caption_tokens=32,
+            image_ids_filter=holdout_ids,
+            filter_mode="exclude",
+        )
+        val_ds = CocoCaptionPairs(
+            coco_root=cfg.paths.coco_root,
+            split="train",
+            image_processor=encoder.processor,
+            tokenizer=tokenizer,
+            max_caption_tokens=32,
+            image_ids_filter=holdout_ids,
+            filter_mode="include",
+        )
     if args.smoke:
         # Trim to a few hundred for fast iteration. Subset preserves
         # the dataset's __getitem__ contract for the DataLoader.
@@ -183,22 +220,28 @@ def main() -> int:
         log.info("Smoke run: subset to %d train / %d val items",
                  len(train_ds), len(val_ds))
 
+    nw = cfg.train.num_workers
+    loader_extras = (
+        {"persistent_workers": True, "prefetch_factor": 4} if nw > 0 else {}
+    )
     train_loader = DataLoader(
         train_ds,
         batch_size=cfg.train.batch_size,
         shuffle=True,
-        num_workers=cfg.train.num_workers,
+        num_workers=nw,
         pin_memory=(device.type == "cuda"),
         drop_last=True,
         worker_init_fn=seed_worker,
+        **loader_extras,
     )
     val_loader = DataLoader(
         val_ds,
         batch_size=cfg.train.batch_size,
         shuffle=False,
-        num_workers=cfg.train.num_workers,
+        num_workers=nw,
         pin_memory=(device.type == "cuda"),
         worker_init_fn=seed_worker,
+        **loader_extras,
     )
     log.info("Loaders built. train batches: %d, val batches: %d",
              len(train_loader), len(val_loader))
@@ -250,7 +293,7 @@ def main() -> int:
     log.info("\nGenerating sample captions from the trained adaptor...")
     best_ckpt = output_dir / "adaptor_best.pt"
     if best_ckpt.exists():
-        ckpt = torch.load(best_ckpt, map_location=device)
+        ckpt = torch.load(best_ckpt, map_location=device, weights_only=False)
         model.adaptor.load_state_dict(ckpt["adaptor_state_dict"])
         log.info("Loaded best checkpoint (val_ppl=%.3f)", ckpt["val_ppl"])
 

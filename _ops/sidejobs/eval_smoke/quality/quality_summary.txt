@@ -1,0 +1,19 @@
+# Caption-quality precondition — clip_seed1_snapshot.jsonl
+
+## Per-condition scores
+
+metric              cider
+encoder decoder          
+clip    beam     1.017226
+        nucleus  0.558487
+
+## Precondition check (CIDEr, beam decoder)
+
+threshold: 10.00% of max CIDEr
+
+  passed: None
+  reason: need >=2 encoders for decoder=beam, got 1
+  n_encoders: 1
+
+PRECONDITION INDETERMINATE — too few encoders to evaluate.
+Reason: need >=2 encoders for decoder=beam, got 1

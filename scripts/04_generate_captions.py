@@ -109,7 +109,7 @@ def generate_for_encoder(
     log.info("Loaded encoder: %r", encoder)
 
     adaptor = build_adaptor(cfg)
-    ckpt = torch.load(ckpt_path, map_location=device)
+    ckpt = torch.load(ckpt_path, map_location=device, weights_only=False)
     adaptor.load_state_dict(ckpt["adaptor_state_dict"])
     adaptor.to(device)
     adaptor.eval()
@@ -199,6 +199,11 @@ def main() -> int:
     parser.add_argument("--restart", action="store_true",
                         help="Delete any existing output JSONL and start fresh "
                              "(default: append + skip-completed for spot resume).")
+    parser.add_argument("--gpu", type=int, default=None,
+                        help="GPU index to use (e.g. 0 or 1). Calls "
+                             "torch.cuda.set_device(N). Use this instead of "
+                             "CUDA_VISIBLE_DEVICES when the environment's "
+                             "PyTorch+CUDA combo doesn't honor that variable.")
     args = parser.parse_args()
 
     encoder_names = [e.strip() for e in args.encoders.split(",") if e.strip()]
@@ -217,7 +222,12 @@ def main() -> int:
     configs_dir = repo_root / "configs"
     base_cfg = OmegaConf.load(configs_dir / "base.yaml")
 
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    if torch.cuda.is_available():
+        gpu_idx = args.gpu if args.gpu is not None else 0
+        torch.cuda.set_device(gpu_idx)
+        device = torch.device(f"cuda:{gpu_idx}")
+    else:
+        device = torch.device("cpu")
     log.info("Device: %s (CUDA: %s)", device, torch.cuda.is_available())
     log.info("Encoders: %s", encoder_names)
     log.info("Decoders: %s", decoders)

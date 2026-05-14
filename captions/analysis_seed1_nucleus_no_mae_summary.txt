@@ -1,0 +1,94 @@
+# Analysis — scores_seed1.csv, decoder=nucleus
+
+alpha = 0.05
+effect_size_floor (Wilcoxon r) = 0.1
+
+## Primary family (supervision-category contrast)
+
+Pools (clip, siglip) vs (dinov2) per image, per metric.
+BH-FDR corrected within this 8-test family.
+
+ statistic      p_value    n        r              metric             contrast    p_adj  rejected_at_alpha  claimed_meaningful
+ 3190118.5 7.434818e-01 3583 0.005467        adj_per_noun lang_sup_vs_self_sup 0.743482              False               False
+ 5125363.0 8.622754e-05 4685 0.057364      caption_length lang_sup_vs_self_sup 0.000230               True               False
+ 3008495.5 5.673758e-05 3611 0.066997 head_noun_min_depth lang_sup_vs_self_sup 0.000227               True               False
+  523675.5 2.289564e-07 1570 0.130584  projective_density lang_sup_vs_self_sup 0.000002               True                True
+  833596.5 1.685294e-01 1860 0.031927  scene_object_ratio lang_sup_vs_self_sup 0.337059              False               False
+ 5890528.0 2.530177e-01 4900 0.016329 topological_density lang_sup_vs_self_sup 0.404828              False               False
+    5091.5 6.901058e-01  145 0.033111   vg_attr_precision lang_sup_vs_self_sup 0.743482              False               False
+  137304.5 3.070368e-01  757 0.037126      vg_attr_recall lang_sup_vs_self_sup 0.409382              False               False
+
+## Image-controlled supervision contrast (methods.md L49)
+
+score ~ supervision + (1 | image). The `method` column records
+whether the row used the MixedLM image-RE fit or fell back to a
+paired t-test on per-image (lang_mean - self_mean) when the ME
+covariance was singular. Both estimate the same population
+parameter; agreement with the primary Wilcoxon validates that
+the contrast is not an artifact of rank statistics.
+
+             metric             method      coef       se         z  p_value  n_images  n_obs  converged
+       adj_per_noun paired_t_per_image -0.007226 0.004187 -1.725953 0.084418      5000  15000       True
+     caption_length   mixedlm_image_re  0.152000 0.052353  2.903361 0.003692      5000  15000       True
+head_noun_min_depth   mixedlm_image_re -0.091630 0.023594 -3.883528 0.000103      5000  14968       True
+ projective_density   mixedlm_image_re -0.002033 0.000507 -4.009751 0.000061      5000  15000       True
+ scene_object_ratio paired_t_per_image  0.008428 0.005562  1.515328 0.129786      3285  12562       True
+topological_density paired_t_per_image  0.000873 0.001102  0.792432 0.428146      5000  15000       True
+  vg_attr_precision paired_t_per_image  0.014555 0.031671  0.459567 0.646281       221   2684       True
+     vg_attr_recall paired_t_per_image  0.000700 0.001114  0.628762 0.529572      2133   6399       True
+
+## Secondary family (all pairwise contrasts)
+
+3 encoder pairs * 8 metrics = 24 tests, BH-FDR corrected within this family.
+
+ statistic      p_value    n        r              metric encoder_a encoder_b         contrast    p_adj  rejected_at_alpha  claimed_meaningful  within_category
+ 2058839.0 5.889031e-01 2886 0.010060        adj_per_noun      clip    siglip   clip_vs_siglip 0.831393              False               False             True
+ 5034901.0 6.645958e-01 4504 0.006461      caption_length      clip    siglip   clip_vs_siglip 0.839489              False               False             True
+ 2144280.0 6.595712e-01 2942 0.008121 head_noun_min_depth      clip    siglip   clip_vs_siglip 0.839489              False               False             True
+  267043.5 3.064836e-03 1091 0.089650  projective_density      clip    siglip   clip_vs_siglip 0.014711               True               False             True
+  584580.0 6.230900e-04 1609 0.085294  scene_object_ratio      clip    siglip   clip_vs_siglip 0.007477               True               False             True
+ 4994460.0 2.493802e-03 4589 0.044641 topological_density      clip    siglip   clip_vs_siglip 0.014711               True               False             True
+    9024.0 9.482572e-01  190 0.004708   vg_attr_precision      clip    siglip   clip_vs_siglip 0.954888              False               False             True
+   70158.0 9.548876e-01  530 0.002457      vg_attr_recall      clip    siglip   clip_vs_siglip 0.954888              False               False             True
+ 2057752.0 6.738932e-02 2926 0.033814        adj_per_noun      clip    dinov2   clip_vs_dinov2 0.161734              False               False            False
+ 4862957.0 1.951204e-01 4460 0.019400      caption_length      clip    dinov2   clip_vs_dinov2 0.390241              False               False            False
+ 2001410.0 1.823652e-03 2928 0.057614 head_noun_min_depth      clip    dinov2   clip_vs_dinov2 0.014589               True               False            False
+  273460.5 1.002854e-07 1155 0.156721  projective_density      clip    dinov2   clip_vs_dinov2 0.000002               True                True            False
+  616140.0 1.745677e-02 1625 0.058965  scene_object_ratio      clip    dinov2   clip_vs_dinov2 0.052370              False               False            False
+ 5079895.0 1.354638e-02 4605 0.036385 topological_density      clip    dinov2   clip_vs_dinov2 0.046445               True               False            False
+   11037.5 3.862813e-01  217 0.058814   vg_attr_precision      clip    dinov2   clip_vs_dinov2 0.618050              False               False            False
+   75716.5 8.733434e-01  552 0.006785      vg_attr_recall      clip    dinov2   clip_vs_dinov2 0.954888              False               False            False
+ 1969945.0 2.516523e-01 2842 0.021503        adj_per_noun    siglip    dinov2 siglip_vs_dinov2 0.464589              False               False            False
+ 4734779.5 1.629616e-01 4405 0.021021      caption_length    siglip    dinov2 siglip_vs_dinov2 0.355553              False               False            False
+ 2013294.5 4.266507e-03 2928 0.052813 head_noun_min_depth    siglip    dinov2 siglip_vs_dinov2 0.017066               True               False            False
+  333365.5 2.185698e-02 1201 0.066161  projective_density    siglip    dinov2 siglip_vs_dinov2 0.058285              False               False            False
+  607228.5 8.245640e-01 1563 0.005607  scene_object_ratio    siglip    dinov2 siglip_vs_dinov2 0.954888              False               False            False
+ 5166712.0 5.839102e-01 4567 0.008104 topological_density    siglip    dinov2 siglip_vs_dinov2 0.831393              False               False            False
+   10528.5 3.286025e-01  213 0.066938   vg_attr_precision    siglip    dinov2 siglip_vs_dinov2 0.563319              False               False            False
+   67261.5 9.513499e-01  519 0.002678      vg_attr_recall    siglip    dinov2 siglip_vs_dinov2 0.954888              False               False            False
+
+## Within-category sanity checks (subset of secondary)
+
+CLIP vs SigLIP and DINOv2 vs MAE per metric. Should be null
+under the supervision-category claim; large within-category
+differences mean one encoder drives that category's effect.
+
+ statistic  p_value    n        r              metric encoder_a encoder_b       contrast    p_adj  rejected_at_alpha  claimed_meaningful  within_category
+ 2058839.0 0.588903 2886 0.010060        adj_per_noun      clip    siglip clip_vs_siglip 0.831393              False               False             True
+ 5034901.0 0.664596 4504 0.006461      caption_length      clip    siglip clip_vs_siglip 0.839489              False               False             True
+ 2144280.0 0.659571 2942 0.008121 head_noun_min_depth      clip    siglip clip_vs_siglip 0.839489              False               False             True
+  267043.5 0.003065 1091 0.089650  projective_density      clip    siglip clip_vs_siglip 0.014711               True               False             True
+  584580.0 0.000623 1609 0.085294  scene_object_ratio      clip    siglip clip_vs_siglip 0.007477               True               False             True
+ 4994460.0 0.002494 4589 0.044641 topological_density      clip    siglip clip_vs_siglip 0.014711               True               False             True
+    9024.0 0.948257  190 0.004708   vg_attr_precision      clip    siglip clip_vs_siglip 0.954888              False               False             True
+   70158.0 0.954888  530 0.002457      vg_attr_recall      clip    siglip clip_vs_siglip 0.954888              False               False             True
+
+## Lexical diversity (MTLD, per-cell with bootstrap 95% CI)
+
+MTLD pooled over all captions in each (encoder, decoder, seed) cell. Two cells differ meaningfully when their bootstrap CIs do not overlap.
+
+encoder decoder  seed metric     score     ci_lo     ci_hi  n_captions
+   clip nucleus     1   mtld 31.877553 31.523797 32.825227        5000
+ siglip nucleus     1   mtld 32.321389 31.323427 32.634905        5000
+ dinov2 nucleus     1   mtld 33.239568 32.484981 33.831197        5000
+    mae nucleus     1   mtld 32.161652 31.775916 33.062733        5000

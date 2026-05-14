@@ -56,6 +56,16 @@ def main() -> int:
     parser.add_argument("--effect-size-floor", type=float, default=0.10,
                         help="Pre-registered Wilcoxon r threshold for "
                              "claimed_meaningful (default: 0.10).")
+    parser.add_argument("--lang-encoders", default="clip,siglip",
+                        help="Encoders pooled into the language-supervised arm "
+                             "of the primary contrast (default: clip,siglip).")
+    parser.add_argument("--self-encoders", default="dinov2,mae",
+                        help="Encoders pooled into the self-supervised arm "
+                             "(default: dinov2,mae). Drop encoders here to "
+                             "rescope the contrast — e.g. 'dinov2' to exclude "
+                             "MAE when the CIDEr precondition fails.")
+    parser.add_argument("--output-suffix", default="",
+                        help="Extra suffix on output filenames, e.g. '_no_mae'.")
     args = parser.parse_args()
 
     df = pd.read_csv(args.scores)
@@ -63,6 +73,12 @@ def main() -> int:
     log.info("Decoders present: %s", sorted(df["decoder"].unique()))
     log.info("Encoders present: %s", sorted(df["encoder"].unique()))
     log.info("Metrics present:  %s", sorted(df["metric"].unique()))
+
+    lang_encoders = tuple(e.strip() for e in args.lang_encoders.split(",") if e.strip())
+    self_encoders = tuple(e.strip() for e in args.self_encoders.split(",") if e.strip())
+    keep_encoders = lang_encoders + self_encoders
+    df = df[df["encoder"].isin(keep_encoders)].copy()
+    log.info("Contrast: lang=%s vs self=%s", lang_encoders, self_encoders)
 
     df_dec = df[df["decoder"] == args.decoder].copy()
     log.info("Filtered to decoder=%s: %d rows", args.decoder, len(df_dec))
@@ -88,7 +104,7 @@ def main() -> int:
     output_dir = args.output_dir or args.scores.parent
     output_dir.mkdir(parents=True, exist_ok=True)
     base = args.scores.stem.replace("scores", "analysis")
-    suffix = f"_{args.decoder}"
+    suffix = f"_{args.decoder}{args.output_suffix}"
 
     # --- Primary family -----------------------------------------------
     log.info("\nRunning primary family (supervision-category contrast, %d tests)...",
@@ -96,15 +112,19 @@ def main() -> int:
     primary = primary_family(
         wide, metrics,
         alpha=args.alpha, effect_size_floor=args.effect_size_floor,
+        lang_encoders=lang_encoders, self_encoders=self_encoders,
     )
     primary_path = output_dir / f"{base}{suffix}_primary.csv"
     primary.to_csv(primary_path, index=False)
     log.info("Primary results:\n%s", primary.to_string(index=False))
     log.info("Wrote -> %s", primary_path)
 
-    # --- Mixed-effects robustness check (methods.md L49) --------------
+    # --- Image-controlled robustness check (methods.md L49) ----------
+    # MixedLM with image random intercept; falls back to a paired t-test
+    # on per-image (lang_mean - self_mean) when the covariance goes
+    # singular (zero-inflated metrics). Both produce comparable estimands.
     log.info(
-        "\nRunning mixed-effects robustness check on primary contrasts (%d metrics)...",
+        "\nRunning image-controlled robustness check on primary contrasts (%d metrics)...",
         len(metrics),
     )
     mixed_rows: list[dict] = []
@@ -113,7 +133,9 @@ def main() -> int:
             columns={"score": metric}
         )
         try:
-            row = mixed_effects_supervision_contrast(per_metric_long, metric)
+            row = mixed_effects_supervision_contrast(
+                per_metric_long, metric, lang_encoders=lang_encoders,
+            )
         except Exception as exc:  # noqa: BLE001
             log.warning("mixed-effects failed for %s: %s", metric, exc)
             row = {"metric": metric, "coef": None, "se": None,
@@ -126,11 +148,14 @@ def main() -> int:
     log.info("Wrote -> %s", mixed_path)
 
     # --- Secondary family ---------------------------------------------
+    n_pairs = len(keep_encoders) * (len(keep_encoders) - 1) // 2
     log.info("\nRunning secondary family (pairwise contrasts, %d tests)...",
-             6 * len(metrics))
+             n_pairs * len(metrics))
     secondary = secondary_family(
         wide, metrics,
+        encoders=keep_encoders,
         alpha=args.alpha, effect_size_floor=args.effect_size_floor,
+        lang_encoders=lang_encoders, self_encoders=self_encoders,
     )
     secondary_path = output_dir / f"{base}{suffix}_secondary.csv"
     secondary.to_csv(secondary_path, index=False)
@@ -143,20 +168,24 @@ def main() -> int:
         f.write(f"alpha = {args.alpha}\n")
         f.write(f"effect_size_floor (Wilcoxon r) = {args.effect_size_floor}\n\n")
         f.write("## Primary family (supervision-category contrast)\n\n")
-        f.write("Pools (CLIP, SigLIP) vs (DINOv2, MAE) per image, per metric.\n")
-        f.write("BH-FDR corrected within this 4-test family.\n\n")
+        f.write("Pools (%s) vs (%s) per image, per metric.\n"
+                % (", ".join(lang_encoders), ", ".join(self_encoders)))
+        f.write("BH-FDR corrected within this %d-test family.\n\n" % len(metrics))
         f.write(primary.to_string(index=False))
-        f.write("\n\n## Mixed-effects robustness (methods.md L49)\n\n")
+        f.write("\n\n## Image-controlled supervision contrast (methods.md L49)\n\n")
         f.write(
-            "score ~ supervision + (1 | encoder). Agreement with the pooled\n"
-            "Wilcoxon primary supports the supervision claim; disagreement\n"
-            "points to one encoder driving most of its category's effect.\n\n"
+            "score ~ supervision + (1 | image). The `method` column records\n"
+            "whether the row used the MixedLM image-RE fit or fell back to a\n"
+            "paired t-test on per-image (lang_mean - self_mean) when the ME\n"
+            "covariance was singular. Both estimate the same population\n"
+            "parameter; agreement with the primary Wilcoxon validates that\n"
+            "the contrast is not an artifact of rank statistics.\n\n"
         )
         f.write(mixed.to_string(index=False))
         f.write("\n\n## Secondary family (all pairwise contrasts)\n\n")
-        f.write("6 encoder pairs * %d metrics = %d tests, "
+        f.write("%d encoder pairs * %d metrics = %d tests, "
                 "BH-FDR corrected within this family.\n\n"
-                % (len(metrics), 6 * len(metrics)))
+                % (n_pairs, len(metrics), n_pairs * len(metrics)))
         f.write(secondary.to_string(index=False))
         f.write("\n\n## Within-category sanity checks (subset of secondary)\n\n")
         f.write("CLIP vs SigLIP and DINOv2 vs MAE per metric. Should be null\n")

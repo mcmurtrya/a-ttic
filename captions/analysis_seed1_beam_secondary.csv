@@ -5,7 +5,7 @@ statistic,p_value,n,r,metric,encoder_a,encoder_b,contrast,p_adj,rejected_at_alph
 72993.0,1.0545132705119387e-12,655,0.2783263684764145,projective_density,clip,siglip,clip_vs_siglip,6.327079623071633e-12,True,True,True
 344737.0,0.0032198447164337616,1234,0.08386194963186376,scene_object_ratio,clip,siglip,clip_vs_siglip,0.00671967592994872,True,False,True
 2908890.5,5.483124275884436e-06,3571,0.07606363964587437,topological_density,clip,siglip,clip_vs_siglip,1.644937282765331e-05,True,False,True
-287.5,0.093661399492957,40,0.26506087715601706,vg_attr_precision,clip,siglip,clip_vs_siglip,0.132227858107704,False,False,True
+287.5,0.09366139949295699,40,0.26506087715601706,vg_attr_precision,clip,siglip,clip_vs_siglip,0.132227858107704,False,False,True
 7329.0,3.272100763644211e-07,220,0.3443179070723567,vg_attr_recall,clip,siglip,clip_vs_siglip,1.2081602819609396e-06,True,True,True
 245391.0,7.040308961214909e-10,1115,0.1846325697298574,adj_per_noun,clip,dinov2,clip_vs_dinov2,3.754831445981285e-09,True,True,False
 2445897.5,2.6747858718837662e-37,3593,0.212905983231363,caption_length,clip,dinov2,clip_vs_dinov2,3.2097430462605196e-36,True,True,False
@@ -14,7 +14,7 @@ statistic,p_value,n,r,metric,encoder_a,encoder_b,contrast,p_adj,rejected_at_alph
 369942.0,0.02507084242537541,1262,0.06306353722779608,scene_object_ratio,clip,dinov2,clip_vs_dinov2,0.04149656677303517,True,False,False
 3105321.5,3.797310709466849e-09,3738,0.09638317872024073,topological_density,clip,dinov2,clip_vs_dinov2,1.8227091405440874e-08,True,False,False
 502.5,0.5086710839008681,47,0.09640339243345143,vg_attr_precision,clip,dinov2,clip_vs_dinov2,0.5425824894942594,False,False,False
-8432.5,4.4631905959553004e-07,233,0.33070940439561763,vg_attr_recall,clip,dinov2,clip_vs_dinov2,1.530236775756103e-06,True,True,False
+8432.5,4.4631905959552993e-07,233,0.33070940439561763,vg_attr_recall,clip,dinov2,clip_vs_dinov2,1.5302367757561026e-06,True,True,False
 269082.0,0.12550159202484631,1066,0.04692498121800847,adj_per_noun,clip,mae,clip_vs_mae,0.15852832676822692,False,False,False
 2251735.0,1.3560866356209857e-63,3635,0.27922620475184107,caption_length,clip,mae,clip_vs_mae,6.509215850980731e-62,True,True,False
 823480.5,0.04967675973819824,1864,0.04546101425725219,head_noun_min_depth,clip,mae,clip_vs_mae,0.07691885378817792,False,False,False
@@ -32,7 +32,7 @@ statistic,p_value,n,r,metric,encoder_a,encoder_b,contrast,p_adj,rejected_at_alph
 584.0,0.007920653592348096,61,0.3399934271785823,vg_attr_precision,siglip,dinov2,siglip_vs_dinov2,0.01408116194195217,True,True,False
 18863.0,0.551688665594205,280,0.03557189228746387,vg_attr_recall,siglip,dinov2,siglip_vs_dinov2,0.5756751293156922,False,False,False
 296504.0,0.00012781270314049726,1166,0.11218158161384557,adj_per_noun,siglip,mae,siglip_vs_mae,0.0003067504875371934,True,True,False
-2367538.5,8.827678465271092e-42,3572,0.22658389807762816,caption_length,siglip,mae,siglip_vs_mae,1.4124285544433747e-40,True,True,False
+2367538.5,8.827678465271093e-42,3572,0.22658389807762816,caption_length,siglip,mae,siglip_vs_mae,1.4124285544433749e-40,True,True,False
 861845.5,0.8477758820192983,1861,0.004449700542625783,head_noun_min_depth,siglip,mae,siglip_vs_mae,0.8477758820192983,False,False,False
 165266.0,5.156739587071587e-16,971,0.2601899509494198,projective_density,siglip,mae,siglip_vs_mae,3.5360500025633735e-15,True,True,False
 418006.5,0.188207909026058,1320,0.03621893084392227,scene_object_ratio,siglip,mae,siglip_vs_mae,0.2258494908312696,False,False,False

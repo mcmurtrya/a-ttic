@@ -199,6 +199,8 @@ def secondary_family(
     encoders: tuple[str, ...] = LANG_SUP + SELF_SUP,
     alpha: float = 0.05,
     effect_size_floor: float = 0.10,
+    lang_encoders: tuple[str, ...] = LANG_SUP,
+    self_encoders: tuple[str, ...] = SELF_SUP,
     **contrast_kwargs,
 ) -> pd.DataFrame:
     """All pairwise contrasts × all metrics, with BH-FDR within this family."""
@@ -216,8 +218,8 @@ def secondary_family(
     out["claimed_meaningful"] = (out["r"] >= effect_size_floor) & out["rejected_at_alpha"]
     out["within_category"] = out.apply(
         lambda r: (
-            (r["encoder_a"] in LANG_SUP and r["encoder_b"] in LANG_SUP)
-            or (r["encoder_a"] in SELF_SUP and r["encoder_b"] in SELF_SUP)
+            (r["encoder_a"] in lang_encoders and r["encoder_b"] in lang_encoders)
+            or (r["encoder_a"] in self_encoders and r["encoder_b"] in self_encoders)
         ),
         axis=1,
     )
@@ -236,43 +238,107 @@ def mixed_effects_supervision_contrast(
     image_col: str = "image_id",
     lang_encoders: tuple[str, ...] = LANG_SUP,
 ) -> dict:
-    """Mixed-effects regression of metric ~ supervision + (1|encoder) + (1|image).
+    """Image-controlled supervision contrast, robust to zero-inflated metrics.
 
-    Statsmodels' MixedLM doesn't natively support multiple random
-    effects, so we use encoder as the only group variable (random
-    intercept by encoder) and treat image as fixed. For our scale
-    this is a reasonable approximation; full random-image is an
-    extension if needed.
+    methods.md L49 specifies `score ~ supervision + (1|encoder) + (1|image)`.
+    Statsmodels' MixedLM cannot fit crossed random effects, so we pick
+    one — and image is the only identifiable choice. Encoder is the
+    WRONG random effect: supervision is a deterministic function of
+    encoder (clip/siglip -> language, dinov2/mae -> self), so a random
+    intercept by encoder absorbs the entire between-encoder signal that
+    supervision is meant to explain. The fit degenerates: SE in the
+    thousands, z ~ 0, model unidentifiable. See git history before
+    2026-05-14 for the broken spec.
 
-    Returns dict with the supervision-coefficient estimate, std error,
-    z-stat, and p-value.
+    Image is identifiable: each image appears once per encoder, so the
+    random intercept absorbs per-image baselines (some images get long
+    captions across all encoders, others short), and the supervision
+    fixed effect captures the within-image difference between lang-sup
+    and self-sup encoders.
+
+    Even with the right RE, several metrics (adj_per_noun,
+    projective_density, topological_density) are zero-inflated enough
+    that MixedLM hits a singular covariance matrix. For those, we fall
+    back to a paired t-test on per-image (lang_mean - self_mean)
+    differences — the same target estimand, computed without iterative
+    MLE. The `method` field records which estimator produced the row.
     """
-    import statsmodels.api as sm
     from statsmodels.formula.api import mixedlm
 
     work = df.copy()
     work["supervision"] = work[encoder_col].apply(
         lambda e: "language" if e in lang_encoders else "self"
     )
-    work = work.dropna(subset=[metric_col, "supervision"])
-    # Group by encoder (random intercept). Image is too high-cardinality
-    # for the default optimizer; we treat it as fixed.
-    model = mixedlm(
-        f"{metric_col} ~ C(supervision, Treatment('self'))",
-        work,
-        groups=work[encoder_col],
+    work = work.dropna(subset=[metric_col, "supervision", image_col])
+    if work.empty:
+        return _empty_me_row(metric_col)
+
+    n_images = int(work[image_col].nunique())
+    n_obs = int(len(work))
+
+    # Attempt 1: MixedLM with image random intercept.
+    try:
+        model = mixedlm(
+            f"{metric_col} ~ C(supervision, Treatment('self'))",
+            work,
+            groups=work[image_col],
+        )
+        fitted = model.fit(method="lbfgs", disp=False)
+        coef_name = next(
+            (n for n in fitted.params.index if "supervision" in n),
+            None,
+        )
+        coef = float(fitted.params[coef_name]) if coef_name else float("nan")
+        se = float(fitted.bse[coef_name]) if coef_name else float("nan")
+        if (
+            coef_name is not None
+            and bool(fitted.converged)
+            and np.isfinite(coef)
+            and np.isfinite(se)
+            and se > 0
+        ):
+            return {
+                "metric": metric_col, "method": "mixedlm_image_re",
+                "coef": coef, "se": se,
+                "z": float(fitted.tvalues[coef_name]),
+                "p_value": float(fitted.pvalues[coef_name]),
+                "n_images": n_images, "n_obs": n_obs, "converged": True,
+            }
+    except Exception:  # noqa: BLE001
+        pass  # fall through to paired t-test
+
+    # Fallback: paired t-test on per-image (lang_mean - self_mean).
+    self_encoders = tuple(
+        e for e in work[encoder_col].unique() if e not in lang_encoders
     )
-    fitted = model.fit(method="lbfgs", disp=False)
-    coef_name = next(
-        (n for n in fitted.params.index if "supervision" in n),
-        None,
+    wide = work.pivot_table(
+        index=image_col, columns=encoder_col, values=metric_col, aggfunc="mean"
     )
-    if coef_name is None:
-        return {"coef": None, "se": None, "z": None, "p_value": None}
+    lang_present = [e for e in lang_encoders if e in wide.columns]
+    self_present = [e for e in self_encoders if e in wide.columns]
+    if not lang_present or not self_present:
+        return _empty_me_row(metric_col)
+    wide = wide.dropna(subset=lang_present + self_present)
+    if wide.empty:
+        return _empty_me_row(metric_col)
+    diff = wide[lang_present].mean(axis=1) - wide[self_present].mean(axis=1)
+    n_paired = int(len(diff))
+    if n_paired < 2:
+        return _empty_me_row(metric_col)
+    t_res = stats.ttest_1samp(diff.values, 0.0)
     return {
-        "coef": float(fitted.params[coef_name]),
-        "se": float(fitted.bse[coef_name]),
-        "z": float(fitted.tvalues[coef_name]),
-        "p_value": float(fitted.pvalues[coef_name]),
-        "metric": metric_col,
+        "metric": metric_col, "method": "paired_t_per_image",
+        "coef": float(diff.mean()),
+        "se": float(diff.std(ddof=1) / math.sqrt(n_paired)),
+        "z": float(t_res.statistic),
+        "p_value": float(t_res.pvalue),
+        "n_images": n_paired, "n_obs": n_obs, "converged": True,
+    }
+
+
+def _empty_me_row(metric_col: str) -> dict:
+    return {
+        "metric": metric_col, "method": "none",
+        "coef": None, "se": None, "z": None, "p_value": None,
+        "n_images": 0, "n_obs": 0, "converged": False,
     }

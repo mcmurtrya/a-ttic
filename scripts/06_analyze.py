@@ -74,6 +74,16 @@ def main() -> int:
     log.info("Encoders present: %s", sorted(df["encoder"].unique()))
     log.info("Metrics present:  %s", sorted(df["metric"].unique()))
 
+    seeds_present = sorted(df["seed"].unique()) if "seed" in df.columns else []
+    if len(seeds_present) > 1:
+        log.error(
+            "Input contains multiple seeds %s. The pivot in this script uses "
+            "aggfunc=mean and would silently average across seeds. Run this "
+            "script once per seed, then aggregate with scripts/09_aggregate_seeds.py.",
+            seeds_present,
+        )
+        return 1
+
     lang_encoders = tuple(e.strip() for e in args.lang_encoders.split(",") if e.strip())
     self_encoders = tuple(e.strip() for e in args.self_encoders.split(",") if e.strip())
     keep_encoders = lang_encoders + self_encoders

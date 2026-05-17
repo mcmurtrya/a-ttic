@@ -1,0 +1,28 @@
+2026-05-17 05:43:53,046 | INFO    | aggregate_seeds | Family primary: aggregating seeds [1, 2, 3]
+2026-05-17 05:43:53,071 | INFO    | aggregate_seeds | Wrote -> captions/analysis_aggregate_beam_primary.csv
+2026-05-17 05:43:53,075 | INFO    | aggregate_seeds | Family secondary: aggregating seeds [1, 2, 3]
+2026-05-17 05:43:53,099 | INFO    | aggregate_seeds | Wrote -> captions/analysis_aggregate_beam_secondary.csv
+2026-05-17 05:43:53,109 | INFO    | aggregate_seeds | Family mixed_effects: aggregating seeds [1, 2, 3]
+2026-05-17 05:43:53,121 | INFO    | aggregate_seeds | Wrote -> captions/analysis_aggregate_beam_mixed_effects.csv
+2026-05-17 05:43:53,123 | INFO    | aggregate_seeds | Wrote -> captions/analysis_aggregate_beam_summary.txt
+2026-05-17 05:43:56,795 | INFO    | aggregate_seeds | Family primary: aggregating seeds [1, 2, 3]
+2026-05-17 05:43:56,821 | INFO    | aggregate_seeds | Wrote -> captions/analysis_aggregate_beam_no_mae_primary.csv
+2026-05-17 05:43:56,828 | INFO    | aggregate_seeds | Family secondary: aggregating seeds [1, 2, 3]
+2026-05-17 05:43:56,851 | INFO    | aggregate_seeds | Wrote -> captions/analysis_aggregate_beam_no_mae_secondary.csv
+2026-05-17 05:43:56,860 | INFO    | aggregate_seeds | Family mixed_effects: aggregating seeds [1, 2, 3]
+2026-05-17 05:43:56,871 | INFO    | aggregate_seeds | Wrote -> captions/analysis_aggregate_beam_no_mae_mixed_effects.csv
+2026-05-17 05:43:56,873 | INFO    | aggregate_seeds | Wrote -> captions/analysis_aggregate_beam_no_mae_summary.txt
+2026-05-17 05:44:00,562 | INFO    | aggregate_seeds | Family primary: aggregating seeds [1, 2, 3]
+2026-05-17 05:44:00,587 | INFO    | aggregate_seeds | Wrote -> captions/analysis_aggregate_nucleus_primary.csv
+2026-05-17 05:44:00,591 | INFO    | aggregate_seeds | Family secondary: aggregating seeds [1, 2, 3]
+2026-05-17 05:44:00,614 | INFO    | aggregate_seeds | Wrote -> captions/analysis_aggregate_nucleus_secondary.csv
+2026-05-17 05:44:00,623 | INFO    | aggregate_seeds | Family mixed_effects: aggregating seeds [1, 2, 3]
+2026-05-17 05:44:00,633 | INFO    | aggregate_seeds | Wrote -> captions/analysis_aggregate_nucleus_mixed_effects.csv
+2026-05-17 05:44:00,635 | INFO    | aggregate_seeds | Wrote -> captions/analysis_aggregate_nucleus_summary.txt
+2026-05-17 05:44:04,297 | INFO    | aggregate_seeds | Family primary: aggregating seeds [1, 2, 3]
+2026-05-17 05:44:04,321 | INFO    | aggregate_seeds | Wrote -> captions/analysis_aggregate_nucleus_no_mae_primary.csv
+2026-05-17 05:44:04,326 | INFO    | aggregate_seeds | Family secondary: aggregating seeds [1, 2, 3]
+2026-05-17 05:44:04,350 | INFO    | aggregate_seeds | Wrote -> captions/analysis_aggregate_nucleus_no_mae_secondary.csv
+2026-05-17 05:44:04,358 | INFO    | aggregate_seeds | Family mixed_effects: aggregating seeds [1, 2, 3]
+2026-05-17 05:44:04,370 | INFO    | aggregate_seeds | Wrote -> captions/analysis_aggregate_nucleus_no_mae_mixed_effects.csv
+2026-05-17 05:44:04,372 | INFO    | aggregate_seeds | Wrote -> captions/analysis_aggregate_nucleus_no_mae_summary.txt

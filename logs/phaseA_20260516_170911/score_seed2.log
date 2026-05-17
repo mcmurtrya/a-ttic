@@ -1,0 +1,58 @@
+/home/ubuntu/ttic_embeddings/.venv/lib/python3.12/site-packages/lexical_diversity/lex_div.py:25: SyntaxWarning: invalid escape sequence '\s'
+  raw_text = re.sub('\s+',' ',raw_text)
+/home/ubuntu/ttic_embeddings/.venv/lib/python3.12/site-packages/lexical_diversity/lex_div.py:4: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
+  import pkg_resources
+2026-05-16 23:19:57,919 | INFO    | score_metrics | Loaded 40000 caption rows from captions/captions_seed2.jsonl
+2026-05-16 23:20:54,098 | INFO    | score_metrics | Parsed 40000 captions (cache: captions/captions_seed2.spacy)
+2026-05-16 23:20:54,112 | INFO    | score_metrics | Building VG→COCO id remap from /home/ubuntu/data/vg/image_data.json ...
+2026-05-16 23:20:54,290 | INFO    | score_metrics | VG→COCO remap covers 51498 images
+2026-05-16 23:20:54,290 | INFO    | score_metrics | Loading VG attributes from /home/ubuntu/data/vg/attributes.json ...
+2026-05-16 23:21:08,932 | INFO    | score_metrics | Loaded VG attributes for 103995 images (2133 overlap with caption rows)
+2026-05-16 23:21:16,963 | INFO    | score_metrics | Wrote 320000 score rows to captions/scores_seed2.csv
+2026-05-16 23:21:16,963 | INFO    | score_metrics | Computing per-cell MTLD with 1000 bootstrap resamples...
+2026-05-16 23:35:58,785 | INFO    | score_metrics | Wrote 8 per-cell MTLD rows to captions/scores_seed2_diversity.csv
+2026-05-16 23:35:58,860 | INFO    | score_metrics | Per-encoder/metric summary:
+                             count      mean       std
+encoder metric                                        
+clip    adj_per_noun         10000  0.119058  0.225608
+        caption_length       10000  9.588000  2.834936
+        head_noun_min_depth   9977  6.811606  2.127705
+        projective_density   10000  0.008680  0.027582
+        scene_object_ratio    8558  0.247240  0.338119
+        topological_density  10000  0.105603  0.063571
+        vg_attr_precision     1317  0.376993  0.450527
+        vg_attr_recall        4266  0.013238  0.040417
+dinov2  adj_per_noun         10000  0.127360  0.232879
+        caption_length       10000  9.974100  2.293241
+        head_noun_min_depth   9991  6.804921  2.107613
+        projective_density   10000  0.013093  0.032447
+        scene_object_ratio    8730  0.240934  0.327959
+        topological_density  10000  0.104212  0.061988
+        vg_attr_precision     1453  0.356206  0.445725
+        vg_attr_recall        4266  0.014737  0.048722
+mae     adj_per_noun         10000  0.122601  0.226751
+        caption_length       10000  9.957400  2.227528
+        head_noun_min_depth   9984  6.748363  2.129915
+        projective_density   10000  0.012985  0.032324
+        scene_object_ratio    8661  0.252967  0.335377
+        topological_density  10000  0.106903  0.061488
+        vg_attr_precision     1329  0.356158  0.445221
+        vg_attr_recall        4266  0.013496  0.043870
+siglip  adj_per_noun         10000  0.123350  0.227992
+        caption_length       10000  9.852100  2.642939
+        head_noun_min_depth   9984  6.769327  2.115894
+        projective_density   10000  0.011228  0.030461
+        scene_object_ratio    8530  0.242624  0.334605
+        topological_density  10000  0.105385  0.062815
+        vg_attr_precision     1356  0.398537  0.461961
+        vg_attr_recall        4266  0.014429  0.045886
+2026-05-16 23:35:58,872 | INFO    | score_metrics | Per-cell MTLD:
+encoder decoder  seed metric     score     ci_lo     ci_hi  n_captions
+   clip    beam     2   mtld 22.399073 22.077775 22.836028        5000
+   clip nucleus     2   mtld 32.583473 31.789402 33.129949        5000
+ siglip    beam     2   mtld 23.508816 23.032048 23.878861        5000
+ siglip nucleus     2   mtld 32.469569 31.844594 33.215762        5000
+ dinov2    beam     2   mtld 23.409509 22.893108 23.697989        5000
+ dinov2 nucleus     2   mtld 33.040319 32.235557 33.674735        5000
+    mae    beam     2   mtld 22.307299 21.761298 22.468299        5000
+    mae nucleus     2   mtld 32.123578 31.522951 32.852932        5000

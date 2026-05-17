@@ -1,0 +1,126 @@
+# Analysis — scores_seed3.csv, decoder=nucleus
+
+alpha = 0.05
+effect_size_floor (Wilcoxon r) = 0.1
+
+## Primary family (supervision-category contrast)
+
+Pools (clip, siglip) vs (dinov2, mae) per image, per metric.
+BH-FDR corrected within this 8-test family.
+
+ statistic      p_value    n        r              metric             contrast        p_adj  rejected_at_alpha  claimed_meaningful
+ 3719707.0 1.110356e-02 3950 0.040405        adj_per_noun lang_sup_vs_self_sup 2.960948e-02               True               False
+ 5419399.0 8.873344e-01 4661 0.002075      caption_length lang_sup_vs_self_sup 9.222548e-01              False               False
+ 3769394.5 9.222548e-01 3886 0.001566 head_noun_min_depth lang_sup_vs_self_sup 9.222548e-01              False               False
+  870437.5 4.751274e-11 2045 0.145473  projective_density lang_sup_vs_self_sup 3.801019e-10               True                True
+  770819.0 6.329838e-01 1767 0.011360  scene_object_ratio lang_sup_vs_self_sup 8.439785e-01              False               False
+ 5777968.5 4.318059e-03 4924 0.040671 topological_density lang_sup_vs_self_sup 1.727224e-02               True               False
+    2782.5 4.910054e-02  118 0.181143   vg_attr_precision lang_sup_vs_self_sup 9.820108e-02              False               False
+  187055.5 5.410995e-01  875 0.020661      vg_attr_recall lang_sup_vs_self_sup 8.439785e-01              False               False
+
+## Image-controlled supervision contrast (methods.md L49)
+
+score ~ supervision + (1 | image). The `method` column records
+whether the row used the MixedLM image-RE fit or fell back to a
+paired t-test on per-image (lang_mean - self_mean) when the ME
+covariance was singular. Both estimate the same population
+parameter; agreement with the primary Wilcoxon validates that
+the contrast is not an artifact of rank statistics.
+
+             metric             method      coef       se         z      p_value  n_images  n_obs  converged
+       adj_per_noun paired_t_per_image -0.006489 0.003389 -1.914703 5.558747e-02      5000  20000       True
+     caption_length paired_t_per_image  0.025700 0.042188  0.609173 5.424372e-01      5000  20000       True
+head_noun_min_depth   mixedlm_image_re -0.003884 0.019615 -0.198027 8.430242e-01      5000  19960       True
+ projective_density paired_t_per_image -0.002704 0.000409 -6.605646 4.369619e-11      5000  20000       True
+ scene_object_ratio paired_t_per_image -0.003167 0.004835 -0.655047 5.124882e-01      2967  16808       True
+topological_density paired_t_per_image  0.002704 0.000892  3.032504 2.437785e-03      5000  20000       True
+  vg_attr_precision paired_t_per_image  0.066560 0.030916  2.152917 3.287208e-02       156   3724       True
+     vg_attr_recall paired_t_per_image  0.000867 0.001027  0.844032 3.987462e-01      2133   8532       True
+
+## Secondary family (all pairwise contrasts)
+
+6 encoder pairs * 8 metrics = 48 tests, BH-FDR corrected within this family.
+
+ statistic      p_value    n        r              metric encoder_a encoder_b         contrast    p_adj  rejected_at_alpha  claimed_meaningful  within_category
+ 2033521.5 3.595012e-01 2880 0.017075        adj_per_noun      clip    siglip   clip_vs_siglip 0.575202              False               False             True
+ 4945756.0 3.302597e-01 4485 0.014538      caption_length      clip    siglip   clip_vs_siglip 0.556189              False               False             True
+ 1998999.5 4.890003e-02 2889 0.036642 head_noun_min_depth      clip    siglip   clip_vs_siglip 0.195600              False               False             True
+  311350.5 4.880187e-01 1129 0.020638  projective_density      clip    siglip   clip_vs_siglip 0.709845              False               False             True
+  634824.5 2.438971e-01 1620 0.028952  scene_object_ratio      clip    siglip   clip_vs_siglip 0.487794              False               False             True
+ 5177656.0 1.987493e-01 4601 0.018946 topological_density      clip    siglip   clip_vs_siglip 0.454284              False               False             True
+   11764.0 8.518409e-01  218 0.012650   vg_attr_precision      clip    siglip   clip_vs_siglip 0.946025              False               False             True
+   70783.5 8.578015e-01  534 0.007754      vg_attr_recall      clip    siglip   clip_vs_siglip 0.946025              False               False             True
+ 2134513.5 8.567458e-02 2976 0.031505        adj_per_noun      clip    dinov2   clip_vs_dinov2 0.293741              False               False            False
+ 4837674.5 1.116700e-01 4460 0.023819      caption_length      clip    dinov2   clip_vs_dinov2 0.335010              False               False            False
+ 2097156.0 2.768090e-01 2930 0.020091 head_noun_min_depth      clip    dinov2   clip_vs_dinov2 0.531473              False               False            False
+  309824.0 1.420654e-07 1224 0.150420  projective_density      clip    dinov2   clip_vs_dinov2 0.000007               True                True            False
+  625304.5 8.267845e-01 1586 0.005495  scene_object_ratio      clip    dinov2   clip_vs_dinov2 0.946025              False               False            False
+ 4982739.0 4.393753e-02 4543 0.029891 topological_density      clip    dinov2   clip_vs_dinov2 0.191727              False               False            False
+   14987.0 8.529849e-01  246 0.011815   vg_attr_precision      clip    dinov2   clip_vs_dinov2 0.946025              False               False            False
+   84148.0 8.671898e-01  582 0.006932      vg_attr_recall      clip    dinov2   clip_vs_dinov2 0.946025              False               False            False
+ 2151303.0 7.485276e-01 2943 0.005909        adj_per_noun      clip       mae      clip_vs_mae 0.921265              False               False            False
+ 5030586.5 1.847067e-01 4537 0.019692      caption_length      clip       mae      clip_vs_mae 0.443296              False               False            False
+ 2572174.0 9.051658e-01 3211 0.002102 head_noun_min_depth      clip       mae      clip_vs_mae 0.951987              False               False            False
+  315960.5 1.510248e-06 1225 0.137425  projective_density      clip       mae      clip_vs_mae 0.000024               True                True            False
+  677130.0 9.399602e-01 1647 0.001856  scene_object_ratio      clip       mae      clip_vs_mae 0.951987              False               False            False
+ 5229156.0 5.744221e-01 4595 0.008284 topological_density      clip       mae      clip_vs_mae 0.787779              False               False            False
+   12063.0 1.490874e-01  232 0.094722   vg_attr_precision      clip       mae      clip_vs_mae 0.397566              False               False            False
+   78293.0 2.300141e-01  576 0.050013      vg_attr_recall      clip       mae      clip_vs_mae 0.485765              False               False            False
+ 2044952.0 3.621950e-03 2952 0.053547        adj_per_noun    siglip    dinov2 siglip_vs_dinov2 0.024836               True               False            False
+ 4924668.0 3.360307e-01 4475 0.014381      caption_length    siglip    dinov2 siglip_vs_dinov2 0.556189              False               False            False
+ 2039987.0 6.530701e-01 2870 0.008391 head_noun_min_depth    siglip    dinov2 siglip_vs_dinov2 0.841809              False               False            False
+  321329.0 1.190890e-06 1236 0.138157  projective_density    siglip    dinov2 siglip_vs_dinov2 0.000024               True                True            False
+  694802.5 9.519868e-01 1668 0.001474  scene_object_ratio    siglip    dinov2 siglip_vs_dinov2 0.951987              False               False            False
+ 4874606.5 1.012406e-03 4545 0.048757 topological_density    siglip    dinov2 siglip_vs_dinov2 0.008099               True               False            False
+   14274.0 9.498138e-01  239 0.004071   vg_attr_precision    siglip    dinov2 siglip_vs_dinov2 0.951987              False               False            False
+   82791.0 6.664323e-01  581 0.017883      vg_attr_recall    siglip    dinov2 siglip_vs_dinov2 0.841809              False               False            False
+ 2170214.0 1.734603e-01 2989 0.024897        adj_per_noun    siglip       mae    siglip_vs_mae 0.438216              False               False            False
+ 4730872.5 8.393513e-03 4452 0.039504      caption_length    siglip       mae    siglip_vs_mae 0.050361              False               False            False
+ 2581124.5 4.792008e-01 3236 0.012439 head_noun_min_depth    siglip       mae    siglip_vs_mae 0.709845              False               False            False
+  340009.0 4.462443e-05 1252 0.115368  projective_density    siglip       mae    siglip_vs_mae 0.000535               True                True            False
+  650858.0 1.354798e-01 1648 0.036773  scene_object_ratio    siglip       mae    siglip_vs_mae 0.382531              False               False            False
+ 5110770.0 2.439340e-02 4610 0.033151 topological_density    siglip       mae    siglip_vs_mae 0.130098              False               False            False
+    8910.5 1.010981e-01  202 0.115359   vg_attr_precision    siglip       mae    siglip_vs_mae 0.323514              False               False            False
+   76711.5 3.297837e-01  567 0.040927      vg_attr_recall    siglip       mae    siglip_vs_mae 0.556189              False               False            False
+ 2287399.0 2.930066e-01 3058 0.019016        adj_per_noun    dinov2       mae    dinov2_vs_mae 0.540935              False               False             True
+ 4675870.0 2.578442e-04 4467 0.054677      caption_length    dinov2       mae    dinov2_vs_mae 0.002475               True               False             True
+ 2488620.0 6.359016e-01 3170 0.008409 head_noun_min_depth    dinov2       mae    dinov2_vs_mae 0.841809              False               False             True
+  461630.5 5.254716e-01 1372 0.017142  projective_density    dinov2       mae    dinov2_vs_mae 0.741842              False               False             True
+  683978.0 6.791406e-02 1697 0.044316  scene_object_ratio    dinov2       mae    dinov2_vs_mae 0.250760              False               False             True
+ 5165561.5 2.327622e-01 4592 0.017609 topological_density    dinov2       mae    dinov2_vs_mae 0.485765              False               False             True
+   10572.0 3.342141e-02  224 0.142115   vg_attr_precision    dinov2       mae    dinov2_vs_mae 0.160423              False               False             True
+   80745.0 4.252914e-01  579 0.033134      vg_attr_recall    dinov2       mae    dinov2_vs_mae 0.658516              False               False             True
+
+## Within-category sanity checks (subset of secondary)
+
+CLIP vs SigLIP and DINOv2 vs MAE per metric. Should be null
+under the supervision-category claim; large within-category
+differences mean one encoder drives that category's effect.
+
+ statistic  p_value    n        r              metric encoder_a encoder_b       contrast    p_adj  rejected_at_alpha  claimed_meaningful  within_category
+ 2033521.5 0.359501 2880 0.017075        adj_per_noun      clip    siglip clip_vs_siglip 0.575202              False               False             True
+ 4945756.0 0.330260 4485 0.014538      caption_length      clip    siglip clip_vs_siglip 0.556189              False               False             True
+ 1998999.5 0.048900 2889 0.036642 head_noun_min_depth      clip    siglip clip_vs_siglip 0.195600              False               False             True
+  311350.5 0.488019 1129 0.020638  projective_density      clip    siglip clip_vs_siglip 0.709845              False               False             True
+  634824.5 0.243897 1620 0.028952  scene_object_ratio      clip    siglip clip_vs_siglip 0.487794              False               False             True
+ 5177656.0 0.198749 4601 0.018946 topological_density      clip    siglip clip_vs_siglip 0.454284              False               False             True
+   11764.0 0.851841  218 0.012650   vg_attr_precision      clip    siglip clip_vs_siglip 0.946025              False               False             True
+   70783.5 0.857802  534 0.007754      vg_attr_recall      clip    siglip clip_vs_siglip 0.946025              False               False             True
+ 2287399.0 0.293007 3058 0.019016        adj_per_noun    dinov2       mae  dinov2_vs_mae 0.540935              False               False             True
+ 4675870.0 0.000258 4467 0.054677      caption_length    dinov2       mae  dinov2_vs_mae 0.002475               True               False             True
+ 2488620.0 0.635902 3170 0.008409 head_noun_min_depth    dinov2       mae  dinov2_vs_mae 0.841809              False               False             True
+  461630.5 0.525472 1372 0.017142  projective_density    dinov2       mae  dinov2_vs_mae 0.741842              False               False             True
+  683978.0 0.067914 1697 0.044316  scene_object_ratio    dinov2       mae  dinov2_vs_mae 0.250760              False               False             True
+ 5165561.5 0.232762 4592 0.017609 topological_density    dinov2       mae  dinov2_vs_mae 0.485765              False               False             True
+   10572.0 0.033421  224 0.142115   vg_attr_precision    dinov2       mae  dinov2_vs_mae 0.160423              False               False             True
+   80745.0 0.425291  579 0.033134      vg_attr_recall    dinov2       mae  dinov2_vs_mae 0.658516              False               False             True
+
+## Lexical diversity (MTLD, per-cell with bootstrap 95% CI)
+
+MTLD pooled over all captions in each (encoder, decoder, seed) cell. Two cells differ meaningfully when their bootstrap CIs do not overlap.
+
+encoder decoder  seed metric     score     ci_lo     ci_hi  n_captions
+   clip nucleus     3   mtld 31.963285 31.507344 32.811616        5000
+ siglip nucleus     3   mtld 32.828822 31.923725 33.210413        5000
+ dinov2 nucleus     3   mtld 33.573755 32.903863 34.294801        5000
+    mae nucleus     3   mtld 32.707768 31.850340 33.182391        5000

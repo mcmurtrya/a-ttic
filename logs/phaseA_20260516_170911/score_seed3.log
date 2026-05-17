@@ -1,0 +1,56 @@
+/home/ubuntu/ttic_embeddings/.venv/lib/python3.12/site-packages/lexical_diversity/lex_div.py:4: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
+  import pkg_resources
+2026-05-17 05:24:59,023 | INFO    | score_metrics | Loaded 40000 caption rows from captions/captions_seed3.jsonl
+2026-05-17 05:25:57,684 | INFO    | score_metrics | Parsed 40000 captions (cache: captions/captions_seed3.spacy)
+2026-05-17 05:25:57,697 | INFO    | score_metrics | Building VG→COCO id remap from /home/ubuntu/data/vg/image_data.json ...
+2026-05-17 05:25:57,863 | INFO    | score_metrics | VG→COCO remap covers 51498 images
+2026-05-17 05:25:57,863 | INFO    | score_metrics | Loading VG attributes from /home/ubuntu/data/vg/attributes.json ...
+2026-05-17 05:26:13,117 | INFO    | score_metrics | Loaded VG attributes for 103995 images (2133 overlap with caption rows)
+2026-05-17 05:26:20,858 | INFO    | score_metrics | Wrote 320000 score rows to captions/scores_seed3.csv
+2026-05-17 05:26:20,858 | INFO    | score_metrics | Computing per-cell MTLD with 1000 bootstrap resamples...
+2026-05-17 05:40:47,459 | INFO    | score_metrics | Wrote 8 per-cell MTLD rows to captions/scores_seed3_diversity.csv
+2026-05-17 05:40:47,527 | INFO    | score_metrics | Per-encoder/metric summary:
+                             count      mean       std
+encoder metric                                        
+clip    adj_per_noun         10000  0.120936  0.230434
+        caption_length       10000  9.680100  2.789649
+        head_noun_min_depth   9987  6.752736  2.118929
+        projective_density   10000  0.009797  0.028982
+        scene_object_ratio    8579  0.247300  0.337999
+        topological_density  10000  0.105315  0.063362
+        vg_attr_precision     1315  0.365995  0.448295
+        vg_attr_recall        4266  0.013356  0.044579
+dinov2  adj_per_noun         10000  0.130632  0.263103
+        caption_length       10000  9.726600  2.344142
+        head_noun_min_depth   9981  6.804754  2.116366
+        projective_density   10000  0.014158  0.033762
+        scene_object_ratio    8644  0.236936  0.327997
+        topological_density  10000  0.101484  0.063317
+        vg_attr_precision     1453  0.370739  0.453642
+        vg_attr_recall        4266  0.014326  0.047594
+mae     adj_per_noun         10000  0.119017  0.225101
+        caption_length       10000  9.959200  2.388285
+        head_noun_min_depth   9984  6.762079  2.110786
+        projective_density   10000  0.013529  0.032802
+        scene_object_ratio    8610  0.242063  0.331295
+        topological_density  10000  0.105649  0.060759
+        vg_attr_precision     1332  0.349600  0.439401
+        vg_attr_recall        4266  0.013337  0.044239
+siglip  adj_per_noun         10000  0.121904  0.223924
+        caption_length       10000  9.697900  2.652874
+        head_noun_min_depth   9982  6.803647  2.117866
+        projective_density   10000  0.010439  0.029576
+        scene_object_ratio    8597  0.239554  0.335116
+        topological_density  10000  0.105172  0.062949
+        vg_attr_precision     1329  0.404314  0.467292
+        vg_attr_recall        4266  0.014560  0.046733
+2026-05-17 05:40:47,535 | INFO    | score_metrics | Per-cell MTLD:
+encoder decoder  seed metric     score     ci_lo     ci_hi  n_captions
+   clip    beam     3   mtld 21.905180 21.722312 22.460429        5000
+   clip nucleus     3   mtld 31.963285 31.507344 32.811616        5000
+ siglip    beam     3   mtld 23.350969 22.960659 23.808317        5000
+ siglip nucleus     3   mtld 32.828822 31.923725 33.210413        5000
+ dinov2    beam     3   mtld 23.324477 22.927874 23.784332        5000
+ dinov2 nucleus     3   mtld 33.573755 32.903863 34.294801        5000
+    mae    beam     3   mtld 21.970468 21.470881 22.166003        5000
+    mae nucleus     3   mtld 32.707768 31.850340 33.182391        5000

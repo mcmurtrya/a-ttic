@@ -1,0 +1,53 @@
+2026-05-16 23:37:54,032 | INFO    | analyze | Loaded 320000 score rows from captions/scores_seed2.csv
+2026-05-16 23:37:54,046 | INFO    | analyze | Decoders present: ['beam', 'nucleus']
+2026-05-16 23:37:54,060 | INFO    | analyze | Encoders present: ['clip', 'dinov2', 'mae', 'siglip']
+2026-05-16 23:37:54,073 | INFO    | analyze | Metrics present:  ['adj_per_noun', 'caption_length', 'head_noun_min_depth', 'projective_density', 'scene_object_ratio', 'topological_density', 'vg_attr_precision', 'vg_attr_recall']
+2026-05-16 23:37:54,106 | INFO    | analyze | Contrast: lang=('clip', 'siglip') vs self=('dinov2', 'mae')
+2026-05-16 23:37:54,137 | INFO    | analyze | Filtered to decoder=beam: 160000 rows
+2026-05-16 23:37:54,143 | INFO    | analyze | Analyzing 8 metrics: ['adj_per_noun', 'caption_length', 'head_noun_min_depth', 'projective_density', 'scene_object_ratio', 'topological_density', 'vg_attr_precision', 'vg_attr_recall']
+2026-05-16 23:37:54,210 | INFO    | analyze | 
+Running primary family (supervision-category contrast, 8 tests)...
+2026-05-16 23:37:54,323 | INFO    | analyze | Primary results:
+ statistic       p_value    n        r              metric             contrast         p_adj  rejected_at_alpha  claimed_meaningful
+  709597.0  3.416458e-01 1707 0.023016        adj_per_noun lang_sup_vs_self_sup  5.466333e-01              False               False
+ 2561691.0 7.264119e-117 4162 0.356216      caption_length lang_sup_vs_self_sup 5.811295e-116               True                True
+ 1394134.0  1.821627e-01 2399 0.027238 head_noun_min_depth lang_sup_vs_self_sup  3.760967e-01              False               False
+  327806.5  3.116466e-20 1357 0.250149  projective_density lang_sup_vs_self_sup  1.246586e-19               True                True
+  673545.0  1.880483e-01 1672 0.032193  scene_object_ratio lang_sup_vs_self_sup  3.760967e-01              False               False
+ 4968837.5  8.293909e-01 4466 0.003224 topological_density lang_sup_vs_self_sup  9.478753e-01              False               False
+     259.0  6.974637e-01   33 0.067672   vg_attr_precision lang_sup_vs_self_sup  9.299516e-01              False               False
+   33909.5  9.849555e-01  368 0.000983      vg_attr_recall lang_sup_vs_self_sup  9.849555e-01              False               False
+2026-05-16 23:37:54,323 | INFO    | analyze | Wrote -> captions/analysis_seed2_beam_primary.csv
+2026-05-16 23:37:54,323 | INFO    | analyze | 
+Running image-controlled robustness check on primary contrasts (8 metrics)...
+/home/ubuntu/ttic_embeddings/.venv/lib/python3.12/site-packages/statsmodels/regression/mixed_linear_model.py:1634: UserWarning: Random effects covariance is singular
+  warnings.warn(msg)
+/home/ubuntu/ttic_embeddings/.venv/lib/python3.12/site-packages/statsmodels/regression/mixed_linear_model.py:1634: UserWarning: Random effects covariance is singular
+  warnings.warn(msg)
+/home/ubuntu/ttic_embeddings/.venv/lib/python3.12/site-packages/statsmodels/regression/mixed_linear_model.py:1634: UserWarning: Random effects covariance is singular
+  warnings.warn(msg)
+/home/ubuntu/ttic_embeddings/.venv/lib/python3.12/site-packages/statsmodels/regression/mixed_linear_model.py:1634: UserWarning: Random effects covariance is singular
+  warnings.warn(msg)
+/home/ubuntu/ttic_embeddings/.venv/lib/python3.12/site-packages/statsmodels/regression/mixed_linear_model.py:1634: UserWarning: Random effects covariance is singular
+  warnings.warn(msg)
+2026-05-16 23:38:12,334 | INFO    | analyze | Mixed-effects results:
+             metric             method      coef       se          z       p_value  n_images  n_obs  converged
+       adj_per_noun paired_t_per_image -0.001522 0.002060  -0.739091  4.598861e-01      5000  20000       True
+     caption_length paired_t_per_image -0.482100 0.021534 -22.387719 7.115657e-106      5000  20000       True
+head_noun_min_depth   mixedlm_image_re  0.027169 0.016271   1.669806  9.495768e-02      5000  19974       True
+ projective_density paired_t_per_image -0.003481 0.000355  -9.795337  1.875266e-22      5000  20000       True
+ scene_object_ratio   mixedlm_image_re -0.001999 0.003114  -0.642021  5.208596e-01      4869  17679       True
+topological_density paired_t_per_image  0.000114 0.000683   0.167017  8.673634e-01      5000  20000       True
+  vg_attr_precision   mixedlm_image_re  0.038513 0.014174   2.717166  6.584354e-03       893   1756       True
+     vg_attr_recall paired_t_per_image -0.000110 0.000677  -0.162257  8.711187e-01      2133   8532       True
+2026-05-16 23:38:12,334 | INFO    | analyze | Wrote -> captions/analysis_seed2_beam_mixed_effects.csv
+2026-05-16 23:38:12,334 | INFO    | analyze | 
+Running secondary family (pairwise contrasts, 48 tests)...
+2026-05-16 23:38:12,730 | INFO    | analyze | Wrote -> captions/analysis_seed2_beam_secondary.csv
+2026-05-16 23:38:12,746 | INFO    | analyze | MTLD per-cell:
+encoder decoder  seed metric     score     ci_lo     ci_hi  n_captions
+   clip    beam     2   mtld 22.399073 22.077775 22.836028        5000
+ siglip    beam     2   mtld 23.508816 23.032048 23.878861        5000
+ dinov2    beam     2   mtld 23.409509 22.893108 23.697989        5000
+    mae    beam     2   mtld 22.307299 21.761298 22.468299        5000
+2026-05-16 23:38:12,746 | INFO    | analyze | Wrote -> captions/analysis_seed2_beam_summary.txt

@@ -1,0 +1,57 @@
+2026-05-17 05:42:37,442 | INFO    | analyze | Loaded 320000 score rows from captions/scores_seed3.csv
+2026-05-17 05:42:37,457 | INFO    | analyze | Decoders present: ['beam', 'nucleus']
+2026-05-17 05:42:37,471 | INFO    | analyze | Encoders present: ['clip', 'dinov2', 'mae', 'siglip']
+2026-05-17 05:42:37,484 | INFO    | analyze | Metrics present:  ['adj_per_noun', 'caption_length', 'head_noun_min_depth', 'projective_density', 'scene_object_ratio', 'topological_density', 'vg_attr_precision', 'vg_attr_recall']
+2026-05-17 05:42:37,518 | INFO    | analyze | Contrast: lang=('clip', 'siglip') vs self=('dinov2', 'mae')
+2026-05-17 05:42:37,550 | INFO    | analyze | Filtered to decoder=nucleus: 160000 rows
+2026-05-17 05:42:37,557 | INFO    | analyze | Analyzing 8 metrics: ['adj_per_noun', 'caption_length', 'head_noun_min_depth', 'projective_density', 'scene_object_ratio', 'topological_density', 'vg_attr_precision', 'vg_attr_recall']
+2026-05-17 05:42:37,626 | INFO    | analyze | 
+Running primary family (supervision-category contrast, 8 tests)...
+2026-05-17 05:42:37,743 | INFO    | analyze | Primary results:
+ statistic      p_value    n        r              metric             contrast        p_adj  rejected_at_alpha  claimed_meaningful
+ 3719707.0 1.110356e-02 3950 0.040405        adj_per_noun lang_sup_vs_self_sup 2.960948e-02               True               False
+ 5419399.0 8.873344e-01 4661 0.002075      caption_length lang_sup_vs_self_sup 9.222548e-01              False               False
+ 3769394.5 9.222548e-01 3886 0.001566 head_noun_min_depth lang_sup_vs_self_sup 9.222548e-01              False               False
+  870437.5 4.751274e-11 2045 0.145473  projective_density lang_sup_vs_self_sup 3.801019e-10               True                True
+  770819.0 6.329838e-01 1767 0.011360  scene_object_ratio lang_sup_vs_self_sup 8.439785e-01              False               False
+ 5777968.5 4.318059e-03 4924 0.040671 topological_density lang_sup_vs_self_sup 1.727224e-02               True               False
+    2782.5 4.910054e-02  118 0.181143   vg_attr_precision lang_sup_vs_self_sup 9.820108e-02              False               False
+  187055.5 5.410995e-01  875 0.020661      vg_attr_recall lang_sup_vs_self_sup 8.439785e-01              False               False
+2026-05-17 05:42:37,743 | INFO    | analyze | Wrote -> captions/analysis_seed3_nucleus_primary.csv
+2026-05-17 05:42:37,743 | INFO    | analyze | 
+Running image-controlled robustness check on primary contrasts (8 metrics)...
+/home/ubuntu/ttic_embeddings/.venv/lib/python3.12/site-packages/statsmodels/regression/mixed_linear_model.py:1634: UserWarning: Random effects covariance is singular
+  warnings.warn(msg)
+/home/ubuntu/ttic_embeddings/.venv/lib/python3.12/site-packages/statsmodels/regression/mixed_linear_model.py:1634: UserWarning: Random effects covariance is singular
+  warnings.warn(msg)
+/home/ubuntu/ttic_embeddings/.venv/lib/python3.12/site-packages/statsmodels/regression/mixed_linear_model.py:1634: UserWarning: Random effects covariance is singular
+  warnings.warn(msg)
+/home/ubuntu/ttic_embeddings/.venv/lib/python3.12/site-packages/statsmodels/regression/mixed_linear_model.py:1634: UserWarning: Random effects covariance is singular
+  warnings.warn(msg)
+/home/ubuntu/ttic_embeddings/.venv/lib/python3.12/site-packages/statsmodels/regression/mixed_linear_model.py:1634: UserWarning: Random effects covariance is singular
+  warnings.warn(msg)
+/home/ubuntu/ttic_embeddings/.venv/lib/python3.12/site-packages/statsmodels/regression/mixed_linear_model.py:1634: UserWarning: Random effects covariance is singular
+  warnings.warn(msg)
+/home/ubuntu/ttic_embeddings/.venv/lib/python3.12/site-packages/statsmodels/regression/mixed_linear_model.py:1634: UserWarning: Random effects covariance is singular
+  warnings.warn(msg)
+2026-05-17 05:42:54,588 | INFO    | analyze | Mixed-effects results:
+             metric             method      coef       se         z      p_value  n_images  n_obs  converged
+       adj_per_noun paired_t_per_image -0.006489 0.003389 -1.914703 5.558747e-02      5000  20000       True
+     caption_length paired_t_per_image  0.025700 0.042188  0.609173 5.424372e-01      5000  20000       True
+head_noun_min_depth   mixedlm_image_re -0.003884 0.019615 -0.198027 8.430242e-01      5000  19960       True
+ projective_density paired_t_per_image -0.002704 0.000409 -6.605646 4.369619e-11      5000  20000       True
+ scene_object_ratio paired_t_per_image -0.003167 0.004835 -0.655047 5.124882e-01      2967  16808       True
+topological_density paired_t_per_image  0.002704 0.000892  3.032504 2.437785e-03      5000  20000       True
+  vg_attr_precision paired_t_per_image  0.066560 0.030916  2.152917 3.287208e-02       156   3724       True
+     vg_attr_recall paired_t_per_image  0.000867 0.001027  0.844032 3.987462e-01      2133   8532       True
+2026-05-17 05:42:54,588 | INFO    | analyze | Wrote -> captions/analysis_seed3_nucleus_mixed_effects.csv
+2026-05-17 05:42:54,588 | INFO    | analyze | 
+Running secondary family (pairwise contrasts, 48 tests)...
+2026-05-17 05:42:55,016 | INFO    | analyze | Wrote -> captions/analysis_seed3_nucleus_secondary.csv
+2026-05-17 05:42:55,033 | INFO    | analyze | MTLD per-cell:
+encoder decoder  seed metric     score     ci_lo     ci_hi  n_captions
+   clip nucleus     3   mtld 31.963285 31.507344 32.811616        5000
+ siglip nucleus     3   mtld 32.828822 31.923725 33.210413        5000
+ dinov2 nucleus     3   mtld 33.573755 32.903863 34.294801        5000
+    mae nucleus     3   mtld 32.707768 31.850340 33.182391        5000
+2026-05-17 05:42:55,033 | INFO    | analyze | Wrote -> captions/analysis_seed3_nucleus_summary.txt

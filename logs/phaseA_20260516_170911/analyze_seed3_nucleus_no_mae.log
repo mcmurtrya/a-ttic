@@ -1,0 +1,65 @@
+2026-05-17 05:42:59,690 | INFO    | analyze | Loaded 320000 score rows from captions/scores_seed3.csv
+2026-05-17 05:42:59,704 | INFO    | analyze | Decoders present: ['beam', 'nucleus']
+2026-05-17 05:42:59,718 | INFO    | analyze | Encoders present: ['clip', 'dinov2', 'mae', 'siglip']
+2026-05-17 05:42:59,731 | INFO    | analyze | Metrics present:  ['adj_per_noun', 'caption_length', 'head_noun_min_depth', 'projective_density', 'scene_object_ratio', 'topological_density', 'vg_attr_precision', 'vg_attr_recall']
+2026-05-17 05:42:59,779 | INFO    | analyze | Contrast: lang=('clip', 'siglip') vs self=('dinov2',)
+2026-05-17 05:42:59,802 | INFO    | analyze | Filtered to decoder=nucleus: 120000 rows
+2026-05-17 05:42:59,808 | INFO    | analyze | Analyzing 8 metrics: ['adj_per_noun', 'caption_length', 'head_noun_min_depth', 'projective_density', 'scene_object_ratio', 'topological_density', 'vg_attr_precision', 'vg_attr_recall']
+2026-05-17 05:42:59,857 | INFO    | analyze | 
+Running primary family (supervision-category contrast, 8 tests)...
+2026-05-17 05:42:59,964 | INFO    | analyze | Primary results:
+ statistic      p_value    n        r              metric             contrast        p_adj  rejected_at_alpha  claimed_meaningful
+ 3163663.0 2.851929e-01 3594 0.017827        adj_per_noun lang_sup_vs_self_sup 5.703857e-01              False               False
+ 5195442.5 4.515009e-04 4699 0.051175      caption_length lang_sup_vs_self_sup 1.806004e-03               True               False
+ 3181223.5 4.489216e-01 3593 0.012633 head_noun_min_depth lang_sup_vs_self_sup 5.879009e-01              False               False
+  537291.5 1.219619e-12 1641 0.175346  projective_density lang_sup_vs_self_sup 9.756948e-12               True                True
+  874528.5 8.045125e-01 1876 0.005715  scene_object_ratio lang_sup_vs_self_sup 8.045125e-01              False               False
+ 5723722.0 9.563766e-04 4920 0.047090 topological_density lang_sup_vs_self_sup 2.550338e-03               True               False
+    7777.5 5.144133e-01  181 0.048461   vg_attr_precision lang_sup_vs_self_sup 5.879009e-01              False               False
+  155398.0 3.931319e-01  802 0.030154      vg_attr_recall lang_sup_vs_self_sup 5.879009e-01              False               False
+2026-05-17 05:42:59,964 | INFO    | analyze | Wrote -> captions/analysis_seed3_nucleus_no_mae_primary.csv
+2026-05-17 05:42:59,964 | INFO    | analyze | 
+Running image-controlled robustness check on primary contrasts (8 metrics)...
+/home/ubuntu/ttic_embeddings/.venv/lib/python3.12/site-packages/statsmodels/regression/mixed_linear_model.py:1634: UserWarning: Random effects covariance is singular
+  warnings.warn(msg)
+/home/ubuntu/ttic_embeddings/.venv/lib/python3.12/site-packages/statsmodels/regression/mixed_linear_model.py:1634: UserWarning: Random effects covariance is singular
+  warnings.warn(msg)
+/home/ubuntu/ttic_embeddings/.venv/lib/python3.12/site-packages/statsmodels/regression/mixed_linear_model.py:1634: UserWarning: Random effects covariance is singular
+  warnings.warn(msg)
+/home/ubuntu/ttic_embeddings/.venv/lib/python3.12/site-packages/statsmodels/base/model.py:607: ConvergenceWarning: Maximum Likelihood optimization failed to converge. Check mle_retvals
+  warnings.warn("Maximum Likelihood optimization failed to "
+/home/ubuntu/ttic_embeddings/.venv/lib/python3.12/site-packages/statsmodels/regression/mixed_linear_model.py:2206: ConvergenceWarning: MixedLM optimization failed, trying a different optimizer may help.
+  warnings.warn(msg, ConvergenceWarning)
+/home/ubuntu/ttic_embeddings/.venv/lib/python3.12/site-packages/statsmodels/regression/mixed_linear_model.py:2218: ConvergenceWarning: Gradient optimization failed, |grad| = 81.529882
+  warnings.warn(msg, ConvergenceWarning)
+/home/ubuntu/ttic_embeddings/.venv/lib/python3.12/site-packages/statsmodels/regression/mixed_linear_model.py:2237: ConvergenceWarning: The MLE may be on the boundary of the parameter space.
+  warnings.warn(msg, ConvergenceWarning)
+/home/ubuntu/ttic_embeddings/.venv/lib/python3.12/site-packages/statsmodels/regression/mixed_linear_model.py:1634: UserWarning: Random effects covariance is singular
+  warnings.warn(msg)
+/home/ubuntu/ttic_embeddings/.venv/lib/python3.12/site-packages/statsmodels/regression/mixed_linear_model.py:1634: UserWarning: Random effects covariance is singular
+  warnings.warn(msg)
+/home/ubuntu/ttic_embeddings/.venv/lib/python3.12/site-packages/statsmodels/regression/mixed_linear_model.py:1634: UserWarning: Random effects covariance is singular
+  warnings.warn(msg)
+/home/ubuntu/ttic_embeddings/.venv/lib/python3.12/site-packages/statsmodels/regression/mixed_linear_model.py:1634: UserWarning: Random effects covariance is singular
+  warnings.warn(msg)
+2026-05-17 05:43:49,052 | INFO    | analyze | Mixed-effects results:
+             metric             method      coef       se         z      p_value  n_images  n_obs  converged
+       adj_per_noun paired_t_per_image -0.008950 0.004066 -2.200970 2.778370e-02      5000  15000       True
+     caption_length paired_t_per_image  0.121900 0.049984  2.438782 1.477144e-02      5000  15000       True
+head_noun_min_depth   mixedlm_image_re -0.015334 0.023764 -0.645273 5.187503e-01      5000  14971       True
+ projective_density paired_t_per_image -0.002849 0.000511 -5.578545 2.553051e-08      5000  15000       True
+ scene_object_ratio   mixedlm_image_re  0.001008 0.005148  0.195802 8.447649e-01      4868  12642       True
+topological_density paired_t_per_image  0.003542 0.001079  3.281178 1.040836e-03      5000  15000       True
+  vg_attr_precision paired_t_per_image  0.019496 0.029803  0.654143 5.135766e-01       271   2804       True
+     vg_attr_recall paired_t_per_image  0.000444 0.001281  0.346253 7.291871e-01      2133   6399       True
+2026-05-17 05:43:49,053 | INFO    | analyze | Wrote -> captions/analysis_seed3_nucleus_no_mae_mixed_effects.csv
+2026-05-17 05:43:49,053 | INFO    | analyze | 
+Running secondary family (pairwise contrasts, 24 tests)...
+2026-05-17 05:43:49,302 | INFO    | analyze | Wrote -> captions/analysis_seed3_nucleus_no_mae_secondary.csv
+2026-05-17 05:43:49,320 | INFO    | analyze | MTLD per-cell:
+encoder decoder  seed metric     score     ci_lo     ci_hi  n_captions
+   clip nucleus     3   mtld 31.963285 31.507344 32.811616        5000
+ siglip nucleus     3   mtld 32.828822 31.923725 33.210413        5000
+ dinov2 nucleus     3   mtld 33.573755 32.903863 34.294801        5000
+    mae nucleus     3   mtld 32.707768 31.850340 33.182391        5000
+2026-05-17 05:43:49,321 | INFO    | analyze | Wrote -> captions/analysis_seed3_nucleus_no_mae_summary.txt

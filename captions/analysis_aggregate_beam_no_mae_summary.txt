@@ -1,0 +1,71 @@
+# Cross-seed aggregate — decoder=beam, suffix=_no_mae
+
+## primary (seeds [1, 2, 3])
+
+             metric             contrast  r_seed1  r_seed2  r_seed3   mean_r     sd_r  n_meaningful_seeds  claimed_robust  verdict_unstable
+       adj_per_noun lang_sup_vs_self_sup 0.100773 0.057590 0.065525 0.074629 0.022986                   1           False              True
+     caption_length lang_sup_vs_self_sup 0.191179 0.286955 0.127996 0.202044 0.080034                   3            True             False
+head_noun_min_depth lang_sup_vs_self_sup 0.102011 0.010720 0.055041 0.055924 0.045652                   1           False              True
+ projective_density lang_sup_vs_self_sup 0.275965 0.255576 0.344936 0.292159 0.046829                   3            True             False
+ scene_object_ratio lang_sup_vs_self_sup 0.009003 0.011094 0.027822 0.015973 0.010314                   0           False             False
+topological_density lang_sup_vs_self_sup 0.054403 0.046591 0.076526 0.059173 0.015527                   0           False             False
+  vg_attr_precision lang_sup_vs_self_sup 0.259752 0.013623 0.088373 0.120583 0.126186                   0           False             False
+     vg_attr_recall lang_sup_vs_self_sup 0.108566 0.014448 0.031960 0.051658 0.050055                   0           False             False
+
+### Unstable verdicts in primary (meaningful in some seeds but not others)
+
+             metric             contrast  r_seed1  r_seed2  r_seed3   mean_r     sd_r  n_meaningful_seeds  claimed_robust  verdict_unstable
+       adj_per_noun lang_sup_vs_self_sup 0.100773  0.05759 0.065525 0.074629 0.022986                   1           False              True
+head_noun_min_depth lang_sup_vs_self_sup 0.102011  0.01072 0.055041 0.055924 0.045652                   1           False              True
+
+## secondary (seeds [1, 2, 3])
+
+             metric encoder_a encoder_b         contrast  r_seed1  r_seed2  r_seed3   mean_r     sd_r  n_meaningful_seeds  claimed_robust  verdict_unstable
+       adj_per_noun      clip    dinov2   clip_vs_dinov2 0.184633 0.116240 0.114308 0.138393 0.040056                   3            True             False
+       adj_per_noun      clip    siglip   clip_vs_siglip 0.169540 0.095751 0.103534 0.122942 0.040542                   2           False              True
+       adj_per_noun    siglip    dinov2 siglip_vs_dinov2 0.026937 0.026414 0.017409 0.023587 0.005357                   0           False             False
+     caption_length      clip    dinov2   clip_vs_dinov2 0.212906 0.375187 0.156466 0.248186 0.113548                   3            True             False
+     caption_length      clip    siglip   clip_vs_siglip 0.068634 0.224444 0.070388 0.121155 0.089455                   1           False              True
+     caption_length    siglip    dinov2 siglip_vs_dinov2 0.155930 0.172036 0.088602 0.138856 0.044260                   2           False              True
+head_noun_min_depth      clip    dinov2   clip_vs_dinov2 0.112550 0.035986 0.083241 0.077259 0.038631                   1           False              True
+head_noun_min_depth      clip    siglip   clip_vs_siglip 0.046511 0.062570 0.080189 0.063090 0.016845                   0           False             False
+head_noun_min_depth    siglip    dinov2 siglip_vs_dinov2 0.066733 0.026872 0.010706 0.034771 0.028836                   0           False             False
+ projective_density      clip    dinov2   clip_vs_dinov2 0.377685 0.340600 0.356723 0.358336 0.018595                   3            True             False
+ projective_density      clip    siglip   clip_vs_siglip 0.278326 0.229923 0.055010 0.187753 0.117479                   2           False              True
+ projective_density    siglip    dinov2 siglip_vs_dinov2 0.131790 0.114561 0.283552 0.176634 0.092994                   3            True             False
+ scene_object_ratio      clip    dinov2   clip_vs_dinov2 0.063064 0.020430 0.054716 0.046070 0.022593                   0           False             False
+ scene_object_ratio      clip    siglip   clip_vs_siglip 0.083862 0.030159 0.025194 0.046405 0.032534                   0           False             False
+ scene_object_ratio    siglip    dinov2 siglip_vs_dinov2 0.023261 0.015011 0.018607 0.018960 0.004136                   0           False             False
+topological_density      clip    dinov2   clip_vs_dinov2 0.096383 0.058856 0.100210 0.085150 0.022852                   1           False              True
+topological_density      clip    siglip   clip_vs_siglip 0.076064 0.006443 0.044128 0.042212 0.034850                   0           False             False
+topological_density    siglip    dinov2 siglip_vs_dinov2 0.018935 0.048302 0.053852 0.040363 0.018763                   0           False             False
+  vg_attr_precision      clip    dinov2   clip_vs_dinov2 0.096403 0.044687 0.220818 0.120636 0.090531                   0           False             False
+  vg_attr_precision      clip    siglip   clip_vs_siglip 0.265061 0.389828 0.191171 0.282020 0.100408                   1           False              True
+  vg_attr_precision    siglip    dinov2 siglip_vs_dinov2 0.339993 0.295697 0.235587 0.290426 0.052403                   1           False              True
+     vg_attr_recall      clip    dinov2   clip_vs_dinov2 0.330709 0.149316 0.139944 0.206657 0.107535                   3            True             False
+     vg_attr_recall      clip    siglip   clip_vs_siglip 0.344318 0.198747 0.225031 0.256032 0.077579                   3            True             False
+     vg_attr_recall    siglip    dinov2 siglip_vs_dinov2 0.035572 0.050695 0.035182 0.040483 0.008846                   0           False             False
+
+### Unstable verdicts in secondary (meaningful in some seeds but not others)
+
+             metric encoder_a encoder_b         contrast  r_seed1  r_seed2  r_seed3   mean_r     sd_r  n_meaningful_seeds  claimed_robust  verdict_unstable
+       adj_per_noun      clip    siglip   clip_vs_siglip 0.169540 0.095751 0.103534 0.122942 0.040542                   2           False              True
+     caption_length      clip    siglip   clip_vs_siglip 0.068634 0.224444 0.070388 0.121155 0.089455                   1           False              True
+     caption_length    siglip    dinov2 siglip_vs_dinov2 0.155930 0.172036 0.088602 0.138856 0.044260                   2           False              True
+head_noun_min_depth      clip    dinov2   clip_vs_dinov2 0.112550 0.035986 0.083241 0.077259 0.038631                   1           False              True
+ projective_density      clip    siglip   clip_vs_siglip 0.278326 0.229923 0.055010 0.187753 0.117479                   2           False              True
+topological_density      clip    dinov2   clip_vs_dinov2 0.096383 0.058856 0.100210 0.085150 0.022852                   1           False              True
+  vg_attr_precision      clip    siglip   clip_vs_siglip 0.265061 0.389828 0.191171 0.282020 0.100408                   1           False              True
+  vg_attr_precision    siglip    dinov2 siglip_vs_dinov2 0.339993 0.295697 0.235587 0.290426 0.052403                   1           False              True
+
+## mixed_effects (seeds [1, 2, 3])
+
+             metric  coef_seed1  coef_seed2  coef_seed3  mean_coef  sd_coef
+       adj_per_noun   -0.008775   -0.006542   -0.009474  -0.008263 0.001532
+     caption_length   -0.293100   -0.471900   -0.197100  -0.320700 0.139464
+head_noun_min_depth   -0.094616   -0.003774   -0.038442  -0.045611 0.045843
+ projective_density   -0.003515   -0.003573   -0.005232  -0.004107 0.000975
+ scene_object_ratio    0.004915    0.001366    0.007967   0.004749 0.003303
+topological_density    0.002993    0.002436    0.003978   0.003136 0.000780
+  vg_attr_precision    0.031974    0.033830    0.041164   0.035656 0.004859
+     vg_attr_recall   -0.002352   -0.000609   -0.001179  -0.001380 0.000889

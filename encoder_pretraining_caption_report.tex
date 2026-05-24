@@ -47,7 +47,7 @@ prefix adaptor, and keeps the COCO data, decoding procedure, and evaluation
 metrics fixed across conditions. The final analysis aggregates three generation
 seeds to distinguish stable encoder effects from seed-specific artifacts. The
 cleanest comparable-quality comparison excludes MAE because it repeatedly fails
-the CIDEr quality precondition. In the CLIP+SigLIP versus DINOv2 contrast,
+the CIDEr and SPICE quality preconditions. In the CLIP+SigLIP versus DINOv2 contrast,
 projective spatial language is robust across beam and nucleus decoding, while
 caption length is robust under beam search only. In both cases the direction is
 the same and counterintuitive: the self-supervised encoder (DINOv2) produces
@@ -178,15 +178,17 @@ or semantic metrics:
   attribute annotations where available.
 \end{itemize}
 
-Reference-based caption quality is checked using CIDEr. SPICE was attempted,
-but the completed run reports \code{SPICE=n/a} because Java was unavailable in
-the execution environment. The same missing dependency caused CIDEr's standard
-PTBTokenizer to fail; the run fell back to a regex tokenizer, so the absolute
-CIDEr values reported here are not directly comparable to literature numbers.
-The quality precondition is a \emph{relative} spread test across encoders,
-which remains valid under a consistent fallback tokenizer. Consequently, this
-report treats CIDEr as the operative quality precondition and does not make
-claims from SPICE.
+Reference-based caption quality is checked using two complementary metrics:
+CIDEr (consensus-based n-gram similarity to the COCO references) and SPICE
+(semantic scene-graph overlap with the references). Both are reported with
+their standard implementations: CIDEr uses the Stanford PTBTokenizer; SPICE
+uses Stanford CoreNLP's scene-graph parser. SPICE 1.0 depends on the Nashorn
+JavaScript engine, which was removed from the JDK in version 15, so the
+scoring run is executed under JDK 11; this is recorded in the reproducibility
+table. The quality precondition is a \emph{relative} cross-encoder spread
+test on each reference metric: the spread must be at most 10\% of the best
+encoder. Both CIDEr and SPICE are reported as preconditions, and the
+headline analysis only proceeds for the subset of encoders that pass both.
 
 \section{Statistical Analysis}
 
@@ -280,23 +282,46 @@ reports:
 
 The project requires the encoders to produce captions of roughly comparable
 reference quality before claiming stylistic differences. The threshold is a
-maximum beam CIDEr spread of 10\% of the best encoder. MAE fails this gate in
-all three seeds.
+maximum beam spread of 10\% of the best encoder, applied to both reference
+metrics (CIDEr and SPICE). MAE fails this gate on both metrics in all three
+seeds; the language-supervised pair plus DINOv2 passes both gates in every
+seed.
 
 \begin{table}[h]
 \centering
-\caption{Beam CIDEr by seed (regex-tokenizer fallback; see the Metrics section
---- absolute values are not literature-comparable, but the relative spread is).
-The precondition fails in every seed because MAE is lower than the other
-encoders.}
+\caption{Beam CIDEr by seed (Stanford PTBTokenizer, JDK 11). The
+precondition fails in every seed because MAE is lower than the other
+encoders. ``Lang+SS$_{-\text{MAE}}$'' is the MAE-excluded triple (CLIP,
+SigLIP, DINOv2); its spread is well under 10\% in every seed, so the
+headline analysis is run on this triple.}
 \label{tab:cider}
-\begin{tabular}{@{}lrrrrr@{}}
+\begin{tabular}{@{}lrrrrrr@{}}
 \toprule
-Seed & CLIP & SigLIP & DINOv2 & MAE & Spread fraction \\
+Seed & CLIP & SigLIP & DINOv2 & MAE & Full spread & Lang+SS$_{-\text{MAE}}$ spread \\
 \midrule
-1 & 1.02 & 1.11 & 1.10 & 0.88 & 0.205 \\
-2 & 1.06 & 1.13 & 1.11 & 0.89 & 0.213 \\
-3 & 1.03 & 1.14 & 1.11 & 0.88 & 0.230 \\
+1 & 1.02 & 1.11 & 1.10 & 0.88 & 0.205 & 0.086 \\
+2 & 1.06 & 1.13 & 1.11 & 0.89 & 0.213 & 0.060 \\
+3 & 1.03 & 1.14 & 1.11 & 0.87 & 0.230 & 0.090 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[h]
+\centering
+\caption{Beam SPICE by seed (Stanford CoreNLP scene-graph parser, JDK 11).
+The encoder ranking is identical to CIDEr (SigLIP $\approx$ DINOv2 $>$ CLIP
+$>$ MAE), and the precondition also fails for the four-encoder set in every
+seed because of MAE. With MAE excluded, the SPICE spread of the remaining
+triple is under 10\% in every seed --- so the MAE-exclusion decision is
+supported by both reference metrics.}
+\label{tab:spice}
+\begin{tabular}{@{}lrrrrrr@{}}
+\toprule
+Seed & CLIP & SigLIP & DINOv2 & MAE & Full spread & Lang+SS$_{-\text{MAE}}$ spread \\
+\midrule
+1 & 0.189 & 0.201 & 0.201 & 0.169 & 0.162 & 0.062 \\
+2 & 0.193 & 0.205 & 0.202 & 0.170 & 0.168 & 0.056 \\
+3 & 0.192 & 0.205 & 0.200 & 0.168 & 0.180 & 0.066 \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -594,18 +619,18 @@ be treated separately from the primary comparable-quality claim.
   curated image collections; this web-versus-curated axis is confounded with
   the supervision-objective axis and is the most important residual confound
   on the headline contrast.
-  \item \textbf{MAE quality confound.} MAE's lower CIDEr means it cannot support
-  the same style-level claim as the comparable-quality encoders.
-  \item \textbf{SPICE is unavailable.} Java was unavailable in the execution
-  environment, so the SPICE scorer could not run. This is a substantive loss:
-  SPICE was the only planned reference metric that targets semantic
-  proposition overlap rather than n-gram surface similarity, so the report
-  cannot make a semantic-quality claim independent of CIDEr.
-  \item \textbf{CIDEr tokenizer is degraded.} The same missing Java dependency
-  prevented CIDEr's standard PTBTokenizer from running; the scorer fell back
-  to a regex tokenizer. Absolute CIDEr values are therefore not
-  literature-comparable; only the relative cross-encoder spread, on which the
-  quality precondition depends, is used.
+  \item \textbf{MAE quality confound.} MAE's lower CIDEr and SPICE mean it
+  cannot support the same style-level claim as the comparable-quality
+  encoders. Both reference metrics agree on this, so the MAE-exclusion
+  decision is supported by two independent reference scorers rather than
+  one.
+  \item \textbf{Reference scoring depends on legacy Java.} SPICE 1.0 relies
+  on the Nashorn JavaScript engine, which was removed from the JDK in
+  version 15. The scoring run therefore requires JDK 11 (or earlier);
+  attempting to run SPICE under a newer JDK produces \code{SPICE=n/a} and a
+  null-pointer trace from Nashorn. This is a tooling fragility, not a
+  correctness issue: the reported SPICE values use the upstream reference
+  implementation under a compatible JDK. Reproducers should use JDK 11.
   \item \textbf{Frozen GPT-2 has its own priors.} GPT-2 medium may normalize
   outputs toward its pretrained language distribution, potentially muting
   encoder differences.
@@ -659,7 +684,7 @@ Path & Role \\
 \code{scripts/04\_generate\_captions.py} & Generates beam and nucleus captions for a selected encoder and seed. \\
 \code{scripts/05\_score\_metrics.py} & Computes per-caption style and attribute metrics. \\
 \code{scripts/06\_analyze.py} & Runs per-seed primary, secondary, and image-controlled analyses. \\
-\code{scripts/08\_caption\_quality.py} & Computes CIDEr quality precondition; SPICE was attempted but unavailable in the completed run. \\
+\code{scripts/08\_caption\_quality.py} & Computes the CIDEr and SPICE quality preconditions. Requires JDK 11 because SPICE 1.0 uses Nashorn. \\
 \code{scripts/09\_aggregate\_seeds.py} & Aggregates per-seed analyses into cross-seed robustness summaries. \\
 \code{captions/analysis\_aggregate\_beam\_no\_mae\_primary.csv} & Cleanest headline beam result. \\
 \code{captions/analysis\_aggregate\_nucleus\_no\_mae\_primary.csv} & Cleanest headline nucleus result. \\

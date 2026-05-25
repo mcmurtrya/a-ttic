@@ -1,8 +1,14 @@
 # TTIC Embeddings — Visual Encoder Swap → Caption Analysis
 
-Course project, TTIC. Compares four visual encoders (CLIP, SigLIP, DINOv2, MAE) under a fixed captioning architecture (frozen GPT-2 medium, lightweight prefix adaptor) to test whether visual encoder pretraining biases the *style* of generated captions along four axes: semantic specificity, spatial language, abstraction level, and lexical diversity.
+A controlled probe of how visual-encoder pretraining shapes generated captions. Four frozen visual encoders (CLIP, SigLIP, DINOv2, MAE) are compared under a fixed captioning architecture (frozen GPT-2 medium, lightweight prefix adaptor), holding training data, decoding, and metric definitions constant. The published writeup is [`encoder_pretraining_caption_report.tex`](encoder_pretraining_caption_report.tex). MIT-licensed; see [`LICENSE`](LICENSE).
+
+**Authors.** Alex McMurtry (`amcmurtry@uchicago.edu`) and Hilman Hanivan (`hanivan@uchicago.edu`). Originally a TTIC course project; extended through a Phase A multi-seed analysis and peer-style reviewer passes into the form here.
 
 **Headline finding (Phase A, three seeds):** with the language model, adaptor, and decoding fixed, the self-supervised DINOv2 encoder produces *more* projective spatial language and *longer* captions than the language-supervised CLIP and SigLIP. CLIP carries most of the pooled effect; SigLIP echoes it more weakly. The projective spatial direction matches the prediction pre-registered in [`methods.md`](methods.md); caption length was not pre-registered. MAE fails the comparable-quality precondition on both CIDEr and SPICE in every seed and is excluded from the headline contrast. Full writeup: [`encoder_pretraining_caption_report.tex`](encoder_pretraining_caption_report.tex) (build with `tectonic -X compile` to get the PDF).
+
+## System overview
+
+![Data and analysis pipeline](data_and_analysis_pipeline.svg)
 
 ## Design documents
 
@@ -31,6 +37,7 @@ powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | ie
 ```bash
 make install-dev    # uv venv + pip install -e .[dev,caption-quality] + spaCy/NLTK assets
 make smoke          # Phase 0 verification: all four encoders load and produce expected shapes
+make test           # Run the pytest suite (metrics, stats, adaptor, data)
 ```
 
 If you don't have `make`, the equivalents are:
@@ -115,6 +122,12 @@ scripts/
   run_phase_a.sh
 tests/                         # pytest
 encoder_pretraining_caption_report.tex   # full writeup
+methods.md                     # pre-registered experimental design (see Design documents)
+encoder_selection.md           # 2×2 encoder rationale and confound matrix
+implementation_roadmap.md      # pre-execution build plan (see also Phase A status)
+RUN_PIPELINE.md, RUN_PHASE_A.md
+data_and_analysis_pipeline.svg # pipeline overview diagram
+_ops/, logs/, pipeline.out     # historical operational logs from completed runs
 ```
 
-`make help` lists all available targets.
+`make help` lists all `## `-documented Makefile targets.

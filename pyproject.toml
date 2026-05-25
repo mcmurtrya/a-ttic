@@ -43,6 +43,10 @@ dev = [
     # installs it as part of resolution. Manually-downloaded models
     # were getting clobbered by `uv sync` because they weren't in
     # pyproject.toml.
+    #
+    # Fragile pin: when explosion deprecates the 3.8.0 release asset on
+    # GitHub this resolves to a 404. Bump to the current spaCy-models
+    # release if `make install-dev` fails to fetch this wheel.
     "en-core-web-lg @ https://github.com/explosion/spacy-models/releases/download/en_core_web_lg-3.8.0/en_core_web_lg-3.8.0-py3-none-any.whl",
 ]
 

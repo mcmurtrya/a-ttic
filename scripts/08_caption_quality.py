@@ -74,6 +74,49 @@ def _import_cider():
         )
 
 
+def _check_java_for_spice() -> None:
+    """Warn loudly if the active JDK can't run SPICE.
+
+    SPICE 1.0 calls into the Nashorn JavaScript engine via Stanford
+    CoreNLP. Nashorn was removed from the JDK in version 15, so under
+    JDK 15+ the SPICE jar throws a NullPointerException and the wrapper
+    silently reports SPICE=n/a. That silence is dangerous because the
+    MAE quality-precondition decision in this pipeline rests on SPICE.
+
+    This check logs an explicit warning (not an error — the run still
+    proceeds with CIDEr only) so a missing-Java run is visible.
+    """
+    import subprocess
+    try:
+        out = subprocess.run(
+            ["java", "-version"], capture_output=True, text=True, timeout=5,
+        ).stderr.splitlines()[0]
+    except (FileNotFoundError, subprocess.TimeoutExpired):
+        log.warning(
+            "SPICE preflight: `java` not on PATH. SPICE will silently "
+            "report n/a. Install JDK 11 (or earlier) for SPICE."
+        )
+        return
+
+    import re
+    m = re.search(r'version "(\d+)', out)
+    if not m:
+        log.warning("SPICE preflight: could not parse java -version: %r", out)
+        return
+
+    major = int(m.group(1))
+    if major >= 15:
+        log.warning(
+            "SPICE preflight: Java major version %d detected; SPICE 1.0 "
+            "requires JDK 11 because Nashorn was removed in JDK 15. SPICE "
+            "will report n/a. To fix, set JAVA_HOME to a JDK 11 install "
+            "(e.g. /usr/lib/jvm/java-11-openjdk-amd64) for this script.",
+            major,
+        )
+    else:
+        log.info("SPICE preflight: Java %d detected; compatible with SPICE 1.0.", major)
+
+
 def _try_import_spice():
     """Return Spice class or None if SPICE/Java is unavailable."""
     try:
@@ -281,6 +324,8 @@ def main() -> int:
     log.info("Loaded references for %d images", len(references))
 
     # Try to load SPICE once (not per-condition)
+    if not args.no_spice:
+        _check_java_for_spice()
     spice_cls = None if args.no_spice else _try_import_spice()
     use_java_tokenizer = not args.no_java_tokenizer
 

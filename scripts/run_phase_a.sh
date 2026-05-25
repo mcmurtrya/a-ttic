@@ -170,6 +170,30 @@ if [[ -z "${SKIP_ANALYZE:-}" ]]; then
     done
 fi
 
+# -------- Appendix: bootstrap CIs + permutation test on headline metrics
+# Both consume per-seed scores; both are seed-independent in the sense
+# that they recompute their own bootstrap/permutation samples from the
+# committed scores files. Honors SKIP_ANALYZE.
+if [[ -z "${SKIP_ANALYZE:-}" ]]; then
+    echo ""
+    echo "=== Bootstrap CIs (10_bootstrap_ci.py) ==="
+    uv run python scripts/10_bootstrap_ci.py \
+        --scores captions/scores_seed1.csv captions/scores_seed2.csv captions/scores_seed3.csv \
+        --metrics projective_density caption_length \
+        --decoders beam nucleus \
+        --n-boot 1000 --seed 0 \
+        2>&1 | tee -a "$LOG_DIR/bootstrap.log"
+
+    echo ""
+    echo "=== Permutation test (11_permutation_test.py) ==="
+    uv run python scripts/11_permutation_test.py \
+        --scores captions/scores_seed1.csv captions/scores_seed2.csv captions/scores_seed3.csv \
+        --metrics projective_density caption_length \
+        --decoders beam nucleus \
+        --n-perm 10000 --seed 0 \
+        2>&1 | tee -a "$LOG_DIR/permutation.log"
+fi
+
 echo ""
 echo "===================================================="
 echo "Phase A complete."
@@ -183,4 +207,6 @@ done
 echo "  Per-seed analysis:    captions/analysis_seed{N}_{beam,nucleus}{,_no_mae}_*.csv"
 echo "  Cross-seed aggregate: captions/analysis_aggregate_{beam,nucleus}{,_no_mae}_*.csv"
 echo "  Aggregate summaries:  captions/analysis_aggregate_*_summary.txt"
+echo "  Bootstrap CIs:        captions/bootstrap_ci.csv"
+echo "  Permutation test:     captions/permutation_test.csv"
 echo "===================================================="

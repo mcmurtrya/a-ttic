@@ -1,8 +1,15 @@
 # Pipeline Run Brief — for autonomous agent
 
+> **Path note.** This brief was written for the cloud-rental Ubuntu host
+> that produced the original Phase A results. Wherever `/home/ubuntu/`
+> appears below, substitute your repo root (e.g. `$HOME/ttic_embeddings`
+> or `/home/<user>/projects/.../ttic_embeddings`). The paths are not
+> magic; they describe the layout of the machine that ran the pipeline,
+> not a requirement of the pipeline itself.
+
 > **How to use this file**: After restarting Claude with `--dangerously-skip-permissions`, paste this single instruction:
 >
-> *"Read `/home/ubuntu/ttic_embeddings/RUN_PIPELINE.md` and spawn a `general-purpose` agent in the background using the AGENT BRIEF section below as the agent's prompt. Then end your turn — you'll be notified when the agent finishes."*
+> *"Read `<repo-root>/RUN_PIPELINE.md` and spawn a `general-purpose` agent in the background using the AGENT BRIEF section below as the agent's prompt. Then end your turn — you'll be notified when the agent finishes."*
 
 ---
 

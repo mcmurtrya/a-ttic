@@ -4,19 +4,21 @@ A controlled probe of how visual-encoder pretraining shapes generated captions. 
 
 **Authors.** Alex McMurtry (`amcmurtry@uchicago.edu`) and Hilman Hanivan (`hanivan@uchicago.edu`). Originally a TTIC course project; extended through a Phase A multi-seed analysis and peer-style reviewer passes into the form here.
 
-**Headline finding (Phase A, three seeds):** with the language model, adaptor, and decoding fixed, the self-supervised DINOv2 encoder produces *more* projective spatial language and *longer* captions than the language-supervised CLIP and SigLIP. CLIP carries most of the pooled effect; SigLIP echoes it more weakly. The projective spatial direction matches the prediction pre-registered in [`methods.md`](methods.md); caption length was not pre-registered. MAE fails the comparable-quality precondition on both CIDEr and SPICE in every seed and is excluded from the headline contrast. Full writeup: [`encoder_pretraining_caption_report.tex`](encoder_pretraining_caption_report.tex) (build with `tectonic -X compile` to get the PDF).
+**Headline finding (Phase A, three seeds):** with the language model, adaptor, and decoding fixed, the self-supervised DINOv2 encoder produces *more* projective spatial language and *longer* captions than the language-supervised CLIP and SigLIP. CLIP carries most of the pooled effect; SigLIP echoes it more weakly. The projective spatial direction matches the prediction pre-registered in [`docs/methods.md`](docs/methods.md); caption length was not pre-registered. MAE fails the comparable-quality precondition on both CIDEr and SPICE in every seed and is excluded from the headline contrast. Full writeup: [`encoder_pretraining_caption_report.tex`](encoder_pretraining_caption_report.tex) (build with `tectonic -X compile` to get the PDF).
 
 ## System overview
 
-![Data and analysis pipeline](data_and_analysis_pipeline.svg)
+![Data and analysis pipeline](docs/data_and_analysis_pipeline.svg)
 
 ## Design documents
 
-- [`methods.md`](methods.md) — experimental design, metric definitions, pre-registered statistical analysis.
-- [`encoder_selection.md`](encoder_selection.md) — 2×2 encoder rationale and confound matrix.
-- [`implementation_roadmap.md`](implementation_roadmap.md) — phase-by-phase build plan.
-- [`RUN_PIPELINE.md`](RUN_PIPELINE.md) — operator brief for the full end-to-end run.
-- [`RUN_PHASE_A.md`](RUN_PHASE_A.md) — operator brief for the seed-aggregation follow-up.
+All design and operator documents live in [`docs/`](docs/):
+
+- [`docs/methods.md`](docs/methods.md) — experimental design, metric definitions, pre-registered statistical analysis.
+- [`docs/encoder_selection.md`](docs/encoder_selection.md) — 2×2 encoder rationale and confound matrix.
+- [`docs/implementation_roadmap.md`](docs/implementation_roadmap.md) — phase-by-phase build plan (pre-execution).
+- [`docs/RUN_PIPELINE.md`](docs/RUN_PIPELINE.md) — operator brief for the full end-to-end run.
+- [`docs/RUN_PHASE_A.md`](docs/RUN_PHASE_A.md) — operator brief for the seed-aggregation follow-up.
 
 ## Quick start
 
@@ -121,12 +123,14 @@ scripts/
   run_full_pipeline.sh
   run_phase_a.sh
 tests/                         # pytest
+docs/                          # design docs, operator briefs, pipeline diagram
+  methods.md                   # pre-registered experimental design
+  encoder_selection.md         # 2×2 encoder rationale and confound matrix
+  implementation_roadmap.md    # pre-execution build plan (see also Phase A)
+  RUN_PIPELINE.md              # operator brief for full end-to-end run
+  RUN_PHASE_A.md               # operator brief for seed-aggregation follow-up
+  data_and_analysis_pipeline.svg
 encoder_pretraining_caption_report.tex   # full writeup
-methods.md                     # pre-registered experimental design (see Design documents)
-encoder_selection.md           # 2×2 encoder rationale and confound matrix
-implementation_roadmap.md      # pre-execution build plan (see also Phase A status)
-RUN_PIPELINE.md, RUN_PHASE_A.md
-data_and_analysis_pipeline.svg # pipeline overview diagram
 _ops/, logs/, pipeline.out     # historical operational logs from completed runs
 ```
 

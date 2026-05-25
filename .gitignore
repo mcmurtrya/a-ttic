@@ -18,11 +18,27 @@ venv/
 .vscode/
 .idea/
 *.swp
+*~
+*.bak
 
 # OS
 .DS_Store
 Thumbs.db
+*:Zone.Identifier
 
 # Credentials / env
 .env
 .env.local
+
+# LaTeX build artifacts (note: not `*.out` — pipeline.out is tracked)
+*.pdf
+*.aux
+*.toc
+*.synctex.gz
+*.fdb_latexmk
+*.fls
+*.bbl
+*.blg
+
+# Claude Code session state (if it ever lands here)
+.claude/

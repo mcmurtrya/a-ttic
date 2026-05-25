@@ -11,6 +11,7 @@
 \usepackage{xcolor}
 \usepackage{hyperref}
 \usepackage{caption}
+\usepackage{float}
 
 \hypersetup{
   colorlinks=true,
@@ -32,35 +33,31 @@
 \title{\textbf{Visual Encoder Pretraining Leaves a Fingerprint on Generated Captions}\\
 \large A controlled frozen-decoder captioning probe}
 \author{TTIC Embeddings Project}
-\date{May 24, 2026}
+\date{May 25, 2026}
 
 \begin{document}
 \maketitle
 
 \begin{abstract}
-This report summarizes a controlled captioning experiment comparing four frozen
-visual encoders: CLIP, SigLIP, DINOv2, and MAE. The central question is whether
-the pretraining objective and data of a visual encoder affect the linguistic
-form of captions produced by a fixed language model. To isolate the encoder, the
-experiment freezes both the visual encoder and GPT-2 medium, trains only a small
-prefix adaptor, and keeps the COCO data, decoding procedure, and evaluation
-metrics fixed across conditions. The final analysis aggregates three generation
-seeds to distinguish stable encoder effects from seed-specific artifacts. The
-cleanest comparable-quality comparison excludes MAE because it repeatedly fails
-the CIDEr and SPICE quality preconditions. In the CLIP+SigLIP versus DINOv2 contrast,
-projective spatial language is robust across beam and nucleus decoding, while
-caption length is robust under beam search only. In both cases the direction is
-the same: the self-supervised encoder (DINOv2) produces \emph{more}
-projective spatial language and \emph{longer} captions than the
-language-supervised encoders. On projective spatial language this matches
-the directional prediction pre-registered in \code{methods.md}; the caption
-length direction was not pre-registered. These differences are statistically robust ---
-consistent in sign and at or above the pre-registered effect-size floor in
-every seed --- but small in absolute terms. Pairwise contrasts show CLIP carries
-most of the pooled effect: SigLIP sits between CLIP and DINOv2, so the headline
-should be read as ``CLIP, and to a lesser extent SigLIP, differ from DINOv2,''
-not as a clean category-level claim. Effects for adjective density and
-head-noun specificity appear in one seed but are not stable across seeds.
+Visual encoder pretraining leaves a measurable fingerprint on generated
+captions. Holding the language model, adaptor, and decoding procedure
+fixed, the self-supervised DINOv2 encoder produces \emph{more} projective
+spatial language and \emph{longer} captions than the language-supervised
+CLIP and SigLIP. The projective spatial direction matches the pre-registered
+prediction in \code{methods.md}; the caption-length direction was not
+pre-registered. Both effects are consistent in sign across three seeds
+and above the pre-registered effect-size floor in every seed (smallest
+$r=0.128$), but small in absolute size. Pairwise contrasts show CLIP
+carries most of the pooled effect: SigLIP sits between CLIP and DINOv2,
+so the headline is best read as ``CLIP, and to a lesser extent SigLIP,
+differ from DINOv2,'' not as a clean category-level claim. Projective
+spatial language is robust across beam and nucleus decoding; caption
+length is robust under beam search only. Effects for adjective density
+and head-noun specificity appear in single seeds and do not survive
+aggregation. The four-encoder experiment uses COCO captions with frozen
+GPT-2 medium and a trained prefix adaptor; the cleanest comparable-quality
+contrast excludes MAE, which fails both reference-quality preconditions
+(CIDEr and SPICE) in all three seeds.
 \end{abstract}
 
 \section{Research Question}
@@ -100,12 +97,12 @@ adaptor input: CLS aggregates information differently across self-supervised
 and language-supervised objectives --- it concentrates substantially less
 information for DINOv2 and MAE than for CLIP and SigLIP --- and using it
 would systematically disadvantage the self-supervised conditions. This
-makes the experiment closer to a controlled adapter-based multimodal probe
+makes the experiment closer to a controlled adaptor-based multimodal probe
 than to a fully optimized BLIP-2 or LLaVA-style system.
 
 \subsection{Encoders}
 
-\begin{table}[h]
+\begin{table}[!htbp]
 \centering
 \caption{Frozen visual encoders used in the experiment.}
 \label{tab:encoders}
@@ -157,12 +154,13 @@ A 5000-image holdout drawn from \code{train2017} with a fixed
 \code{holdout\_seed=0} (shared across all encoder $\times$ seed runs) supplies
 the validation set used for early-stopping val PPL. Sharing one holdout across
 conditions removes a fairness confound: every encoder is evaluated against the
-same images during training. Each adaptor trains with AdamW
-(lr $1\!\times\!10^{-4}$, weight decay 0.01), batch size 256, 500 warmup steps,
-and a cosine schedule to a 35{,}000-step cap, with early-stopping patience of 5
-validation evaluations (every 1000 steps). Generation uses beam search with
-width 5 and nucleus sampling with $p=0.9$, both capped at
-\code{max\_new\_tokens=30} (see \code{configs/base.yaml}).
+same images during training. Each adaptor trains with AdamW at learning rate $1\!\times\!10^{-4}$,
+weight decay $0.01$, and batch size $256$, with $500$ warmup steps
+followed by a cosine schedule capped at $35{,}000$ steps. Validation
+runs every $1000$ steps; training stops after five validation evaluations
+without improvement. Generation uses beam search with width 5 and nucleus
+sampling with $p=0.9$, both capped at \code{max\_new\_tokens=30}
+(see \code{configs/base.yaml}).
 
 \section{Metrics}
 
@@ -293,7 +291,7 @@ metrics (CIDEr and SPICE). MAE fails this gate on both metrics in all three
 seeds; the language-supervised pair plus DINOv2 passes both gates in every
 seed.
 
-\begin{table}[h]
+\begin{table}[!htbp]
 \centering
 \caption{Beam CIDEr by seed (Stanford PTBTokenizer, JDK 11). The
 precondition fails in every seed because MAE is lower than the other
@@ -312,7 +310,7 @@ Seed & CLIP & SigLIP & DINOv2 & MAE & Full spread & Lang+SS$_{-\text{MAE}}$ spre
 \end{tabular}
 \end{table}
 
-\begin{table}[h]
+\begin{table}[!htbp]
 \centering
 \caption{Beam SPICE by seed (Stanford CoreNLP scene-graph parser, JDK 11).
 The encoder ranking is identical to CIDEr (SigLIP $\approx$ DINOv2 $>$ CLIP
@@ -335,19 +333,21 @@ Seed & CLIP & SigLIP & DINOv2 & MAE & Full spread & Lang+SS$_{-\text{MAE}}$ spre
 This does not imply that MAE is a bad vision model in general. It means MAE is
 behind in this specific frozen-encoder, small-adaptor, frozen-GPT-2 captioning
 setup. MAE remains useful as a secondary finding: reconstruction-pretrained
-features are less plug-and-play for caption generation than CLIP, SigLIP, and
-DINOv2 under this adapter-only bottleneck. However, MAE should not be part of
+features are less directly usable for caption generation than CLIP, SigLIP,
+and DINOv2 under this adaptor-only bottleneck. However, MAE should not be part of
 the main comparable-quality style claim.
 
 \paragraph{Independent representational evidence (linear probes).} A
 linear-probe analysis on the frozen encoders supports the same conclusion.
 Training a one-vs-rest linear classifier on each encoder's pooled patch
-features for COCO 80-way object classification (4000 train / 1000 test
-images) gives mAP scores 0.73 (CLIP), 0.76 (SigLIP), 0.73 (DINOv2), and
-0.53 (MAE); see \code{captions/probe\_results.csv}. The three
+features for COCO 80-way object classification (4000 train / 1000 test,
+80/20 random split of COCO \code{val2017} --- the same image pool used
+for caption generation, but the probe never sees captions) gives mAP
+scores 0.73 (CLIP), 0.76 (SigLIP), 0.73 (DINOv2), and 0.53 (MAE); see
+\code{captions/probe\_results.csv}. The three
 comparable-quality encoders are within 4\% of each other while MAE is
 roughly 30\% behind, mirroring the CIDEr and SPICE ordering. The
-exclusion of MAE is therefore not an adapter-specific quirk: MAE's patch
+exclusion of MAE is therefore not an adaptor-specific quirk: MAE's patch
 features carry less object-level discriminative signal in the first
 place.
 
@@ -360,7 +360,7 @@ excluded. Two metrics are robust across all three seeds: projective spatial
 density and caption length. Two effects that appear in only one seed---adjectives
 per noun and head noun depth---are unstable.
 
-\begin{table}[h]
+\begin{table}[!htbp]
 \centering
 \caption{Primary aggregate results for beam decoding, MAE excluded. The final
 column gives the sign of the language-supervised minus DINOv2 difference (from
@@ -402,7 +402,7 @@ contrast that SigLIP echoes more weakly.
 Nucleus decoding gives a narrower result. Projective spatial density remains
 robust; caption length does not.
 
-\begin{table}[h]
+\begin{table}[!htbp]
 \centering
 \caption{Primary aggregate results for nucleus decoding, MAE excluded.
 ``Lang.\ vs DINOv2'' gives the sign of the language-supervised minus DINOv2
@@ -432,15 +432,14 @@ length appears more tied to beam search's stronger mode-seeking behavior.
 
 \subsection{Image-Controlled Direction and Magnitude}
 
-Because the rank-based effect sizes in the tables above are unsigned, the
-mixed-effects table below is what establishes the \emph{direction} of every
-effect reported in this paper. It also gives an image-controlled magnitude in
-each metric's native unit. In the MAE-excluded beam contrast, every robust
+The mixed-effects table establishes the \emph{direction} of every effect
+reported in this paper, since the rank-based $r$ statistic is unsigned.
+It also gives an image-controlled magnitude in each metric's native unit. In the MAE-excluded beam contrast, every robust
 effect points the same way: language-supervised encoders score \emph{lower}
 than DINOv2 on projective spatial density and on caption length, after
 controlling for image identity.
 
-\begin{table}[h]
+\begin{table}[!htbp]
 \centering
 \caption{Image-controlled aggregate coefficients for beam decoding, MAE excluded.
 Negative means language-supervised lower than DINOv2. The Method column counts,
@@ -502,7 +501,7 @@ result is supported by about one quarter as many image pairs as a reader
 would assume from the 5000-per-encoder design. In native units, the two
 robust beam effects are modest in absolute size.
 
-\begin{table}[h]
+\begin{table}[!htbp]
 \centering
 \caption{Raw per-encoder means for the two robust beam metrics, averaged over
 seeds 1--3. ``Lang.\ avg.'' averages CLIP and SigLIP. The final column is the
@@ -535,10 +534,10 @@ Appendix~\ref{app:bootstrap}. The aggregate 95\% bootstrap CIs are
 \textbf{[0.262, 0.324]} for beam projective density,
 \textbf{[0.185, 0.218]} for beam caption length, and
 \textbf{[0.132, 0.188]} for nucleus projective density --- all comfortably
-above the pre-registered 0.10 floor. Two per-seed CIs reach the floor
-honestly: beam caption length in seed 3 has CI $[0.099, 0.159]$, with the
-lower bound a hair below 0.10, and nucleus projective density in seed 1
-has CI $[0.077, 0.185]$. In both cases the aggregate is unambiguous and
+above the pre-registered 0.10 floor. Two per-seed CIs reach the floor as marginal cases: beam caption length
+in seed 3 has CI $[0.099, 0.159]$, with the lower bound fractionally
+below 0.10, and nucleus projective density in seed 1 has CI
+$[0.077, 0.185]$. In both cases the aggregate is unambiguous and
 the other two seeds are clearly above the floor, so the ``robust'' verdict
 holds; but the per-seed near-misses are the bound on how confident a
 reader should be from any single seed. Nucleus caption length, in
@@ -565,7 +564,7 @@ to check whether that pooling is innocuous. It is not entirely innocuous: CLIP
 and SigLIP differ from DINOv2 at different magnitudes, and on one metric they
 differ robustly from each other.
 
-\begin{table}[h]
+\begin{table}[!htbp]
 \centering
 \caption{Pairwise contrasts on robust headline metrics and the metric on which
 CLIP and SigLIP themselves differ robustly. Beam decoding, MAE excluded; mean
@@ -633,7 +632,7 @@ does robustly affect specific linguistic signatures.
   headlines.} They are meaningful in only one seed, so the final aggregate
   treats them as seed-sensitive.
   \item \textbf{MAE is a secondary result.} It repeatedly produces lower CIDEr
-  under the adapter-only setup, so style differences involving MAE are
+  under the adaptor-only setup, so style differences involving MAE are
   confounded with quality.
 \end{itemize}
 
@@ -665,7 +664,7 @@ also produces robustly longer captions; the per-pair breakdown shows that
 length contrast is essentially CLIP versus DINOv2 (the SigLIP--DINOv2 gap is
 not stable across seeds). Both differences are reliable in direction but
 small in magnitude. MAE's lower CIDEr indicates that reconstruction-pretrained
-features are less comparable in this adapter-only captioning setup and should
+features are less comparable in this adaptor-only captioning setup and should
 be treated separately from the primary comparable-quality claim.
 \end{quote}
 
@@ -724,7 +723,7 @@ for SigLIP. Under beam decoding the same direction also holds for caption
 length, but the per-pair breakdown shows that length contrast is essentially
 a CLIP-vs-DINOv2 effect. Both effects are consistent in direction and above
 our pre-registered effect-size floor in every seed, though small in absolute
-size. MAE produces lower CIDEr across seeds under the adapter-only setup, so
+size. MAE produces lower CIDEr across seeds under the adaptor-only setup, so
 we report it as a secondary finding rather than part of the headline
 comparable-quality contrast.
 \end{quote}
@@ -733,9 +732,17 @@ comparable-quality contrast.
 
 \section{Reproducibility Pointers}
 
-\begin{table}[h]
+Table~\ref{tab:repro} lists the scripts that reproduce every numerical
+claim in this report, together with the headline output files each script
+emits. Each script is self-contained and reads its inputs from
+\code{captions/} and \code{configs/}.
+
+\begin{table}[H]
 \centering
-\caption{Key scripts and result files.}
+\caption{Scripts that reproduce every numerical claim in this report and
+the headline output files each emits. ``Phase A'' refers to the seed
+2--3 follow-up; the earlier scripts produce the pipeline outputs that
+Phase A consumes.}
 \label{tab:repro}
 \begin{tabularx}{\textwidth}{@{}l X@{}}
 \toprule
@@ -764,11 +771,12 @@ sample size, the point estimate of $r$, and the 95\% bootstrap CI on $r$.
 The bootstrap is paired-by-image with 1000 iterations; the CI is the
 percentile method. Per-seed rows show within-seed statistics; the
 ``aggregate'' row is the cross-seed mean $r$ with its corresponding
-bootstrap CI (independently resampling each seed and averaging the three
-$r$ values per iteration). No BH correction is applied across seeds, so
-the aggregate row has no $p_{\text{adj}}$.
+bootstrap CI (each seed is resampled independently per iteration --- image
+indices are not aligned across seeds --- and the three resampled $r$
+values are averaged). No BH correction is applied across seeds, so the
+aggregate row has no $p_{\text{adj}}$.
 
-\begin{table}[h]
+\begin{table}[H]
 \centering
 \caption{Per-seed BH-adjusted $p$-values and bootstrap 95\% CIs for the
 robust headline metrics (and the nucleus caption-length row that is not
@@ -804,10 +812,9 @@ nucleus & caption length & agg. & --- & 0.038 & [0.026, 0.057] & --- \\
 \end{tabular}
 \end{table}
 
-Two reading notes. (i)~Per-seed CIs that include or touch the 0.10
-pre-registered floor are honest near-misses: beam caption length in
-seed~3 has lower bound 0.099; nucleus projective density in seed~1 has
-lower bound 0.077. In both cases the aggregate CI is cleanly above 0.10
+Two reading notes. (i)~Two per-seed CIs are marginal at the 0.10
+pre-registered floor: beam caption length in seed~3 has lower bound
+0.099; nucleus projective density in seed~1 has lower bound 0.077. In both cases the aggregate CI is cleanly above 0.10
 and the other two seeds clear the floor by a wide margin. (ii)~The
 nucleus caption-length row is included because, although the
 BH-adjusted $p$-values are significant in two of three seeds, the effect

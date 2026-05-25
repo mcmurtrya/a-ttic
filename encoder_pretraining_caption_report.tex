@@ -50,11 +50,13 @@ cleanest comparable-quality comparison excludes MAE because it repeatedly fails
 the CIDEr and SPICE quality preconditions. In the CLIP+SigLIP versus DINOv2 contrast,
 projective spatial language is robust across beam and nucleus decoding, while
 caption length is robust under beam search only. In both cases the direction is
-the same and counterintuitive: the self-supervised encoder (DINOv2) produces
-\emph{more} projective spatial language and \emph{longer} captions than the
-language-supervised encoders. These differences are statistically robust ---
-consistent in sign and above the pre-registered effect-size floor in every
-seed --- but small in absolute terms. Pairwise contrasts show CLIP carries
+the same: the self-supervised encoder (DINOv2) produces \emph{more}
+projective spatial language and \emph{longer} captions than the
+language-supervised encoders. On projective spatial language this matches
+the directional prediction pre-registered in \code{methods.md}; the caption
+length direction was not pre-registered. These differences are statistically robust ---
+consistent in sign and at or above the pre-registered effect-size floor in
+every seed --- but small in absolute terms. Pairwise contrasts show CLIP carries
 most of the pooled effect: SigLIP sits between CLIP and DINOv2, so the headline
 should be read as ``CLIP, and to a lesser extent SigLIP, differ from DINOv2,''
 not as a clean category-level claim. Effects for adjective density and
@@ -93,9 +95,13 @@ Each condition uses the same high-level architecture:
 
 Only the prefix adaptor is trained. The visual encoders and GPT-2 are frozen.
 The adaptor maps visual patch tokens into \(k=10\) soft prompt vectors in the
-GPT-2 embedding space. This makes the experiment closer to a controlled
-adapter-based multimodal probe than to a fully optimized BLIP-2 or LLaVA-style
-system.
+GPT-2 embedding space. Patch tokens (not the CLS token) are used as the
+adaptor input: CLS aggregates information differently across self-supervised
+and language-supervised objectives --- it concentrates substantially less
+information for DINOv2 and MAE than for CLIP and SigLIP --- and using it
+would systematically disadvantage the self-supervised conditions. This
+makes the experiment closer to a controlled adapter-based multimodal probe
+than to a fully optimized BLIP-2 or LLaVA-style system.
 
 \subsection{Encoders}
 
@@ -333,6 +339,18 @@ features are less plug-and-play for caption generation than CLIP, SigLIP, and
 DINOv2 under this adapter-only bottleneck. However, MAE should not be part of
 the main comparable-quality style claim.
 
+\paragraph{Independent representational evidence (linear probes).} A
+linear-probe analysis on the frozen encoders supports the same conclusion.
+Training a one-vs-rest linear classifier on each encoder's pooled patch
+features for COCO 80-way object classification (4000 train / 1000 test
+images) gives mAP scores 0.73 (CLIP), 0.76 (SigLIP), 0.73 (DINOv2), and
+0.53 (MAE); see \code{captions/probe\_results.csv}. The three
+comparable-quality encoders are within 4\% of each other while MAE is
+roughly 30\% behind, mirroring the CIDEr and SPICE ordering. The
+exclusion of MAE is therefore not an adapter-specific quirk: MAE's patch
+features carry less object-level discriminative signal in the first
+place.
+
 \section{Main Results}
 
 \subsection{Beam Decoding, MAE Excluded}
@@ -402,7 +420,7 @@ Head noun min depth & 0.067 & 0.026 & 0.013 & 0.035 & 0.028 & 3610 & \notrobust 
 Scene-object ratio & 0.032 & 0.036 & 0.006 & 0.024 & 0.016 & 1883 & \notrobust & higher \\
 Topological density & 0.016 & 0.005 & 0.047 & 0.023 & 0.022 & 4909 & \notrobust & higher \\
 VG attr precision & 0.033 & 0.018 & 0.048 & 0.033 & 0.015 & 169 & \notrobust & higher \\
-VG attr recall & 0.037 & 0.010 & 0.030 & 0.026 & 0.014 & 782 & \notrobust & \(\approx\)0 \\
+VG attr recall & 0.037 & 0.010 & 0.030 & 0.026 & 0.014 & 782 & \notrobust & near-zero \\
 Adjectives per noun & 0.005 & 0.012 & 0.018 & 0.012 & 0.006 & 3602 & \notrobust & lower \\
 \bottomrule
 \end{tabular}
@@ -527,6 +545,16 @@ reader should be from any single seed. Nucleus caption length, in
 contrast, has aggregate CI $[0.026, 0.057]$ entirely below the floor ---
 the ``not robust'' verdict is solidly below threshold, not borderline.
 
+As a final confirmation that the asymptotic Wilcoxon $p$-values are not
+artifacts of the normal approximation under the zero-inflated metrics, a
+10{,}000-iteration paired sign-flip permutation test
+(\code{scripts/11\_permutation\_test.py},
+\code{captions/permutation\_test.csv}) reproduces the same significance
+verdicts as the Wilcoxon BH-corrected $p$-values: all robust headline
+rows yield $p_{\text{perm}}$ at the floor of $1/10{,}001\!\approx\!10^{-4}$,
+and the non-robust nucleus caption-length seed-2 row yields
+$p_{\text{perm}}\!=\!0.71$, matching the Wilcoxon $p_{\text{adj}}\!=\!0.80$.
+
 \subsection{Within-Category Structure}
 \label{sec:within}
 
@@ -608,6 +636,21 @@ does robustly affect specific linguistic signatures.
   under the adapter-only setup, so style differences involving MAE are
   confounded with quality.
 \end{itemize}
+
+\paragraph{Relationship to the pre-registered prediction.}
+\code{methods.md} pre-registers a three-part directional prediction: that
+the language-supervised encoders, relative to the self-supervised
+encoders, will produce captions with (a) higher object-naming density,
+(b) higher hypernym depth on head nouns, and (c) lower projective-spatial-term
+frequency. The robust headline (projective spatial density: lang-supervised
+$<$ DINOv2) matches part (c) of that prediction in direction; this is the
+pre-registered direction, not a surprise. Parts (a) and (b) are not
+supported by the data: VG attribute recall and head-noun hypernym depth
+both come out with the opposite sign on average (lang-supervised
+\emph{lower} than DINOv2), but neither is robust under the cross-seed
+aggregation, so the disconfirmation is weak and the right reading is
+``not enough evidence to confirm parts (a) or (b),'' not ``parts (a) and
+(b) are reversed.''
 
 The clean conclusion is:
 
@@ -705,6 +748,7 @@ Path & Role \\
 \code{scripts/08\_caption\_quality.py} & Computes the CIDEr and SPICE quality preconditions. Requires JDK 11 because SPICE 1.0 uses Nashorn. \\
 \code{scripts/09\_aggregate\_seeds.py} & Aggregates per-seed analyses into cross-seed robustness summaries. \\
 \code{scripts/10\_bootstrap\_ci.py} & 1000-iteration paired image-level bootstrap of the Wilcoxon $r$ statistic; produces \code{captions/bootstrap\_ci.csv}. \\
+\code{scripts/11\_permutation\_test.py} & 10{,}000-iteration paired sign-flip permutation test. \\
 \code{captions/analysis\_aggregate\_beam\_no\_mae\_primary.csv} & Cleanest headline beam result. \\
 \code{captions/analysis\_aggregate\_nucleus\_no\_mae\_primary.csv} & Cleanest headline nucleus result. \\
 \bottomrule

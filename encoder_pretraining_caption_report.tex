@@ -509,6 +509,24 @@ means reproducible in direction across seeds and decoders, not practically
 large: encoder pretraining reliably \emph{shifts} these caption properties
 rather than transforming them.
 
+\paragraph{Bootstrap uncertainty.} To put numeric uncertainty on the
+per-seed $r$ statistics, we ran a 1000-iteration paired image-level
+bootstrap (resampling per-image differences with replacement, recomputing
+Wilcoxon $r$ at each iteration). The full table is in
+Appendix~\ref{app:bootstrap}. The aggregate 95\% bootstrap CIs are
+\textbf{[0.262, 0.324]} for beam projective density,
+\textbf{[0.185, 0.218]} for beam caption length, and
+\textbf{[0.132, 0.188]} for nucleus projective density --- all comfortably
+above the pre-registered 0.10 floor. Two per-seed CIs reach the floor
+honestly: beam caption length in seed 3 has CI $[0.099, 0.159]$, with the
+lower bound a hair below 0.10, and nucleus projective density in seed 1
+has CI $[0.077, 0.185]$. In both cases the aggregate is unambiguous and
+the other two seeds are clearly above the floor, so the ``robust'' verdict
+holds; but the per-seed near-misses are the bound on how confident a
+reader should be from any single seed. Nucleus caption length, in
+contrast, has aggregate CI $[0.026, 0.057]$ entirely below the floor ---
+the ``not robust'' verdict is solidly below threshold, not borderline.
+
 \subsection{Within-Category Structure}
 \label{sec:within}
 
@@ -686,11 +704,72 @@ Path & Role \\
 \code{scripts/06\_analyze.py} & Runs per-seed primary, secondary, and image-controlled analyses. \\
 \code{scripts/08\_caption\_quality.py} & Computes the CIDEr and SPICE quality preconditions. Requires JDK 11 because SPICE 1.0 uses Nashorn. \\
 \code{scripts/09\_aggregate\_seeds.py} & Aggregates per-seed analyses into cross-seed robustness summaries. \\
+\code{scripts/10\_bootstrap\_ci.py} & 1000-iteration paired image-level bootstrap of the Wilcoxon $r$ statistic; produces \code{captions/bootstrap\_ci.csv}. \\
 \code{captions/analysis\_aggregate\_beam\_no\_mae\_primary.csv} & Cleanest headline beam result. \\
 \code{captions/analysis\_aggregate\_nucleus\_no\_mae\_primary.csv} & Cleanest headline nucleus result. \\
 \bottomrule
 \end{tabularx}
 \end{table}
+
+\section{Per-Seed Statistical Detail for Headline Metrics}
+\label{app:bootstrap}
+
+Table~\ref{tab:per-seed-detail} reports, for each headline metric and
+decoder, the Benjamini--Hochberg adjusted $p$-value, the Wilcoxon effective
+sample size, the point estimate of $r$, and the 95\% bootstrap CI on $r$.
+The bootstrap is paired-by-image with 1000 iterations; the CI is the
+percentile method. Per-seed rows show within-seed statistics; the
+``aggregate'' row is the cross-seed mean $r$ with its corresponding
+bootstrap CI (independently resampling each seed and averaging the three
+$r$ values per iteration). No BH correction is applied across seeds, so
+the aggregate row has no $p_{\text{adj}}$.
+
+\begin{table}[h]
+\centering
+\caption{Per-seed BH-adjusted $p$-values and bootstrap 95\% CIs for the
+robust headline metrics (and the nucleus caption-length row that is not
+robust, for completeness). Sources:
+\code{captions/analysis\_seed*\_*\_no\_mae\_primary.csv} (BH-adjusted $p$
+and effective $n$) and \code{captions/bootstrap\_ci.csv} (bootstrap CIs).}
+\label{tab:per-seed-detail}
+\footnotesize
+\begin{tabular}{@{}l l l r r r l@{}}
+\toprule
+Decoder & Metric & Seed & Eff.\ $n$ & $r$ & 95\% CI & $p_{\text{adj}}$ \\
+\midrule
+beam & projective density & 1 & 1027 & 0.276 & [0.221, 0.332] & $3.7\!\times\!10^{-18}$ \\
+beam & projective density & 2 & 1134 & 0.256 & [0.198, 0.314] & $3.0\!\times\!10^{-17}$ \\
+beam & projective density & 3 & 1154 & 0.345 & [0.295, 0.396] & $8.3\!\times\!10^{-31}$ \\
+beam & projective density & agg. & --- & 0.292 & [0.262, 0.324] & --- \\
+\midrule
+beam & caption length & 1 & 4103 & 0.191 & [0.162, 0.222] & $1.4\!\times\!10^{-33}$ \\
+beam & caption length & 2 & 4096 & 0.287 & [0.261, 0.316] & $2.0\!\times\!10^{-74}$ \\
+beam & caption length & 3 & 4027 & 0.128 & [0.099, 0.159] & $1.8\!\times\!10^{-15}$ \\
+beam & caption length & agg. & --- & 0.202 & [0.185, 0.218] & --- \\
+\midrule
+nucleus & projective density & 1 & 1570 & 0.131 & [0.077, 0.185] & $1.8\!\times\!10^{-6}$ \\
+nucleus & projective density & 2 & 1600 & 0.175 & [0.126, 0.226] & $2.2\!\times\!10^{-11}$ \\
+nucleus & projective density & 3 & 1641 & 0.175 & [0.126, 0.222] & $9.8\!\times\!10^{-12}$ \\
+nucleus & projective density & agg. & --- & 0.160 & [0.132, 0.188] & --- \\
+\midrule
+nucleus & caption length & 1 & 4685 & 0.057 & [0.029, 0.086] & $2.3\!\times\!10^{-4}$ \\
+nucleus & caption length & 2 & 4688 & 0.005 & [0.001, 0.031] & 0.80 \\
+nucleus & caption length & 3 & 4699 & 0.051 & [0.022, 0.080] & $1.8\!\times\!10^{-3}$ \\
+nucleus & caption length & agg. & --- & 0.038 & [0.026, 0.057] & --- \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Two reading notes. (i)~Per-seed CIs that include or touch the 0.10
+pre-registered floor are honest near-misses: beam caption length in
+seed~3 has lower bound 0.099; nucleus projective density in seed~1 has
+lower bound 0.077. In both cases the aggregate CI is cleanly above 0.10
+and the other two seeds clear the floor by a wide margin. (ii)~The
+nucleus caption-length row is included because, although the
+BH-adjusted $p$-values are significant in two of three seeds, the effect
+sizes are an order of magnitude below the floor and the aggregate CI
+$[0.026, 0.057]$ is entirely below it --- which is exactly the case the
+pre-registered effect-size floor was designed to filter out.
 
 \begin{thebibliography}{9}
 

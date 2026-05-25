@@ -749,7 +749,7 @@ Phase A consumes.}
 \toprule
 Path & Role \\
 \midrule
-\code{scripts/02\_train\_clip.py} & Trains one adaptor while freezing the selected visual encoder and GPT-2. The filename retains an early CLIP-only label; the script is the general adaptor trainer and is invoked once per encoder (CLIP, SigLIP, DINOv2, MAE). \\
+\code{scripts/02\_train\_adaptor.py} & Trains one prefix adaptor while freezing the selected visual encoder and GPT-2. Invoked once per encoder (CLIP, SigLIP, DINOv2, MAE) via \code{--encoder}. \\
 \code{scripts/04\_generate\_captions.py} & Generates beam and nucleus captions for a selected encoder and seed. \\
 \code{scripts/05\_score\_metrics.py} & Computes per-caption style and attribute metrics. \\
 \code{scripts/06\_analyze.py} & Runs per-seed primary, secondary, and image-controlled analyses. \\

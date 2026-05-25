@@ -1,9 +1,10 @@
-"""Phase 1 — orchestration script for the CLIP vertical slice.
+"""Adaptor training driver — one trained prefix adaptor per encoder.
 
 Wires together:
-  - configs/base.yaml + configs/clip.yaml (manually merged; OmegaConf
+  - configs/base.yaml + configs/{encoder}.yaml (manually merged; OmegaConf
     doesn't honor Hydra's `defaults:` key)
-  - encoder (CLIP-L/14 from src/ttic_embeddings/encoders)
+  - the selected encoder (CLIP, SigLIP, DINOv2, or MAE) from
+    src/ttic_embeddings/encoders
   - adaptor (PrefixAdaptor from src/ttic_embeddings/adaptor)
   - frozen GPT-2 medium decoder
   - CocoCaptionPairs train + val DataLoaders
@@ -11,17 +12,20 @@ Wires together:
 
 After training (or when --smoke is passed for a tiny end-to-end run),
 loads the best adaptor checkpoint and generates 5 sample captions on
-held-out val images so you can eyeball whether captions are coherent —
-the Phase 1 success criterion in the roadmap.
+held-out val images so you can eyeball whether captions are coherent.
+
+Originally written for the CLIP vertical slice (hence the script's
+former filename, 02_train_clip.py); it has always been general across
+the four-encoder design and is now named accordingly.
 
 Usage (full run):
-    uv run python scripts/02_train_clip.py
+    uv run python scripts/02_train_adaptor.py --encoder clip
 
 Usage (tiny end-to-end smoke run, ~5–10 min on CPU):
-    uv run python scripts/02_train_clip.py --smoke
+    uv run python scripts/02_train_adaptor.py --encoder clip --smoke
 
 Usage with overrides:
-    uv run python scripts/02_train_clip.py --max-steps 2000 --batch-size 64
+    uv run python scripts/02_train_adaptor.py --encoder siglip --max-steps 2000 --batch-size 64
 """
 from __future__ import annotations
 
@@ -52,7 +56,7 @@ from ttic_embeddings.generate import generate_captions               # noqa: E40
 from ttic_embeddings.train import CaptioningModel, train             # noqa: E402
 from ttic_embeddings.utils import get_logger, seed_worker, set_seed   # noqa: E402
 
-log = get_logger("train_clip")
+log = get_logger("train_adaptor")
 
 
 # ---------------------------------------------------------------------

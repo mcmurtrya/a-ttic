@@ -102,7 +102,7 @@ scripts/
   00_smoke_test.py             # Phase 0 verification
   01_cache_features.py         # Pre-extract frozen patch features
   01_download_data.py          # COCO + VG fetch
-  02_train_clip.py             # General adaptor trainer (early CLIP-only filename)
+  02_train_adaptor.py          # Trains one prefix adaptor per encoder
   04_generate_captions.py
   05_score_metrics.py
   06_analyze.py

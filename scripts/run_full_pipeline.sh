@@ -56,12 +56,12 @@ run_train_pair() {
     echo ""
     echo "[$(date +%H:%M:%S)] TRAIN  GPU0=$tag0   GPU1=$tag1"
 
-    uv run python scripts/02_train_clip.py \
+    uv run python scripts/02_train_adaptor.py \
         --encoder "$enc0" --seed "$seed0" --gpu 0 \
         > "$LOG_DIR/train_${tag0}.log" 2>&1 &
     local pid0=$!
 
-    uv run python scripts/02_train_clip.py \
+    uv run python scripts/02_train_adaptor.py \
         --encoder "$enc1" --seed "$seed1" --gpu 1 \
         > "$LOG_DIR/train_${tag1}.log" 2>&1 &
     local pid1=$!
@@ -145,12 +145,12 @@ run_train_seed_pair() {
     echo ""
     echo "[$(date +%H:%M:%S)] TRAIN  GPU0=$tag0   GPU1=$tag1"
 
-    uv run python scripts/02_train_clip.py \
+    uv run python scripts/02_train_adaptor.py \
         --encoder "$enc" --seed "$seed0" --gpu 0 \
         > "$LOG_DIR/train_${tag0}.log" 2>&1 &
     local pid0=$!
 
-    uv run python scripts/02_train_clip.py \
+    uv run python scripts/02_train_adaptor.py \
         --encoder "$enc" --seed "$seed1" --gpu 1 \
         > "$LOG_DIR/train_${tag1}.log" 2>&1 &
     local pid1=$!
@@ -164,7 +164,7 @@ run_train_seed_solo() {
     local tag="${enc}_seed${seed}"
     echo ""
     echo "[$(date +%H:%M:%S)] TRAIN  GPU$gpu=$tag (solo)"
-    uv run python scripts/02_train_clip.py \
+    uv run python scripts/02_train_adaptor.py \
         --encoder "$enc" --seed "$seed" --gpu "$gpu" \
         2>&1 | tee "$LOG_DIR/train_${tag}.log"
     echo "[$(date +%H:%M:%S)] DONE   $tag"

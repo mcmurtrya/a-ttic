@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "ttic-embeddings"
 version = "0.1.0"
-description = "Visual encoder swap to caption analysis (TTIC course project)"
+description = "Controlled probe of how visual-encoder pretraining shapes generated captions (originally a TTIC course project; extended through Phase A multi-seed analysis)"
 authors = [
     {name = "Alex McMurtry", email = "amcmurtry@uchicago.edu"},
     {name = "Hilman Hanivan", email = "hanivan@uchicago.edu"},

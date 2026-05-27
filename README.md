@@ -4,6 +4,8 @@ A controlled probe of how visual-encoder pretraining shapes generated captions. 
 
 **Authors.** Alex McMurtry (`amcmurtry@uchicago.edu`) and Hilman Hanivan (`hanivan@uchicago.edu`). Originally a TTIC course project; extended through a Phase A multi-seed analysis and peer-style reviewer passes into the form here.
 
+**AI assistance.** Anthropic's Claude (via Claude Code) was used in creating all parts of this repository — code, documentation, configs, tests, and the LaTeX writeup. All design decisions, experimental choices, and final content were directed and reviewed by the human authors, who are responsible for the work.
+
 **Headline finding (Phase A, three seeds):** with the language model, adaptor, and decoding fixed, the self-supervised DINOv2 encoder produces *more* projective spatial language and *longer* captions than the language-supervised CLIP and SigLIP. CLIP carries most of the pooled effect; SigLIP echoes it more weakly. The projective spatial direction matches the prediction pre-registered in [`docs/methods.md`](docs/methods.md); caption length was not pre-registered. MAE fails the comparable-quality precondition on both CIDEr and SPICE in every seed and is excluded from the headline contrast. Full writeup: [`encoder_pretraining_caption_report.tex`](encoder_pretraining_caption_report.tex) (build with `tectonic -X compile` to get the PDF).
 
 ## System overview

@@ -39,7 +39,7 @@ powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | ie
 ### Local development
 
 ```bash
-make install-dev    # uv venv + pip install -e .[dev,caption-quality] + spaCy/NLTK assets
+make install-dev    # uv sync --extra dev --extra caption-quality + NLTK assets (spaCy model via pyproject.toml)
 make smoke          # Phase 0 verification: all four encoders load and produce expected shapes
 make test           # Run the pytest suite (metrics, stats, adaptor, data)
 ```
